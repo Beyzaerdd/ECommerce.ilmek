@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Data.Configurations
+namespace ECommerce.Data.Concrete.Configurations
 {
     public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessage>
     {
@@ -21,23 +21,23 @@ namespace ECommerce.Data.Configurations
                 .HasColumnType("nvarchar(20)");
 
             builder
-            .Property(cm => cm.Subject)
-            .IsRequired()
-            .HasMaxLength(20)
-            .HasColumnType("nvarchar(100)");
+                .Property(cm => cm.Subject)
+                .IsRequired()
+                .HasMaxLength(20)
+                .HasColumnType("nvarchar(100)");
 
             builder
-            .Property(cm => cm.Message)
-            .IsRequired()
-            .HasMaxLength(500)
-            .HasColumnType("nvarchar(500)");
+                .Property(cm => cm.Message)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasColumnType("nvarchar(500)");
 
 
             builder
-            .HasOne(cm => cm.User)
-            .WithMany(u => u.ContactMessages)
-            .HasForeignKey(cm => cm.UserId)
-            .OnDelete(DeleteBehavior.SetNull);
+                .HasOne(cm => cm.User)
+                .WithMany(u => u.ContactMessages)
+                .HasForeignKey(cm => cm.UserId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

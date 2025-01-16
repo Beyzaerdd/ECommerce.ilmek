@@ -8,14 +8,14 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Data.Configurations
+namespace ECommerce.Data.Concrete.Configurations
 {
     public class SellerConfiguration : IEntityTypeConfiguration<Seller>
     {
         public void Configure(EntityTypeBuilder<Seller> builder)
         {
             builder.ToTable("Sellers");
-          
+
         }
     }
 }

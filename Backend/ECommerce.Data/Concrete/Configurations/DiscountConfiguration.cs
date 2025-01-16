@@ -8,15 +8,15 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Data.Configurations
+namespace ECommerce.Data.Concrete.Configurations
 {
     public class DiscountConfiguration : IEntityTypeConfiguration<Discount>
     {
         public void Configure(EntityTypeBuilder<Discount> builder)
         {
-           
 
-           
+
+
             builder
                 .HasOne(d => d.Seller)
                 .WithMany(s => s.Discounts)

@@ -8,14 +8,19 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Data.Configurations
+namespace ECommerce.Data.Concrete.Configurations
 {
-    internal class NormalUserConfiguration : IEntityTypeConfiguration<NormalUser>
+    public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
     {
-        public void Configure(EntityTypeBuilder<NormalUser> builder)
+        public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
-            builder.ToTable("NormalUsers");
-          
+
+
+
+
+
+
+            builder.HasKey(oi => new { oi.OrderId, oi.ProductId });
         }
     }
 }

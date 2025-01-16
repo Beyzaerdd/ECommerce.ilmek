@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 namespace ECommerce.Entity.Concrete
 {
     [DebuggerDisplay("{Name}")]
-        public class Product : BaseEntity
-        {
-   
-        
+        public class Product : BaseEntity<int>
+
+    { 
+
         public string Name { get; set; } 
 
         public string Description { get; set; } 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Entity.Concrete
 {
-    public class Category :BaseEntity
+    public class Category : BaseEntity<int>
     {
        
         public string Name { get; set; }

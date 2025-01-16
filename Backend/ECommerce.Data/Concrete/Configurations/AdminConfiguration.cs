@@ -8,19 +8,13 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Data.Configurations
+namespace ECommerce.Data.Concrete.Configurations
 {
-    public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
+    public class AdminConfiguration : IEntityTypeConfiguration<Admin>
     {
-        public void Configure(EntityTypeBuilder<OrderItem> builder)
+        public void Configure(EntityTypeBuilder<Admin> builder)
         {
-
-          
-
-
-
-
-            builder.HasKey(oi => new { oi.OrderId, oi.ProductId });
+            builder.ToTable("Admin");
         }
     }
 }

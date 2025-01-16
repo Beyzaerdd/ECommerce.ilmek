@@ -8,7 +8,7 @@ using ECommerce.Shared.ComplexTypes;
 
 namespace ECommerce.Entity.Concrete
 {
-   public class Discount :BaseEntity
+   public class Discount : BaseEntity<int>
     {
       
            

@@ -8,13 +8,14 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Data.Configurations
+namespace ECommerce.Data.Concrete.Configurations
 {
-    public class AdminConfiguration : IEntityTypeConfiguration<Admin>
+    internal class NormalUserConfiguration : IEntityTypeConfiguration<NormalUser>
     {
-        public void Configure(EntityTypeBuilder<Admin> builder)
+        public void Configure(EntityTypeBuilder<NormalUser> builder)
         {
-            builder.ToTable("Admin");
+            builder.ToTable("NormalUsers");
+
         }
     }
 }

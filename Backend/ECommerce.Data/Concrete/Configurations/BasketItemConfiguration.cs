@@ -8,15 +8,16 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Data.Configurations
+namespace ECommerce.Data.Concrete.Configurations
 {
     public class BasketItemConfiguration : IEntityTypeConfiguration<BasketItem>
     {
         public void Configure(EntityTypeBuilder<BasketItem> builder)
         {
-          
+
 
             builder.HasKey(bi => new { bi.BasketId, bi.ProductId });
+
             builder.HasKey(bi => bi.Id);
 
             builder
@@ -26,9 +27,9 @@ namespace ECommerce.Data.Configurations
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder
-            .Property(bi => bi.Quantity)
-            .IsRequired()
-           .HasDefaultValue(1);
+                  .Property(bi => bi.Quantity)
+                  .IsRequired()
+                  .HasDefaultValue(1);
 
 
             builder.ToTable(t =>

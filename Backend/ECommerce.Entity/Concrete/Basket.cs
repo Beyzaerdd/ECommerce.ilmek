@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Entity.Concrete
 {
-    public class Basket :BaseEntity
+    public class Basket :BaseEntity<int>
     {
         public string UserId { get; set; }
         public NormalUser User { get; set; }
@@ -17,4 +17,6 @@ namespace ECommerce.Entity.Concrete
         public ICollection<BasketItem> BasketItems { get; set; }
 
     }
+
+   
 }

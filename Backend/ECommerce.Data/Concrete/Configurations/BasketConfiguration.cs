@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Data.Configurations
+namespace ECommerce.Data.Concrete.Configurations
 {
     public class BasketConfiguration : IEntityTypeConfiguration<Basket>
     {
@@ -17,7 +17,7 @@ namespace ECommerce.Data.Configurations
 
             builder.HasOne(b => b.User)
              .WithOne(u => u.Basket)
-             .HasForeignKey<Basket>(b => b.UserId) 
+             .HasForeignKey<Basket>(b => b.UserId)
              .OnDelete(DeleteBehavior.Cascade);
 
         }

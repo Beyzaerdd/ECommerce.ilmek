@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Entity.Concrete
 {
-    public class ContactMessage :BaseEntity
+    public class ContactMessage : BaseEntity<int>
     {
         
     

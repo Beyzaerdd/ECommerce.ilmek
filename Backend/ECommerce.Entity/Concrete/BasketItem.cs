@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Entity.Concrete
 {
-    public class BasketItem:BaseEntity
+    public class BasketItem: BaseEntity<int>
     {
         public int BasketId { get; set; } 
         public Basket Basket { get; set; }
