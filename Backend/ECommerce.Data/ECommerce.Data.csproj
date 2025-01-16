@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\" />
-    <Folder Include="Concrete\" />
+    <Folder Include="Concrete\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

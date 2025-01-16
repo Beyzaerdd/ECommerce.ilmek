@@ -11,9 +11,9 @@ using ECommerce.Entity.Concrete;
 using System.Reflection;
 
 
-namespace ECommerce.Data.Context
+namespace ECommerce.Data.Concrete.Context
 {
-    public class ECommerceDbContext: IdentityDbContext<ApplicationUser , ApplicationRole , string>
+    public class ECommerceDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options)
         {
@@ -24,14 +24,14 @@ namespace ECommerce.Data.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-   
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Admin> Admin { get; set; }
         public DbSet<Seller> Sellers { get; set; }
         public DbSet<NormalUser> NormalUsers { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
-      
+
         public DbSet<ContactMessage> ContactMessages { get; set; }
         public DbSet<Discount> Discounts { get; set; }
 
@@ -46,7 +46,7 @@ namespace ECommerce.Data.Context
         }
     }
 
-    }
+}
 
 
 
