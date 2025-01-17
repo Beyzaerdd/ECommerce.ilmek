@@ -9,6 +9,6 @@ namespace ECommerce.Shared.DTOs
     public class CategoryUpdateDTO
     {
         public string Name { get; set; }
-        public int? ParentCategoryId { get; set; }
+        public int ParentCategoryId { get; set; }
     }
 }
