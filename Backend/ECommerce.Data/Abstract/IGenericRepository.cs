@@ -11,10 +11,10 @@ namespace ECommerce.Data.Abstract
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-
+        
         Task<TEntity> AddAsync(TEntity entity);
 
-        Task<IEnumerable<TEntity>> AddRangeAsync(TEntity entities);
+        Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities);
 
         void HardDeleteAsync(TEntity entity);
 
@@ -32,12 +32,13 @@ namespace ECommerce.Data.Abstract
             Expression<Func<TEntity, bool>>? predicate = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
             int? take = null,
+             bool asNoTracking = false,
             params Func<IQueryable<TEntity>, IQueryable<TEntity>>[] includes
             );
 
-        Task<TEntity> GetByIdAsync<TEntity>(object id);
+        Task<TEntity> GetByIdAsync(int id);
 
-        Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> anyExpression);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> anyExpression);
 
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate);
         Task<int> CountAsync();
