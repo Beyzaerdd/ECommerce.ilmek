@@ -25,7 +25,7 @@ namespace ECommerce.Entity.Concrete
         [Required]
         public Invoice Invoice { get; set; }
         [NotMapped]
-        public decimal TotalPrice => OrderItems?.Sum(oi => oi.TotalPrice) ?? 0; // Siparişin toplam fiyatı
+        public decimal TotalPrice => OrderItems?.Sum(oi => oi.TotalPrice) ?? 0; 
 
 
 
