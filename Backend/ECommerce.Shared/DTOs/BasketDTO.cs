@@ -8,10 +8,9 @@ namespace ECommerce.Shared.DTOs
 {
     public  class BasketDTO
     {
+        public int Id { get; set; }
         public string ApplicationUserId { get; set; }
         public ApplicationUserDTO ApplicationUser { get; set; }
-
-
-        public ICollection<BasketItemDTO> BasketItems { get; set; }
+        public IEnumerable<BasketItemDTO> BasketItems { get; set; } = new List<BasketItemDTO>();
     }
 }
