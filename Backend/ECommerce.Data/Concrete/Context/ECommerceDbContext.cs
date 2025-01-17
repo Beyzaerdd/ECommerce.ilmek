@@ -34,7 +34,7 @@ namespace ECommerce.Data.Concrete.Context
 
         public DbSet<ContactMessage> ContactMessages { get; set; }
         public DbSet<Discount> Discounts { get; set; }
-
+        public DbSet<Review> Reviews { get; set; }
         public DbSet<UserFav> UserFavs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,6 +42,12 @@ namespace ECommerce.Data.Concrete.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<ApplicationUser>()
+
+                .HasOne(p => p.Basket)
+                .WithOne(c => c.ApplicationUser)
+                .HasForeignKey<ApplicationUser>(P => P.BasketId);
 
         }
     }

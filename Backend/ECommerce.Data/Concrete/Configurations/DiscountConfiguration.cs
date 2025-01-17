@@ -15,13 +15,12 @@ namespace ECommerce.Data.Concrete.Configurations
         public void Configure(EntityTypeBuilder<Discount> builder)
         {
 
+            builder.HasOne(b => b.ApplicationUser)
+               .WithMany(au => au.Discounts)
+               .HasForeignKey(b => b.ApplicationUserId)
+               .OnDelete(DeleteBehavior.Cascade);
 
 
-            builder
-                .HasOne(d => d.Seller)
-                .WithMany(s => s.Discounts)
-                .HasForeignKey(d => d.SellerId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

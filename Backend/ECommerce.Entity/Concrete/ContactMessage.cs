@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Entity.Concrete
 {
-    public class ContactMessage : BaseEntity<int>
+    public class ContactMessage : BaseEntity
     {
         
     
@@ -20,8 +20,8 @@ namespace ECommerce.Entity.Concrete
         public string Subject { get; set; }
        
         public string Message { get; set; }
-        public string? UserId { get; set; }
-        public NormalUser User { get; set; }
-   
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
     }
 }

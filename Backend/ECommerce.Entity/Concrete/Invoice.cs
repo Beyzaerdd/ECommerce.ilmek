@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Entity.Concrete
 {
-    public class Invoice : BaseEntity<int>
+    public class Invoice : BaseEntity
     {
         
         public int OrderId { get; set; }

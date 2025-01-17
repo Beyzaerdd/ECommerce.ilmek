@@ -15,11 +15,6 @@ namespace ECommerce.Data.Concrete.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
 
-            builder
-               .HasOne(o => o.User)
-               .WithMany(u => u.Orders)
-               .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
             //if the User is deleted, the Orders are not deleted
         }
     }

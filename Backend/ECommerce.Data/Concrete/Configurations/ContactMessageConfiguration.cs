@@ -32,12 +32,11 @@ namespace ECommerce.Data.Concrete.Configurations
                 .HasMaxLength(500)
                 .HasColumnType("nvarchar(500)");
 
+            builder.HasOne(b => b.ApplicationUser)
+                   .WithMany(au => au.ContactMessages)
+                   .HasForeignKey(b => b.ApplicationUserId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
-            builder
-                .HasOne(cm => cm.User)
-                .WithMany(u => u.ContactMessages)
-                .HasForeignKey(cm => cm.UserId)
-                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -10,15 +10,26 @@ namespace ECommerce.Entity.Concrete
 {
     public class ApplicationUser : IdentityUser
     {
-        [Required]
-        [StringLength(20)]
+      
         public string FirstName { get; set; }
-        [Required]
-        [StringLength(20)]
+      
         public string LastName { get; set; }
-        [Required]
-        [StringLength(300)]
+  
         public string Address { get; set; }
         public string City { get; set; }
+
+        public bool IsDeleted { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public ICollection<UserFav> UserFavs { get; set; }
+        public ICollection<ContactMessage> ContactMessages { get; set; }
+        public int BasketId { get; set; }
+        public Basket Basket { get; set; }
+        public ICollection<Product> Products { get; set; }
+
+        public ICollection<Discount> Discounts { get; set; }
+
+
+
     }
 }

@@ -10,10 +10,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Entity.Concrete
 {
-    public class Order : BaseEntity<int>
+    public class Order : BaseEntity
     {
-        public string UserId { get; set; }
-        public NormalUser User { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         [Required]
         public OrderStatus Status { get; set; }
         [Required]

@@ -16,11 +16,6 @@ namespace ECommerce.Data.Concrete.Configurations
         {
 
 
-            builder
-              .HasOne(uf => uf.User)
-              .WithMany(u => u.UserFavs)
-              .HasForeignKey(uf => uf.UserId)
-              .OnDelete(DeleteBehavior.Cascade);
 
 
             builder

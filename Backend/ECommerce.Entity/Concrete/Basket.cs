@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Entity.Concrete
 {
-    public class Basket :BaseEntity<int>
+    public class Basket :BaseEntity
     {
-        public string UserId { get; set; }
-        public NormalUser User { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
-        
+
         public ICollection<BasketItem> BasketItems { get; set; }
 
     }

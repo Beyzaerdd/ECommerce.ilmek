@@ -20,7 +20,7 @@ namespace ECommerce.Data.Concrete.Configurations
 
 
 
-            builder.HasKey(oi => new { oi.OrderId, oi.ProductId });
+            
         }
     }
 }

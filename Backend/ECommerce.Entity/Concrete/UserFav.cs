@@ -10,8 +10,8 @@ namespace ECommerce.Entity.Concrete
     public class UserFav :BaseEntity
     {
 
-        public string UserId { get; set; }
-        public NormalUser User { get; set; } 
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public int? ProductId { get; set; }
         public Product Product { get; set; } 
     }

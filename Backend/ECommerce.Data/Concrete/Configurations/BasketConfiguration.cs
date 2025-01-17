@@ -15,11 +15,10 @@ namespace ECommerce.Data.Concrete.Configurations
         public void Configure(EntityTypeBuilder<Basket> builder)
         {
 
-            builder.HasOne(b => b.User)
-             .WithOne(u => u.Basket)
-             .HasForeignKey<Basket>(b => b.UserId)
-             .OnDelete(DeleteBehavior.Cascade);
-
+            builder.HasOne(b => b.ApplicationUser)
+                    .WithOne(au => au.Basket)
+                    .HasForeignKey<Basket>(b => b.ApplicationUserId);
+                 
         }
     }
 }

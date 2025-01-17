@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace ECommerce.Entity.Concrete
 {
     [DebuggerDisplay("{Name}")]
-        public class Product : BaseEntity<int>
+        public class Product : BaseEntity
 
     { 
 
@@ -35,19 +35,19 @@ namespace ECommerce.Entity.Concrete
        
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-        
-        public string SellerId { get; set; }
-        public Seller Seller { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
 
         public ICollection<UserFav> UserFavs { get; set; } 
         public ICollection<OrderItem> OrderItems { get; set; }
         public ICollection<BasketItem> BasketItems { get; set; }
 
         public ICollection<Discount> Discounts { get; set; }
+    
 
-       
+
 
     }
 
