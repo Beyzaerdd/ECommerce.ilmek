@@ -14,6 +14,6 @@ namespace ECommerce.Shared.DTOs
         public DateTime OrderDate { get; set; }
         public IEnumerable<OrderItemCreateDTO> OrderItems { get; set; } = new List<OrderItemCreateDTO>();
         public InvoiceCreateDTO Invoice { get; set; }
-        public decimal TotalAmount => OrderItems.Sum(item => item.UnitPrice * item.Quantity);
+   
     }
 }

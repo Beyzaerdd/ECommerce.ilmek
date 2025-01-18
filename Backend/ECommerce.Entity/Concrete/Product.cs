@@ -21,7 +21,7 @@ namespace ECommerce.Entity.Concrete
 
         public string Description { get; set; } 
   
-        public decimal Price { get; set; } 
+        public decimal UnitPrice { get; set; } 
      
         public ProductSize Size { get; set; } 
   
@@ -45,8 +45,8 @@ namespace ECommerce.Entity.Concrete
         public ICollection<BasketItem> BasketItems { get; set; }
 
         public ICollection<Discount> Discounts { get; set; }
-    
 
+        public string ImageUrl { get; set; }
 
 
     }

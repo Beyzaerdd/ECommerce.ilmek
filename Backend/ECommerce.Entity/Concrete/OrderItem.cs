@@ -19,7 +19,7 @@ namespace ECommerce.Entity.Concrete
         public ICollection<Review> Reviews { get; set; }
 
         [NotMapped]
-        public decimal TotalPrice => Quantity * (Product?.Price ?? 0); 
+        public decimal TotalPrice => Quantity * (Product?.UnitPrice ?? 0); 
         
     }
 }

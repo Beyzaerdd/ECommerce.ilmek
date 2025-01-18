@@ -12,9 +12,9 @@ namespace ECommerce.Shared.DTOs
         public int OrderId { get; set; }
         public int ProductId { get; set; }
         public ProductDTO Product { get; set; }
-        public decimal UnitPrice { get; set; }
+       
         public int Quantity { get; set; }
-        public decimal TotalPrice => Quantity * (Product?.Price ?? 0);
+        public decimal TotalPrice => Quantity * (Product?.UnitPrice ?? 0);
         public List<ReviewDTO> Reviews { get; set; }
     }
 }

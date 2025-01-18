@@ -14,7 +14,7 @@ namespace ECommerce.Shared.DTOs
         public string ApplicationUserName { get; set; }
         public OrderStatus Status { get; set; }
         public DateTime OrderDate { get; set; }
-        public List<OrderCreateDTO> OrderItems { get; set; } = new List<OrderCreateDTO>();
+        public List<OrderItemDTO> OrderItems { get; set; } = new List<OrderItemDTO>();
         public InvoiceDTO Invoice { get; set; }
         public decimal TotalPrice => OrderItems?.Sum(oi => oi.TotalPrice) ?? 0;
     }
