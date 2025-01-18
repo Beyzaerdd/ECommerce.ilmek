@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Shared.DTOs
 {
-    public class DiscountCreateDTO
+    public class DiscountUptadeDTO
     {
-        public string Name { get; set; } 
+        public int Id { get; set; }
+        public string Name { get; set; }
         public decimal DiscountValue { get; set; }
-        public DiscountType Type { get; set; } 
+        public DiscountType Type { get; set; }
         public string CouponCode { get; set; }
-        public DateTime StartDate { get; set; } 
+        public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int? ProductId { get; set; }
+        public bool IsActive { get; set; }
     }
 }
