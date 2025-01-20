@@ -1,15 +1,20 @@
-﻿using System;
+﻿using ECommerce.Shared.DTOs;
+using ECommerce.Shared.DTOs.CategoryDTOs;
+using ECommerce.Shared.DTOs.ResponseDTOs;
+using ECommerce.Shared.DTOs.CategoryDTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using ECommerce.Entity.Concrete;
 
 namespace ECommerce.Business.Abstract
 {
-    public class ICategoryService
+    public interface ICategoryService
     {
-        public interface ICategoryService
-        {
+        
            
             Task<ResponseDTO<CategoryDTO>> AddCategoryAsync(CategoryCreateDTO categoryCreateDTO);
             Task<ResponseDTO<NoContent>> UpdateCategoryAsync(CategoryUpdateDTO categoryUpdateDTO);
@@ -27,4 +32,4 @@ namespace ECommerce.Business.Abstract
         }
 
     }
-}
+
