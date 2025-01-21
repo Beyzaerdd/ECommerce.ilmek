@@ -20,3 +20,4 @@ namespace ECommerce.Shared.DTOs.InvoiceDTOs
 
         public DateTime IssueDate { get; set; }
     }
+}

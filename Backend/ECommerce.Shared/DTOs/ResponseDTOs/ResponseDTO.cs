@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerce.Shared.DTOs.CategoryDTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -44,7 +45,7 @@ namespace ECommerce.Shared.DTOs.ResponseDTOs
     }
 
 
-    public static ResponseDTO<T> Fail(string error, HttpStatusCode statusCode)
+        public static ResponseDTO<T> Fail(string error, HttpStatusCode statusCode)
     {
         return new ResponseDTO<T>
         {
@@ -63,6 +64,8 @@ namespace ECommerce.Shared.DTOs.ResponseDTOs
             IsSucceeded = false
         };
     }
-}
+
+       
+    }
       
 }
