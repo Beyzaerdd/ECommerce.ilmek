@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -8,58 +9,60 @@ using System.Threading.Tasks;
 namespace ECommerce.Shared.DTOs.ResponseDTOs
 {
     public class ResponseDTO<T>
+    { 
+     public T? Data { get; set; } 
+
+    public List<ErrorDetail>? Errors { get; set; }
+
+    [JsonPropertyName("success")]
+    public bool IsSucceeded { get; set; } 
+
+    [JsonPropertyName("status_code")]
+    public HttpStatusCode StatusCode { get; set; } 
+
+  
+    public static ResponseDTO<T> Success(T data, HttpStatusCode statusCode)
     {
-        public T? Data { get; set; }
-        public List<string>? Errors { get; set; }
-
-        [JsonIgnore]
-        public bool IsSucceded { get; set; }
-
-        [JsonIgnore]
-        public int StatusCode { get; set; }
-
-
-        public static ResponseDTO<T> Success(T data, int statusCode)
+        return new ResponseDTO<T>
         {
-            return new ResponseDTO<T>
-            {
-                Data = data,
-                StatusCode = statusCode,
-                IsSucceded = true
-            };
-        }
-
-       
-        public static ResponseDTO<T> Success(int statusCode)
-        {
-            return new ResponseDTO<T>
-            {
-                Data = default(T),
-                StatusCode = statusCode,
-                IsSucceded = true
-            };
-        }
-
-      
-        public static ResponseDTO<T> Fail(string error, int statusCode)
-        {
-            return new ResponseDTO<T>
-            {
-                Errors = new List<string> { error },
-                StatusCode = statusCode,
-                IsSucceded = false
-            };
-        }
-
+            Data = data,
+            StatusCode = statusCode,
+            IsSucceeded = true,
      
-        public static ResponseDTO<T> Fail(List<string> errors, int statusCode)
-        {
-            return new ResponseDTO<T>
-            {
-                Errors = errors,
-                StatusCode = statusCode,
-                IsSucceded = false
-            };
-        }
+        };
     }
+
+    public static ResponseDTO<T> Success(HttpStatusCode statusCode)
+    {
+        return new ResponseDTO<T>
+        {
+            Data = default,
+            StatusCode = statusCode,
+            IsSucceeded = true,
+   
+        };
+    }
+
+
+    public static ResponseDTO<T> Fail(string error, HttpStatusCode statusCode)
+    {
+        return new ResponseDTO<T>
+        {
+            Errors = new List<ErrorDetail> { new ErrorDetail { Message = error } },
+            StatusCode = statusCode,
+            IsSucceeded = false
+        };
+    }
+
+    public static ResponseDTO<T> Fail(List<ErrorDetail> errors, HttpStatusCode statusCode)
+    {
+        return new ResponseDTO<T>
+        {
+            Errors = errors,
+            StatusCode = statusCode,
+            IsSucceeded = false
+        };
+    }
+}
+      
 }
