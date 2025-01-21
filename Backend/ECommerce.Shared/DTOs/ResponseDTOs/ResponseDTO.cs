@@ -18,7 +18,7 @@ namespace ECommerce.Shared.DTOs.ResponseDTOs
     [JsonPropertyName("success")]
     public bool IsSucceeded { get; set; } 
 
-    [JsonPropertyName("status_code")]
+  
     public HttpStatusCode StatusCode { get; set; } 
 
   

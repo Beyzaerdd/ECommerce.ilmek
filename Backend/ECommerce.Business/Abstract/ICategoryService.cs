@@ -19,15 +19,15 @@ namespace ECommerce.Business.Abstract
             Task<ResponseDTO<CategoryDTO>> AddCategoryAsync(CategoryCreateDTO categoryCreateDTO);
             Task<ResponseDTO<NoContent>> UpdateCategoryAsync(CategoryUpdateDTO categoryUpdateDTO);
             Task<ResponseDTO<NoContent>> SoftDeleteCategoryAsync(int id); // Soft delete
-            Task<ResponseDTO<NoContent>> HardDeleteCategoryAsync(int id); // Hard delete
+            Task HardDeleteCategoryAsync(int id); // Hard delete
 
         
             Task<ResponseDTO<CategoryDTO>> GetCategoryByIdAsync(int id);
             Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetAllCategoriesAsync();
             Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetCategoriesByParentIdAsync(int? parentId);
 
-         
-            Task<ResponseDTO<int>> GetCategoryCountAsync();
+        Task<ResponseDTO<int>> GetCategoryCountAsync(bool? isActive);
+        Task<ResponseDTO<int>> GetCategoryCountAsync();
             Task<ResponseDTO<bool>> AnyCategoryAsync(Expression<Func<Category, bool>> predicate);
         }
 

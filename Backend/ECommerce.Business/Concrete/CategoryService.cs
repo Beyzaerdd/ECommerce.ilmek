@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECommerce.Business.Abstract;
 using ECommerce.Data.Abstract;
 using ECommerce.Data.Concrete;
 using ECommerce.Entity.Concrete;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Business.Concrete
 {
-    public class CategoryService
+    public class CategoryService :ICategoryService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -27,7 +28,7 @@ namespace ECommerce.Business.Concrete
             this.mapper = mapper;
         }
 
-        public async Task<ResponseDTO<CategoryDTO>> AddAsync(CategoryCreateDTO categoryCreateDTO)
+        public async Task<ResponseDTO<CategoryDTO>> AddCategoryAsync(CategoryCreateDTO categoryCreateDTO)
         {
             if (categoryCreateDTO.ParentCategoryId > 0)
             {
@@ -75,19 +76,19 @@ namespace ECommerce.Business.Concrete
         }
 
 
-        public async Task<ResponseDTO<int>> CountAsync()
+        public async Task<ResponseDTO<int>> GetCategoryCountAsync()
         {
             var count = await unitOfWork.GetRepository<Category>().CountAsync();
             return ResponseDTO<int>.Success(count, HttpStatusCode.OK);
         }
-        public async Task<ResponseDTO<int>> CountAsync(bool? isActive)
+        public async Task<ResponseDTO<int>> GetCategoryCountAsync(bool? isActive)
         {
             var count = await unitOfWork.GetRepository<Category>().CountAsync(x => x.IsActive == isActive);
             return ResponseDTO<int>.Success(count, HttpStatusCode.OK);
         }
 
-     
-        public async Task<ResponseDTO<NoContent>> SoftDeleteAsync(int id)
+
+        public async Task<ResponseDTO<NoContent>> SoftDeleteCategoryAsync(int id)
         {
             var category = await unitOfWork.GetRepository<Category>().GetByIdAsync(id);
 
@@ -111,7 +112,7 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<NoContent>.Success(HttpStatusCode.NoContent);
         }
 
-        public async Task HardDeleteIfSoftDeletedAsync(int id)
+        public async Task HardDeleteCategoryAsync(int id)
         {
             var category = await unitOfWork.GetRepository<Category>().GetByIdAsync(id);
 
@@ -130,13 +131,153 @@ namespace ECommerce.Business.Concrete
 
         }
 
+        public async Task<ResponseDTO<CategoryDTO>> GetCategoryByIdAsync(int id)
+        {
+            var category = await unitOfWork.GetRepository<Category>().GetByIdAsync(id);
+
+            if (category == null)
+            {
+                return ResponseDTO<CategoryDTO>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message=$"Category not found with id: {id}",
+                        Code="CategoryNotFound",
+                        Target=nameof(id)
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+
+            var categoryDTO = mapper.Map<CategoryDTO>(category);
+            return ResponseDTO<CategoryDTO>.Success(categoryDTO, HttpStatusCode.OK);
 
         }
 
+        public async Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetAllCategoriesAsync()
+        {
+            try
+            {
+
+                var categories = await unitOfWork.GetRepository<Category>().GetAllAsync();
+
+                if (categories == null || !categories.Any())
+                {
+                    return ResponseDTO<IEnumerable<CategoryDTO>>.Fail(new List<ErrorDetail>
+            {
+                new ErrorDetail
+                {
+                    Message = "No categories found.",
+                    Code = "CategoriesNotFound",
+                    Target = nameof(categories)
+                }
+            }, HttpStatusCode.NotFound);
+                }
+
+                var categoryDTOs = mapper.Map<IEnumerable<CategoryDTO>>(categories);
 
 
+                return ResponseDTO<IEnumerable<CategoryDTO>>.Success(categoryDTOs, HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+
+                return ResponseDTO<IEnumerable<CategoryDTO>>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = $"An error occurred: {ex.Message}",
+                Code = "InternalError",
+                Target = "GetAllAsync"
+            }
+        }, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        public async Task<ResponseDTO<NoContent>> UpdateCategoryAsync(CategoryUpdateDTO categoryUpdateDTO)
+        {
+            var category = await unitOfWork.GetRepository<Category>().GetByIdAsync(categoryUpdateDTO.Id);
+
+            if (category == null)
+            {
+                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message=$"Category not found with id: {categoryUpdateDTO.Id}",
+                        Code="CategoryNotFound",
+                        Target=nameof(categoryUpdateDTO.Id)
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+
+            if (categoryUpdateDTO.ParentCategoryId > 0)
+            {
+                var ParentCategory = await unitOfWork.GetRepository<Category>().GetByIdAsync(categoryUpdateDTO.ParentCategoryId);
+
+                if (ParentCategory == null)
+                {
+                    return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
+                    {
+                        new ErrorDetail
+                        {
+                            Message=$"Parent category not found with id: {categoryUpdateDTO.ParentCategoryId}",
+                            Code="ParentCategoryNotFound",
+                            Target=nameof(categoryUpdateDTO.ParentCategoryId)
+                        }
+                    }, HttpStatusCode.BadRequest);
+                }
+            }
+
+            if (await unitOfWork.GetRepository<Category>().AnyAsync(x => x.Name == categoryUpdateDTO.Name && x.Id != categoryUpdateDTO.Id))
+            {
+                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message=$"Category with name {categoryUpdateDTO.Name} already exists",
+                        Code="CategoryAlreadyExists",
+                        Target=nameof(categoryUpdateDTO.Name)
+                    }
+                }, HttpStatusCode.BadRequest);
+            }
+
+
+            mapper.Map(categoryUpdateDTO, category);
+            category.UpdatedAt = DateTime.Now;
+
+            unitOfWork.GetRepository<Category>().UpdateAsync(category);
+            await unitOfWork.SaveChangesAsync();
+
+            return ResponseDTO<NoContent>.Success(HttpStatusCode.NoContent);
+        }
+
+        public async Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetCategoriesByParentIdAsync(int? parentId)
+        {
+            var categories = await unitOfWork.GetRepository<Category>().GetAllAsync(x => x.ParentCategoryId == parentId);
+            if (categories == null)
+            {
+                return ResponseDTO<IEnumerable<CategoryDTO>>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message = "No categories found.",
+                        Code = "CategoriesNotFound",
+                        Target = nameof(categories)
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+            var categoryDTOs = mapper.Map<IEnumerable<CategoryDTO>>(categories);
+            return ResponseDTO<IEnumerable<CategoryDTO>>.Success(categoryDTOs, HttpStatusCode.OK);
+
+        }
+
+        public async Task<ResponseDTO<bool>> AnyCategoryAsync(Expression<Func<Category, bool>> predicate)
+        {
+            var any = await unitOfWork.GetRepository<Category>().AnyAsync(predicate);
+            return ResponseDTO<bool>.Success(any, HttpStatusCode.OK);
+        }
+   
+     
     }
 
-
-
-
+}
