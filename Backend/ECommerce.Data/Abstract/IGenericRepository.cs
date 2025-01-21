@@ -16,7 +16,7 @@ namespace ECommerce.Data.Abstract
 
         Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities);
 
-        void HardDeleteAsync(TEntity entity);
+        void HardDeleteAsync(Expression<Func<TEntity, bool>> predicate);
 
         void SoftDeleteAsync(TEntity entity);
 

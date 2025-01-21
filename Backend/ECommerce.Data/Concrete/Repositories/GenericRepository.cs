@@ -167,11 +167,18 @@ namespace ECommerce.Data.Concrete.Repositories
         /// Permanently deletes an entity from the database.
         /// </summary>
         /// <param name="entity">The entity to be deleted.</param>
-        public void HardDeleteAsync(TEntity entity)
+        public async Task HardDeleteAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+        
+            var entity = await _dbSet.FirstOrDefaultAsync(predicate);
+            if (entity == null)
+                throw new InvalidOperationException("Entity not found.");
 
             _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
         }
         /// <summary>
         /// Marks an entity as deleted (soft delete) by setting the IsDeleted flag.
