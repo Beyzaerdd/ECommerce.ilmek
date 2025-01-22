@@ -11,6 +11,6 @@ namespace ECommerce.Shared.DTOs.OrderDTOs
     {
         public OrderStatus Status { get; set; }
         public List<OrderItemUpdateDTO> OrderItems { get; set; } = new List<OrderItemUpdateDTO>();
-        public decimal TotalPrice => OrderItems?.Sum(oi => oi.TotalPrice) ?? 0;
+       
     }
 }
