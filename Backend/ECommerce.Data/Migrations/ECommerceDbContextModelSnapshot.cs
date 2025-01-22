@@ -172,6 +172,9 @@ namespace ECommerce.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -196,6 +199,9 @@ namespace ECommerce.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -233,6 +239,13 @@ namespace ECommerce.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -278,6 +291,9 @@ namespace ECommerce.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -386,6 +402,9 @@ namespace ECommerce.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -394,6 +413,9 @@ namespace ECommerce.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId1")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
@@ -415,8 +437,7 @@ namespace ECommerce.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId1");
 
                     b.ToTable("Invoices");
                 });
@@ -424,10 +445,7 @@ namespace ECommerce.Data.Migrations
             modelBuilder.Entity("ECommerce.Entity.Concrete.Order", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
@@ -435,6 +453,9 @@ namespace ECommerce.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -466,13 +487,16 @@ namespace ECommerce.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -516,6 +540,10 @@ namespace ECommerce.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -532,11 +560,14 @@ namespace ECommerce.Data.Migrations
                     b.Property<int>("PreparationTimeInDays")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("Size")
                         .HasColumnType("int");
+
+                    b.Property<int?>("SubcategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -546,6 +577,8 @@ namespace ECommerce.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("SubcategoryId");
 
                     b.ToTable("Products");
                 });
@@ -564,6 +597,9 @@ namespace ECommerce.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("IsApproved")
                         .HasColumnType("bit");
@@ -601,6 +637,9 @@ namespace ECommerce.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -815,19 +854,21 @@ namespace ECommerce.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECommerce.Entity.Concrete.Product", null)
+                    b.HasOne("ECommerce.Entity.Concrete.Product", "Product")
                         .WithMany("Discounts")
                         .HasForeignKey("ProductId");
 
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.Invoice", b =>
                 {
                     b.HasOne("ECommerce.Entity.Concrete.Order", "Order")
-                        .WithOne("Invoice")
-                        .HasForeignKey("ECommerce.Entity.Concrete.Invoice", "OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany()
+                        .HasForeignKey("OrderId1")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -841,7 +882,15 @@ namespace ECommerce.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ECommerce.Entity.Concrete.Invoice", "Invoice")
+                        .WithOne()
+                        .HasForeignKey("ECommerce.Entity.Concrete.Order", "Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.OrderItem", b =>
@@ -854,7 +903,9 @@ namespace ECommerce.Data.Migrations
 
                     b.HasOne("ECommerce.Entity.Concrete.Product", "Product")
                         .WithMany("OrderItems")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
@@ -875,9 +926,15 @@ namespace ECommerce.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ECommerce.Entity.Concrete.Category", "Subcategory")
+                        .WithMany()
+                        .HasForeignKey("SubcategoryId");
+
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Subcategory");
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.Review", b =>
@@ -1017,9 +1074,6 @@ namespace ECommerce.Data.Migrations
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.Order", b =>
                 {
-                    b.Navigation("Invoice")
-                        .IsRequired();
-
                     b.Navigation("OrderItems");
                 });
 
