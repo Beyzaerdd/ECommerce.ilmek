@@ -1,3 +1,6 @@
+using ECommerce.Business.Abstract;
+using ECommerce.Business.Concrete;
+using ECommerce.Business.Mapping;
 using ECommerce.Data.Abstract;
 using ECommerce.Data.Concrete;
 using ECommerce.Data.Concrete.Context;
@@ -5,6 +8,9 @@ using ECommerce.Data.Concrete.Repositories;
 using ECommerce.Entity.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using ECommerce.Business.Mapping;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,49 +29,20 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
     options.Password.RequiredLength = 8;
 
     options.User.RequireUniqueEmail = true;
-    //options.User.AllowedUserNameCharacters = "abcdefghijklmnoqprstuvwxyz0123456789-_.@";
+   
 
 }).AddEntityFrameworkStores<ECommerceDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
+
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
-//var scope = app.Services.CreateScope();
-//var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-//var context = scope.ServiceProvider.GetRequiredService<ECommerceDbContext>();
-//await userManager.CreateAsync(new Admin
-//{
-//    UserName = "admin",
-//    Email = "beyza@gmail.com",
-//    Address = "Istanbul",
-//    City = "Istanbul",
-//    FirstName = "Beyza",
-//    LastName = "Kara",
-//    DateOfBirth = new DateTime(1998, 12, 12),
-//    PhoneNumber = "1234567890",
-//    EmailConfirmed = true,
-//    Basket = new Basket()
-//    {
 
-//    }
-
-
-
-//},
-//"Bsfdjdsjkjk38309."
-
-
-//);
-//var admin = context.Admin.First();
-//context.Baskets.Add(new Basket
-//{
-//    ApplicationUser = admin,
-//    ApplicationUserId = admin.Id
-//});
-
-//context.SaveChanges();
 
 if (app.Environment.IsDevelopment())
 {
