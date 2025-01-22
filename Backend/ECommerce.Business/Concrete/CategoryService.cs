@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Business.Concrete
 {
-    public class CategoryService :ICategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -30,43 +30,41 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<CategoryDTO>> AddCategoryAsync(CategoryCreateDTO categoryCreateDTO)
         {
-            if (categoryCreateDTO.ParentCategoryId > 0)
-            {
 
-                var ParentCategory = await unitOfWork.GetRepository<Category>().GetByIdAsync(categoryCreateDTO.ParentCategoryId);
+            if (categoryCreateDTO.ParentCategoryId.HasValue && categoryCreateDTO.ParentCategoryId.Value > 0)
+            {
+                var ParentCategory = await unitOfWork.GetRepository<Category>().GetByIdAsync(categoryCreateDTO.ParentCategoryId.Value);
 
                 if (ParentCategory == null)
                 {
                     return ResponseDTO<CategoryDTO>.Fail(new List<ErrorDetail>
-                    {
-                        new ErrorDetail
-                        {
-                            Message=$"Parent category not found with id: {categoryCreateDTO.ParentCategoryId}",
-                            Code="ParentCategoryNotFound",
-                            Target=nameof(categoryCreateDTO.ParentCategoryId)
-                        }
-
-                        }, HttpStatusCode.BadRequest);
+            {
+                new ErrorDetail
+                {
+                    Message = $"Parent category not found with id: {categoryCreateDTO.ParentCategoryId}",
+                    Code = "ParentCategoryNotFound",
+                    Target = nameof(categoryCreateDTO.ParentCategoryId)
+                }
+            }, HttpStatusCode.BadRequest);
                 }
             }
 
             if (await unitOfWork.GetRepository<Category>().AnyAsync(x => x.Name == categoryCreateDTO.Name))
             {
                 return ResponseDTO<CategoryDTO>.Fail(new List<ErrorDetail>
-                {
-                    new ErrorDetail
-                    {
-                        Message=$"Category with name {categoryCreateDTO.Name} already exists",
-                        Code="CategoryAlreadyExists",
-                        Target=nameof(categoryCreateDTO.Name)
-                    }
-                }, HttpStatusCode.BadRequest);
+        {
+            new ErrorDetail
+            {
+                Message = $"Category with name {categoryCreateDTO.Name} already exists",
+                Code = "CategoryAlreadyExists",
+                Target = nameof(categoryCreateDTO.Name)
+            }
+        }, HttpStatusCode.BadRequest);
             }
 
             var newCategory = mapper.Map<Category>(categoryCreateDTO);
             newCategory.CreatedAt = DateTime.Now;
             newCategory.IsActive = true;
-
 
             await unitOfWork.GetRepository<Category>().AddAsync(newCategory);
             await unitOfWork.SaveChangesAsync();
@@ -74,6 +72,10 @@ namespace ECommerce.Business.Concrete
 
             return ResponseDTO<CategoryDTO>.Success(categoryDTO, HttpStatusCode.Created);
         }
+
+
+
+
 
 
         public async Task<ResponseDTO<int>> GetCategoryCountAsync()
@@ -276,8 +278,8 @@ namespace ECommerce.Business.Concrete
             var any = await unitOfWork.GetRepository<Category>().AnyAsync(predicate);
             return ResponseDTO<bool>.Success(any, HttpStatusCode.OK);
         }
-   
-     
+
+
     }
 
 }
