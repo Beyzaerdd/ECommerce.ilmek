@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Shared.DTOs.ProductDTOs
 {
-    public class ProductUptadeDTO
+    public class ProductUpdateDTO
     {
         public int Id { get; set; }
 
