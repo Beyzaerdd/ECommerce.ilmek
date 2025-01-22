@@ -49,6 +49,19 @@ namespace ECommerce.Data.Concrete.Context
                 .WithOne(c => c.ApplicationUser)
                 .HasForeignKey<ApplicationUser>(P => P.BasketId);
 
+            modelBuilder.Entity<Category>().HasData(
+             new Category { Id = 1, Name = "Woman", Description = "Woman" },
+             new Category { Id = 2, Name = "Man", Description = "Man" },
+             new Category { Id = 3, Name = "Baby", Description = "Baby" },
+             new Category { Id = 4, Name = "Home", Description = "Home" },
+             new Category { Id = 5, ParentCategoryId = 1, Name = "Woman Top clothing", Description = "Top clothing" },
+             new Category { Id = 6, ParentCategoryId = 2, Name = "Man Top clothing", Description = "Top clothing" },
+             new Category { Id = 7, ParentCategoryId = 3, Name = "Baby Top clothing", Description = "Top clothing" },
+             new Category { Id = 8, ParentCategoryId = 4, Name = "Home Blanket", Description = "Blanket" });
+
+          
+        
+
         }
     }
 
