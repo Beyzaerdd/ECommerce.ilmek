@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ECommerce.Data.Migrations
 {
     /// <inheritdoc />
@@ -546,6 +548,21 @@ namespace ECommerce.Data.Migrations
                         principalTable: "OrderItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CreatedAt", "Description", "IsActive", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(682), "Woman", true, false, "Woman", null, null },
+                    { 2, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(685), "Man", true, false, "Man", null, null },
+                    { 3, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(686), "Baby", true, false, "Baby", null, null },
+                    { 4, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(707), "Home", true, false, "Home", null, null },
+                    { 5, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(708), "Top clothing", true, false, "Woman Top clothing", 1, null },
+                    { 6, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(709), "Top clothing", true, false, "Man Top clothing", 2, null },
+                    { 7, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(711), "Top clothing", true, false, "Baby Top clothing", 3, null },
+                    { 8, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(711), "Blanket", true, false, "Home Blanket", 4, null }
                 });
 
             migrationBuilder.CreateIndex(

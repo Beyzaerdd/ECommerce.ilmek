@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Data.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20250122095546_InitialDb")]
+    [Migration("20250122171001_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
@@ -269,6 +269,84 @@ namespace ECommerce.Data.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(682),
+                            Description = "Woman",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Woman"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(685),
+                            Description = "Man",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Man"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(686),
+                            Description = "Baby",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Baby"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(707),
+                            Description = "Home",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Home"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(708),
+                            Description = "Top clothing",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Woman Top clothing",
+                            ParentCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(709),
+                            Description = "Top clothing",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Man Top clothing",
+                            ParentCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(711),
+                            Description = "Top clothing",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Baby Top clothing",
+                            ParentCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(711),
+                            Description = "Blanket",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Home Blanket",
+                            ParentCategoryId = 4
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.ContactMessage", b =>
