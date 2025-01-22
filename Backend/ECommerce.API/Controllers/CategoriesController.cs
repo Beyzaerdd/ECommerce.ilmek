@@ -76,7 +76,7 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        [HttpGet("count")]
+        [HttpGet("countAll")]
         public async Task<IActionResult> GetCategoryCount()
         {
             var response = await _categoryService.GetCategoryCountAsync();
