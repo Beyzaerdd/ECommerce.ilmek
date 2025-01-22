@@ -15,12 +15,18 @@ namespace ECommerce.Data.Concrete.Configurations
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
 
+           
+
+            builder
+                 .HasOne(oi => oi.Product)
+                 .WithMany(p => p.OrderItems)
+                 .HasForeignKey(oi => oi.ProductId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
 
 
 
 
-            
         }
     }
 }

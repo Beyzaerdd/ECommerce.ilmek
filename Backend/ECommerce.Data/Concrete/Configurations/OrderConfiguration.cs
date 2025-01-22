@@ -15,7 +15,17 @@ namespace ECommerce.Data.Concrete.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
 
-            //if the User is deleted, the Orders are not deleted
+            builder
+       .HasOne(o => o.Invoice)
+       .WithOne()
+       .HasForeignKey<Order>(o => o.Id)
+       .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+        .HasMany(o => o.OrderItems)
+        .WithOne(oi => oi.Order)
+        .HasForeignKey(oi => oi.OrderId)
+        .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
