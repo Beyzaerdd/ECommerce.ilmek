@@ -16,6 +16,6 @@ namespace ECommerce.Shared.DTOs.CategoryDTOs
         public int ParentCategoryId { get; set; }
         public string ParentCategoryName { get; set; }
         public List<CategoryDTO> SubCategories { get; set; } = new List<CategoryDTO>();
-        public List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+       
     }
 }
