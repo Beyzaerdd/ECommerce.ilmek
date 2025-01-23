@@ -46,7 +46,7 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        [HttpPut("updateCategory")]
+        [HttpPut]
         public async Task<IActionResult> UpdateCategory(CategoryUpdateDTO categoryUpdateDTO)
         {
             var response = await _categoryService.UpdateCategoryAsync(categoryUpdateDTO);
