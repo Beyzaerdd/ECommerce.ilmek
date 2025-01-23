@@ -73,11 +73,6 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<CategoryDTO>.Success(categoryDTO, HttpStatusCode.Created);
         }
 
-
-
-
-
-
         public async Task<ResponseDTO<int>> GetCategoryCountAsync()
         {
             var count = await unitOfWork.GetRepository<Category>().CountAsync();
@@ -278,7 +273,7 @@ namespace ECommerce.Business.Concrete
             var any = await unitOfWork.GetRepository<Category>().AnyAsync(predicate);
             return ResponseDTO<bool>.Success(any, HttpStatusCode.OK);
         }
-
+     
 
     }
 
