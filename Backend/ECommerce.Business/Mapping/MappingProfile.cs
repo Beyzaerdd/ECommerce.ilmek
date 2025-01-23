@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.CategoryDTOs;
+using ECommerce.Shared.DTOs.ProductDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,20 @@ namespace ECommerce.Business.Mapping
         public MappingProfile()
         {
             #region Category
-            CreateMap<Category, CategoryDTO>().ReverseMap();
+            CreateMap<Category, CategoryDTO>()
+                .ForMember(src => src.ParentCategoryName, opt => opt.MapFrom(dest => dest.ParentCategory.Name)).ReverseMap();
+           
+              //  .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ParentCategoryName));
             CreateMap<Category, CategoryCreateDTO>().ReverseMap();
             CreateMap<Category, CategoryUpdateDTO>().ReverseMap();
 
+
+            #endregion
+            #region Product
+            CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Product, ProductUpdateDTO>().ReverseMap();
+            CreateMap<Product, ProductCreateDTO>().ReverseMap();
+           
             #endregion
         }
     }
