@@ -21,7 +21,6 @@ namespace ECommerce.Business.Abstract
             Task<ResponseDTO<NoContent>> SoftDeleteCategoryAsync(int id); // Soft delete
             Task HardDeleteCategoryAsync(int id); // Hard delete
 
-        
             Task<ResponseDTO<CategoryDTO>> GetCategoryByIdAsync(int id);
             Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetAllCategoriesAsync();
             Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetCategoriesByParentIdAsync(int? parentId);
