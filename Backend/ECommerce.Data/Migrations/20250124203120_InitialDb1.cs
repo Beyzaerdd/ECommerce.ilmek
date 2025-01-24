@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ECommerce.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class InitialDb1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -105,7 +105,7 @@ namespace ECommerce.Data.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BasketId = table.Column<int>(type: "int", nullable: false),
+                    BasketId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -128,8 +128,7 @@ namespace ECommerce.Data.Migrations
                         name: "FK_AspNetUsers_Baskets_BasketId",
                         column: x => x.BasketId,
                         principalTable: "Baskets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -284,7 +283,7 @@ namespace ECommerce.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 10, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
@@ -555,14 +554,14 @@ namespace ECommerce.Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "IsActive", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(682), "Woman", true, false, "Woman", null, null },
-                    { 2, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(685), "Man", true, false, "Man", null, null },
-                    { 3, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(686), "Baby", true, false, "Baby", null, null },
-                    { 4, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(707), "Home", true, false, "Home", null, null },
-                    { 5, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(708), "Top clothing", true, false, "Woman Top clothing", 1, null },
-                    { 6, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(709), "Top clothing", true, false, "Man Top clothing", 2, null },
-                    { 7, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(711), "Top clothing", true, false, "Baby Top clothing", 3, null },
-                    { 8, new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(711), "Blanket", true, false, "Home Blanket", 4, null }
+                    { 1, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7862), "Woman", true, false, "Woman", null, null },
+                    { 2, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7865), "Man", true, false, "Man", null, null },
+                    { 3, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7866), "Baby", true, false, "Baby", null, null },
+                    { 4, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7867), "Home", true, false, "Home", null, null },
+                    { 5, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7868), "Top clothing", true, false, "Woman Top clothing", 1, null },
+                    { 6, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7869), "Top clothing", true, false, "Man Top clothing", 2, null },
+                    { 7, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7870), "Top clothing", true, false, "Baby Top clothing", 3, null },
+                    { 8, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7871), "Blanket", true, false, "Home Blanket", 4, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -601,7 +600,8 @@ namespace ECommerce.Data.Migrations
                 name: "IX_AspNetUsers_BasketId",
                 table: "AspNetUsers",
                 column: "BasketId",
-                unique: true);
+                unique: true,
+                filter: "[BasketId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

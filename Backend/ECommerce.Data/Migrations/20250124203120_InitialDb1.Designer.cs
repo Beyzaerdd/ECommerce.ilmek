@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Data.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20250122171001_InitialDb")]
-    partial class InitialDb
+    [Migration("20250124203120_InitialDb1")]
+    partial class InitialDb1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,7 +77,7 @@ namespace ECommerce.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BasketId")
+                    b.Property<int?>("BasketId")
                         .HasColumnType("int");
 
                     b.Property<string>("City")
@@ -145,7 +145,8 @@ namespace ECommerce.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BasketId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[BasketId] IS NOT NULL");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -274,7 +275,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(682),
+                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7862),
                             Description = "Woman",
                             IsActive = true,
                             IsDeleted = false,
@@ -283,7 +284,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(685),
+                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7865),
                             Description = "Man",
                             IsActive = true,
                             IsDeleted = false,
@@ -292,7 +293,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(686),
+                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7866),
                             Description = "Baby",
                             IsActive = true,
                             IsDeleted = false,
@@ -301,7 +302,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(707),
+                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7867),
                             Description = "Home",
                             IsActive = true,
                             IsDeleted = false,
@@ -310,7 +311,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(708),
+                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7868),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -320,7 +321,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(709),
+                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7869),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -330,7 +331,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(711),
+                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7870),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -340,7 +341,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2025, 1, 22, 17, 10, 0, 670, DateTimeKind.Utc).AddTicks(711),
+                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7871),
                             Description = "Blanket",
                             IsActive = true,
                             IsDeleted = false,
@@ -636,7 +637,7 @@ namespace ECommerce.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("PreparationTimeInDays")
                         .HasColumnType("int");
@@ -880,9 +881,7 @@ namespace ECommerce.Data.Migrations
                 {
                     b.HasOne("ECommerce.Entity.Concrete.Basket", "Basket")
                         .WithOne("ApplicationUser")
-                        .HasForeignKey("ECommerce.Entity.Concrete.ApplicationUser", "BasketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ECommerce.Entity.Concrete.ApplicationUser", "BasketId");
 
                     b.Navigation("Basket");
                 });
