@@ -13,6 +13,11 @@ namespace ECommerce.Shared.ComplexTypes
         M = 3,
         L = 4,
         XL = 5,
-        XXL = 6
+        XXL = 6,
+       Newborn = 7,      
+        Infant = 8,       
+        Toddler = 9,     
+        Preschooler = 10,  
+        EarlySchoolAge = 11 
     }
 }
