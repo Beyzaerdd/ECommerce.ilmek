@@ -18,13 +18,13 @@ namespace ECommerce.Business.Abstract
         Task<ResponseDTO<ProductDTO>> GetProductByIdAsync(int id);
         Task<ResponseDTO<IEnumerable<ProductDTO>>> GetAllProductsAsync();
 
-        Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsByCategoryIdAsync(int categoryId);
+        Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsWithCategoriesAsync(int parentCategoryId);
         Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsBySubCategoryIdAsync(int subCategoryId);
 
         Task<ResponseDTO<int>> GetProductCountAsync(bool? isActive);
-        Task<ResponseDTO<int>> GetProductCountAsync();
+       
 
-        Task<ResponseDTO<int>> GetCountByCategory(int categoryId);
+        Task<ResponseDTO<int>> GetCountBySubCategory(int subCategoryId);
 
 
 
