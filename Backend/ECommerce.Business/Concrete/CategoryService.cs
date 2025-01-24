@@ -6,6 +6,7 @@ using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.CategoryDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -250,7 +251,15 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetCategoriesByParentIdAsync(int? parentId)
         {
-            var categories = await unitOfWork.GetRepository<Category>().GetAllAsync(x => x.ParentCategoryId == parentId);
+            var categories = await unitOfWork.GetRepository<Category>()
+                .GetAllAsync(
+                    x => x.ParentCategoryId == parentId,
+                          null,
+                          null,
+                          false,
+                         query => query.Include(y => y.ParentCategory)
+    );
+
             if (categories == null)
             {
                 return ResponseDTO<IEnumerable<CategoryDTO>>.Fail(new List<ErrorDetail>
@@ -264,6 +273,7 @@ namespace ECommerce.Business.Concrete
                 }, HttpStatusCode.NotFound);
             }
             var categoryDTOs = mapper.Map<IEnumerable<CategoryDTO>>(categories);
+
             return ResponseDTO<IEnumerable<CategoryDTO>>.Success(categoryDTOs, HttpStatusCode.OK);
 
         }
@@ -273,7 +283,7 @@ namespace ECommerce.Business.Concrete
             var any = await unitOfWork.GetRepository<Category>().AnyAsync(predicate);
             return ResponseDTO<bool>.Success(any, HttpStatusCode.OK);
         }
-     
+
 
     }
 
