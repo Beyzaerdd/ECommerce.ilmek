@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ECommerce.Entity.Concrete;
 using System.Reflection;
+using ECommerce.Shared.ComplexTypes;
 
 
 namespace ECommerce.Data.Concrete.Context
@@ -59,13 +60,19 @@ namespace ECommerce.Data.Concrete.Context
              new Category { Id = 7, ParentCategoryId = 3, Name = "Baby Top clothing", Description = "Top clothing" },
              new Category { Id = 8, ParentCategoryId = 4, Name = "Home Blanket", Description = "Blanket" });
 
-          
-        
+       
 
+      
         }
+
     }
 
-}
+
+
+    }
+
+
+
 
 
 
