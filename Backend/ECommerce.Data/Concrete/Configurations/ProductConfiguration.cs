@@ -16,7 +16,7 @@ namespace ECommerce.Data.Concrete.Configurations
             builder.Property(p => p.Name)
                    .IsRequired()
                    .HasMaxLength(10)
-                   .HasColumnType("nvarchar(10)");
+                   .HasColumnType("nvarchar(50)");
             builder.Property(p => p.Description)
                   .IsRequired()
                   .HasMaxLength(100)
