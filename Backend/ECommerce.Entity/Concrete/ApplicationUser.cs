@@ -19,6 +19,7 @@ namespace ECommerce.Entity.Concrete
         public string City { get; set; }
 
         public bool IsDeleted { get; set; }
+
         public DateTime DateOfBirth { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection<UserFav> UserFavs { get; set; }
