@@ -46,6 +46,25 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IImageService, ImageService>();
 
 
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SellerPolicy", policy =>
+        policy.RequireRole("Seller"));
+
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireRole("Admin"));
+
+    options.AddPolicy("SellerAndAdmin", policy =>
+        policy.RequireRole("Seller", "Admin"));
+
+    options.AddPolicy("UserPolicy", policy =>
+        policy.RequireRole("User","Admin", "NormalUser"));
+
+});
+
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
 
