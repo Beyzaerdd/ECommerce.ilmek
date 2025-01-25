@@ -43,6 +43,8 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.
 
 var app = builder.Build();
 var scope = app.Services.CreateScope();
