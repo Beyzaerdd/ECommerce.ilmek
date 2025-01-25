@@ -12,6 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using ECommerce.Business.Mapping;
 using ECommerce.Shared.ComplexTypes;
 using Microsoft.OpenApi.Validations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using ECommerce.Business.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +38,30 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
    
 
 }).AddEntityFrameworkStores<ECommerceDbContext>().AddDefaultTokenProviders();
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+
+
+var jwtConfig = builder.Configuration.GetSection("JwtConfig").Get<JwtConfig>();
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtConfig?.Issuer,
+        ValidAudience = jwtConfig?.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig?.Secret ?? ""))
+    };
+});
+
 
 builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
 
