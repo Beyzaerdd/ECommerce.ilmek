@@ -17,6 +17,6 @@ namespace ECommerce.Entity.Concrete
         public Category ParentCategory { get; set; }
         public ICollection<Category> SubCategories { get; set; } 
         public ICollection<Product> Products { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }
