@@ -77,7 +77,25 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-       
-        
+        [HttpGet("getByColor/{productColor}")]
+        public async Task<IActionResult> GetProductByColor(int productColor)
+        {
+            var response = await _productService.GetProductByColor(productColor);
+            return CreateResponse(response);
+        }
+        [HttpGet("getByPriceRange/{minPrice}/{maxPrice}")]
+        public async Task<IActionResult> GetProductByPriceRange(decimal minPrice, decimal maxPrice)
+        {
+            var response = await _productService.GetProductByPriceRange(minPrice, maxPrice);
+            return CreateResponse(response);
+        }
+
+        [HttpGet("getBySize/{productSize}")]
+        public async Task<IActionResult> GetProductBySize(int productSize)
+        {
+            var response = await _productService.GetProductBySize(productSize);
+            return CreateResponse(response);
+        }
+
     }
 }

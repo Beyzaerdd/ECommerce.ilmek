@@ -3,6 +3,7 @@ using AutoMapper.Configuration.Annotations;
 using ECommerce.Business.Abstract;
 using ECommerce.Data.Abstract;
 using ECommerce.Entity.Concrete;
+using ECommerce.Shared.ComplexTypes;
 using ECommerce.Shared.DTOs.CategoryDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
@@ -178,7 +179,7 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsBySubCategoryIdAsync(int subCategoryId)
         {
-            var products =await  unitOfWork.GetRepository<Product>().GetAllAsync(x => x.SubcategoryId == subCategoryId);
+            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.SubcategoryId == subCategoryId);
             if (products == null || !products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
@@ -231,9 +232,9 @@ namespace ECommerce.Business.Concrete
         }
     }, HttpStatusCode.BadRequest);
         }
-        
-           
-        
+
+
+
 
 
 
@@ -277,7 +278,7 @@ namespace ECommerce.Business.Concrete
 
             var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(productUpdateDTO.Id);
 
-            
+
             if (product == null)
             {
                 return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
@@ -291,7 +292,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-           
+
             if (!product.IsActive)
             {
                 return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
@@ -305,7 +306,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.BadRequest);
             }
 
-            
+
             if (product.IsDeleted)
             {
                 return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
@@ -327,6 +328,77 @@ namespace ECommerce.Business.Concrete
 
             return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
         }
-    
+
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySize(int productSize)
+        {
+            var size = (ProductSize)productSize;
+
+            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.Size == size);
+
+
+            if (products == null || !products.Any())
+            {
+                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail {
+                Message = "No product found",
+                Code = "ProductNotFound",
+                Target = nameof(products)
+            }
+        }, HttpStatusCode.NotFound);
+            }
+
+
+            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
+
+            return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
+        }
+
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductByColor(int productColor)
+        {
+            var color = (ProductColor)productColor;
+            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.Color == color);
+            if (products == null || !products.Any())
+            {
+                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail {
+                Message = "No product found",
+                Code = "ProductNotFound",
+                Target = nameof(products)
+            }
+        }, HttpStatusCode.NotFound);
+
+            }
+            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
+            return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
+
+        }
+
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductByPriceRange(decimal minPrice, decimal maxPrice)
+        {
+            var products = await unitOfWork.GetRepository<Product>()
+        .GetAllAsync(x => x.UnitPrice >= minPrice && x.UnitPrice <= maxPrice);
+
+          
+            if (products == null || !products.Any())
+            {
+                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "No products found in the specified price range",
+                Code = "ProductNotFound",
+                Target = nameof(products)
+            }
+        }, HttpStatusCode.NotFound);
+            }
+
+       
+            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
+
+           
+            return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
+        }
     }
 }

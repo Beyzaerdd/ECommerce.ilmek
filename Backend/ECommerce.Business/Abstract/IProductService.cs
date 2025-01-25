@@ -22,7 +22,12 @@ namespace ECommerce.Business.Abstract
         Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsBySubCategoryIdAsync(int subCategoryId);
 
         Task<ResponseDTO<int>> GetProductCountAsync(bool? isActive);
-       
+
+        Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySize(int productSize);
+        Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductByColor(int productColor);
+        Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductByPriceRange(decimal minPrice, decimal maxPrice);
+
+
 
         Task<ResponseDTO<int>> GetCountBySubCategory(int subCategoryId);
 
