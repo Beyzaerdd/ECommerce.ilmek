@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Entity.Concrete
 {
-    [DebuggerDisplay("{Name}")]
+    
         public class Product : BaseEntity
 
     { 
@@ -24,7 +24,8 @@ namespace ECommerce.Entity.Concrete
         public decimal UnitPrice { get; set; } 
      
         public ProductSize Size { get; set; } 
-  
+    
+
         public ProductColor Color { get; set; } 
     
         public int PreparationTimeInDays { get; set; } 

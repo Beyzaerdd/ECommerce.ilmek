@@ -23,7 +23,7 @@ namespace ECommerce.Entity.Concrete
         public ICollection<Order> Orders { get; set; }
         public ICollection<UserFav> UserFavs { get; set; }
         public ICollection<ContactMessage> ContactMessages { get; set; }
-        public int BasketId { get; set; }
+        public int? BasketId { get; set; }
         public Basket Basket { get; set; }
         public ICollection<Product> Products { get; set; }
 
