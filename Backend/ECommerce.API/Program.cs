@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ECommerce.Business.Configuration;
+using System.Security.Claims;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,39 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
+
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IBasketService, BasketService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+
+
+
+
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SellerPolicy", policy =>
+        policy.RequireRole("Seller"));
+
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireRole("Admin"));
+
+    options.AddPolicy("SellerAndAdmin", policy =>
+        policy.RequireRole("Seller", "Admin"));
+
+    options.AddPolicy("UserPolicy", policy =>
+        policy.RequireRole("User", "Admin", "NormalUser"));
+
+});
+
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -55,43 +89,17 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
+        ValidateIssuerSigningKey = true, 
         ValidIssuer = jwtConfig?.Issuer,
         ValidAudience = jwtConfig?.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig?.Secret ?? ""))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig?.Secret ?? "")),
+        RoleClaimType = jwtConfig?.RoleClaimType,
+       
     };
-});
+
+}); builder.Services.AddScoped<IAuthService, AuthService>();
 
 
-builder.Services.AddDbContext<ECommerceDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
-
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
-
-
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("SellerPolicy", policy =>
-        policy.RequireRole("Seller"));
-
-    options.AddPolicy("AdminPolicy", policy =>
-        policy.RequireRole("Admin"));
-
-    options.AddPolicy("SellerAndAdmin", policy =>
-        policy.RequireRole("Seller", "Admin"));
-
-    options.AddPolicy("UserPolicy", policy =>
-        policy.RequireRole("User","Admin", "NormalUser"));
-
-});
 
 builder.Services.AddControllersWithViews();
 
