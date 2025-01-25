@@ -120,6 +120,8 @@ namespace ECommerce.Data.Concrete.Context
                 IdentityNumber = 1,
                 LastName = "User",
                 StoreName = "Store",
+                IsApproved = true,
+                IsActive = true,
                 Address = "",
                 PhoneNumber = "",
                 City = "",
