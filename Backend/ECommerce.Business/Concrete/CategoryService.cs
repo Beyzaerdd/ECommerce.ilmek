@@ -4,6 +4,7 @@ using ECommerce.Data.Abstract;
 using ECommerce.Data.Concrete;
 using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.CategoryDTOs;
+using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +23,13 @@ namespace ECommerce.Business.Concrete
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IImageService imageService;
 
-        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
+        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper, IImageService imageService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.imageService = imageService;
         }
 
         public async Task<ResponseDTO<CategoryDTO>> AddCategoryAsync(CategoryCreateDTO categoryCreateDTO)
@@ -64,6 +67,11 @@ namespace ECommerce.Business.Concrete
             }
 
             var newCategory = mapper.Map<Category>(categoryCreateDTO);
+            if (categoryCreateDTO.Image != null)
+            {
+                var imageUrl = await imageService.UploadImageAsync(categoryCreateDTO.Image);
+                newCategory.ImageUrl = imageUrl;
+            }
             newCategory.CreatedAt = DateTime.Now;
             newCategory.IsActive = true;
 

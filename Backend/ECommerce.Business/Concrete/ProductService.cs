@@ -22,11 +22,14 @@ namespace ECommerce.Business.Concrete
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IImageService _imageService;
 
-        public ProductService(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper, IImageService imageService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            _imageService = imageService;
         }
 
         public async Task<ResponseDTO<ProductDTO>> AddProductAsync(ProductCreateDTO productCreateDTO)
@@ -63,6 +66,12 @@ namespace ECommerce.Business.Concrete
                 }
             }
             var newProduct = mapper.Map<Product>(productCreateDTO);
+            if (productCreateDTO.Image != null)
+            {
+                var imageUrl = await _imageService.UploadImageAsync(productCreateDTO.Image);
+                newProduct.ImageUrl = imageUrl;
+            }
+
             newProduct.IsActive = true;
             newProduct.CreatedAt = DateTime.Now;
 
@@ -73,9 +82,10 @@ namespace ECommerce.Business.Concrete
 
         }
 
-        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetAllProductsAsync()
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetAllProductsAsync(int? take = null)
         {
-            var producs = await unitOfWork.GetRepository<Product>().GetAllAsync();
+            var producs = await unitOfWork.GetRepository<Product>().GetAllAsync(null, orderBy: query => query.OrderByDescending(x => x.CreatedAt),
+                take: take);
             if (producs == null || !producs.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
