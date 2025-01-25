@@ -60,6 +60,35 @@ namespace ECommerce.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "115c7796-cfac-44de-91b5-916eaae125b5",
+                            CreatedDate = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7454),
+                            Description = "Administrator role",
+                            IsActive = true,
+                            Name = "AdminUser",
+                            NormalizedName = "ADMINUSER"
+                        },
+                        new
+                        {
+                            Id = "811f466c-9d06-43f8-a054-24aedbb4161b",
+                            CreatedDate = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7513),
+                            Description = "Regular user role",
+                            IsActive = true,
+                            Name = "NormalUser",
+                            NormalizedName = "NORMALUSER"
+                        },
+                        new
+                        {
+                            Id = "811f466c-9d06-43f8-a054-24aedbb4161c",
+                            CreatedDate = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7518),
+                            Description = "Seller role",
+                            IsActive = true,
+                            Name = "Seller",
+                            NormalizedName = "SELLER"
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.ApplicationUser", b =>
@@ -185,6 +214,32 @@ namespace ECommerce.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Baskets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ApplicationUserId = "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac",
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(38),
+                            IsActive = true,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ApplicationUserId = "14a0183f-1e96-4930-a83d-6ef5f22d8c09",
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(43),
+                            IsActive = true,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(47),
+                            IsActive = true,
+                            IsDeleted = false
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.BasketItem", b =>
@@ -245,6 +300,9 @@ namespace ECommerce.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -272,8 +330,9 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7862),
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7321),
                             Description = "Woman",
+                            ImageUrl = "x",
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Woman"
@@ -281,8 +340,9 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7865),
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7324),
                             Description = "Man",
+                            ImageUrl = "x",
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Man"
@@ -290,8 +350,9 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7866),
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7326),
                             Description = "Baby",
+                            ImageUrl = "x",
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Baby"
@@ -299,8 +360,9 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7867),
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7327),
                             Description = "Home",
+                            ImageUrl = "x",
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Home"
@@ -308,7 +370,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7868),
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7328),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -318,7 +380,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7869),
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7329),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -328,7 +390,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7870),
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7330),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -338,7 +400,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7871),
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7331),
                             Description = "Blanket",
                             IsActive = true,
                             IsDeleted = false,
@@ -660,6 +722,110 @@ namespace ECommerce.Data.Migrations
                     b.HasIndex("SubcategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            CategoryId = 1,
+                            Color = 2,
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(81),
+                            Description = "Elegant silk blouse for women.",
+                            ImageUrl = "https://example.com/images/silk-blouse.jpg",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Silk Blouse",
+                            PreparationTimeInDays = 3,
+                            Size = 3,
+                            SubcategoryId = 5,
+                            UnitPrice = 49.99m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            CategoryId = 2,
+                            Color = 4,
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(91),
+                            Description = "Comfortable and stylish casual shirt for men.",
+                            ImageUrl = "https://example.com/images/mens-casual-shirt.jpg",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Men's Casual Shirt",
+                            PreparationTimeInDays = 2,
+                            Size = 4,
+                            SubcategoryId = 6,
+                            UnitPrice = 34.99m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            CategoryId = 3,
+                            Color = 7,
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(94),
+                            Description = "Soft pajamas for babies.",
+                            ImageUrl = "https://example.com/images/baby-pajamas.jpg",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Baby Pajamas",
+                            PreparationTimeInDays = 2,
+                            Size = 7,
+                            SubcategoryId = 7,
+                            UnitPrice = 14.99m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            CategoryId = 3,
+                            Color = 6,
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(96),
+                            Description = "Comfortable shoes for babies.",
+                            ImageUrl = "https://example.com/images/baby-shoes.jpg",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Baby Shoes",
+                            PreparationTimeInDays = 4,
+                            Size = 11,
+                            SubcategoryId = 7,
+                            UnitPrice = 25.99m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            CategoryId = 4,
+                            Color = 4,
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(98),
+                            Description = "Soft and warm blanket for home.",
+                            ImageUrl = "https://example.com/images/home-blanket.jpg",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Home Blanket",
+                            PreparationTimeInDays = 3,
+                            Size = 4,
+                            SubcategoryId = 8,
+                            UnitPrice = 39.99m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            CategoryId = 4,
+                            Color = 11,
+                            CreatedAt = new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(101),
+                            Description = "Comfortable furniture set for home.",
+                            ImageUrl = "https://example.com/images/home-furniture-set.jpg",
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Home Furniture Set",
+                            PreparationTimeInDays = 7,
+                            Size = 4,
+                            SubcategoryId = 8,
+                            UnitPrice = 499.99m
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.Review", b =>
@@ -823,6 +989,23 @@ namespace ECommerce.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac",
+                            RoleId = "115c7796-cfac-44de-91b5-916eaae125b5"
+                        },
+                        new
+                        {
+                            UserId = "14a0183f-1e96-4930-a83d-6ef5f22d8c09",
+                            RoleId = "811f466c-9d06-43f8-a054-24aedbb4161b"
+                        },
+                        new
+                        {
+                            UserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            RoleId = "811f466c-9d06-43f8-a054-24aedbb4161c"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -849,6 +1032,31 @@ namespace ECommerce.Data.Migrations
                     b.HasBaseType("ECommerce.Entity.Concrete.ApplicationUser");
 
                     b.ToTable("Admin", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac",
+                            AccessFailedCount = 0,
+                            Address = "",
+                            City = "",
+                            ConcurrencyStamp = "cae01fd8-8cf3-4de1-93d5-2f97182fddd8",
+                            DateOfBirth = new DateTime(2025, 1, 25, 21, 23, 28, 218, DateTimeKind.Local).AddTicks(7558),
+                            Email = "adminuser@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            IsDeleted = false,
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMINUSER@GMAIL.COM",
+                            NormalizedUserName = "ADMINUSER@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMt6mNMvq5vIedGKhtUzffUcpmvPOmqYRgpqzBneoW/+1jF6g8Ql3tU2c1X33SV38g==",
+                            PhoneNumber = "",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "b0eb6f60-aebe-4b0e-ab1a-b6693e1d56a3",
+                            TwoFactorEnabled = false,
+                            UserName = "adminuser@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.NormalUser", b =>
@@ -856,6 +1064,30 @@ namespace ECommerce.Data.Migrations
                     b.HasBaseType("ECommerce.Entity.Concrete.ApplicationUser");
 
                     b.ToTable("NormalUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "14a0183f-1e96-4930-a83d-6ef5f22d8c09",
+                            AccessFailedCount = 0,
+                            Address = "",
+                            City = "",
+                            ConcurrencyStamp = "17d3129d-a0cf-4a13-87e6-0b6e533c320a",
+                            DateOfBirth = new DateTime(2025, 1, 25, 21, 23, 28, 290, DateTimeKind.Local).AddTicks(5206),
+                            EmailConfirmed = true,
+                            FirstName = "Normal",
+                            IsDeleted = false,
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "NORMALUSER@GMAIL.COM",
+                            NormalizedUserName = "NORMALUSER@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFc8S/Y3y+WPQsOH1UHji77MDhu1p9mOR/3veCML2mDFlhNusVW4xXDWeG5OeDEprQ==",
+                            PhoneNumber = "",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "c67cb8a0-b9e3-4a8f-8e5e-958fb383c279",
+                            TwoFactorEnabled = false,
+                            UserName = "normaluser@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.Seller", b =>
@@ -868,10 +1100,43 @@ namespace ECommerce.Data.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("StoreName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("WeeklyOrderLimit")
                         .HasColumnType("int");
 
                     b.ToTable("Sellers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+                            AccessFailedCount = 0,
+                            Address = "",
+                            City = "",
+                            ConcurrencyStamp = "f5f24fa7-c2d5-421d-8fe7-eed34209803f",
+                            DateOfBirth = new DateTime(2025, 1, 25, 21, 23, 28, 335, DateTimeKind.Local).AddTicks(5710),
+                            Email = "selleruser@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Seller",
+                            IsDeleted = false,
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SELLERUSER@GMAIL.COM",
+                            NormalizedUserName = "SELLERUSER@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPeTCEU1r1KFb+433/zBqTPq7WxOHFtXXLBXmD3rkKryqz2eu4emA3Y/G2Lp1kKAMg==",
+                            PhoneNumber = "",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "3f4165a2-17bd-4b0d-ae12-29ef0b397266",
+                            TwoFactorEnabled = false,
+                            UserName = "selleruser@gmail.com",
+                            IdentityNumber = 1,
+                            IsActive = false,
+                            StoreName = "Store",
+                            WeeklyOrderLimit = 0
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.ApplicationUser", b =>

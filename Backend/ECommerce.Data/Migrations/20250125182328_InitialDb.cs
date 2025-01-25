@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ECommerce.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb1 : Migration
+    public partial class InitialDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,6 +57,7 @@ namespace ECommerce.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ParentCategoryId = table.Column<int>(type: "int", nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -327,6 +328,7 @@ namespace ECommerce.Data.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IdentityNumber = table.Column<int>(type: "int", nullable: false),
                     WeeklyOrderLimit = table.Column<int>(type: "int", nullable: false),
+                    StoreName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -550,18 +552,93 @@ namespace ECommerce.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "CreatedAt", "Description", "IsActive", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "Description", "IsActive", "Name", "NormalizedName", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7862), "Woman", true, false, "Woman", null, null },
-                    { 2, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7865), "Man", true, false, "Man", null, null },
-                    { 3, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7866), "Baby", true, false, "Baby", null, null },
-                    { 4, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7867), "Home", true, false, "Home", null, null },
-                    { 5, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7868), "Top clothing", true, false, "Woman Top clothing", 1, null },
-                    { 6, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7869), "Top clothing", true, false, "Man Top clothing", 2, null },
-                    { 7, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7870), "Top clothing", true, false, "Baby Top clothing", 3, null },
-                    { 8, new DateTime(2025, 1, 24, 20, 31, 20, 684, DateTimeKind.Utc).AddTicks(7871), "Blanket", true, false, "Home Blanket", 4, null }
+                    { "115c7796-cfac-44de-91b5-916eaae125b5", null, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7454), "Administrator role", true, "AdminUser", "ADMINUSER", null },
+                    { "811f466c-9d06-43f8-a054-24aedbb4161b", null, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7513), "Regular user role", true, "NormalUser", "NORMALUSER", null },
+                    { "811f466c-9d06-43f8-a054-24aedbb4161c", null, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7518), "Seller role", true, "Seller", "SELLER", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "BasketId", "City", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "14a0183f-1e96-4930-a83d-6ef5f22d8c09", 0, "", null, "", "17d3129d-a0cf-4a13-87e6-0b6e533c320a", new DateTime(2025, 1, 25, 21, 23, 28, 290, DateTimeKind.Local).AddTicks(5206), null, true, "Normal", false, "User", false, null, "NORMALUSER@GMAIL.COM", "NORMALUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEFc8S/Y3y+WPQsOH1UHji77MDhu1p9mOR/3veCML2mDFlhNusVW4xXDWeG5OeDEprQ==", "", false, "c67cb8a0-b9e3-4a8f-8e5e-958fb383c279", false, "normaluser@gmail.com" },
+                    { "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac", 0, "", null, "", "cae01fd8-8cf3-4de1-93d5-2f97182fddd8", new DateTime(2025, 1, 25, 21, 23, 28, 218, DateTimeKind.Local).AddTicks(7558), "adminuser@gmail.com", true, "Admin", false, "User", false, null, "ADMINUSER@GMAIL.COM", "ADMINUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEMt6mNMvq5vIedGKhtUzffUcpmvPOmqYRgpqzBneoW/+1jF6g8Ql3tU2c1X33SV38g==", "", false, "b0eb6f60-aebe-4b0e-ab1a-b6693e1d56a3", false, "adminuser@gmail.com" },
+                    { "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 0, "", null, "", "f5f24fa7-c2d5-421d-8fe7-eed34209803f", new DateTime(2025, 1, 25, 21, 23, 28, 335, DateTimeKind.Local).AddTicks(5710), "selleruser@gmail.com", true, "Seller", false, "User", false, null, "SELLERUSER@GMAIL.COM", "SELLERUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEPeTCEU1r1KFb+433/zBqTPq7WxOHFtXXLBXmD3rkKryqz2eu4emA3Y/G2Lp1kKAMg==", "", false, "3f4165a2-17bd-4b0d-ae12-29ef0b397266", false, "selleruser@gmail.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Baskets",
+                columns: new[] { "Id", "ApplicationUserId", "CreatedAt", "IsActive", "IsDeleted", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac", new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(38), true, false, null },
+                    { 2, "14a0183f-1e96-4930-a83d-6ef5f22d8c09", new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(43), true, false, null },
+                    { 3, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(47), true, false, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CreatedAt", "Description", "ImageUrl", "IsActive", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7321), "Woman", "x", true, false, "Woman", null, null },
+                    { 2, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7324), "Man", "x", true, false, "Man", null, null },
+                    { 3, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7326), "Baby", "x", true, false, "Baby", null, null },
+                    { 4, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7327), "Home", "x", true, false, "Home", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Admin",
+                column: "Id",
+                value: "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac");
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "811f466c-9d06-43f8-a054-24aedbb4161b", "14a0183f-1e96-4930-a83d-6ef5f22d8c09" },
+                    { "115c7796-cfac-44de-91b5-916eaae125b5", "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac" },
+                    { "811f466c-9d06-43f8-a054-24aedbb4161c", "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CreatedAt", "Description", "ImageUrl", "IsActive", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 5, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7328), "Top clothing", null, true, false, "Woman Top clothing", 1, null },
+                    { 6, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7329), "Top clothing", null, true, false, "Man Top clothing", 2, null },
+                    { 7, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7330), "Top clothing", null, true, false, "Baby Top clothing", 3, null },
+                    { 8, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7331), "Blanket", null, true, false, "Home Blanket", 4, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "NormalUsers",
+                column: "Id",
+                value: "14a0183f-1e96-4930-a83d-6ef5f22d8c09");
+
+            migrationBuilder.InsertData(
+                table: "Sellers",
+                columns: new[] { "Id", "IdentityNumber", "IsActive", "StoreName", "WeeklyOrderLimit" },
+                values: new object[] { "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 1, false, "Store", 0 });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Color", "CreatedAt", "Description", "ImageUrl", "IsActive", "Name", "PreparationTimeInDays", "Size", "SubcategoryId", "UnitPrice", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 1, 2, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(81), "Elegant silk blouse for women.", "https://example.com/images/silk-blouse.jpg", true, "Silk Blouse", 3, 3, 5, 49.99m, null },
+                    { 2, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 2, 4, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(91), "Comfortable and stylish casual shirt for men.", "https://example.com/images/mens-casual-shirt.jpg", true, "Men's Casual Shirt", 2, 4, 6, 34.99m, null },
+                    { 3, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 3, 7, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(94), "Soft pajamas for babies.", "https://example.com/images/baby-pajamas.jpg", true, "Baby Pajamas", 2, 7, 7, 14.99m, null },
+                    { 4, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 3, 6, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(96), "Comfortable shoes for babies.", "https://example.com/images/baby-shoes.jpg", true, "Baby Shoes", 4, 11, 7, 25.99m, null },
+                    { 5, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 4, 4, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(98), "Soft and warm blanket for home.", "https://example.com/images/home-blanket.jpg", true, "Home Blanket", 3, 4, 8, 39.99m, null },
+                    { 6, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 4, 11, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(101), "Comfortable furniture set for home.", "https://example.com/images/home-furniture-set.jpg", true, "Home Furniture Set", 7, 4, 8, 499.99m, null }
                 });
 
             migrationBuilder.CreateIndex(
