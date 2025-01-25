@@ -15,6 +15,6 @@ namespace ECommerce.Shared.DTOs.DiscountDTOs
         public string CouponCode { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
     }
 }
