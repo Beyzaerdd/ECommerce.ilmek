@@ -14,6 +14,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using ECommerce.Shared.Extensions;
 
 namespace ECommerce.Business.Concrete
 {
@@ -22,12 +24,14 @@ namespace ECommerce.Business.Concrete
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IProductService productService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public DiscountService(IProductService productService, IMapper mapper, IUnitOfWork unitOfWork)
+        public DiscountService(IProductService productService, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             this.productService = productService;
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResponseDTO<DiscountDTO>> CreateCouponCodeAsync(DiscountCreateDTO discountCreateDTO)
@@ -49,8 +53,10 @@ namespace ECommerce.Business.Concrete
             }
 
             var discount = mapper.Map<Discount>(discountCreateDTO);
-            discount.Type = Shared.ComplexTypes.DiscountType.Coupon;
+            discount.Type = discountCreateDTO.Type;
+
             discount.IsActive = true;
+            discount.ApplicationUserId = httpContextAccessor.GetUserId();
             await unitOfWork.GetRepository<Discount>().AddAsync(discount);
             await unitOfWork.SaveChangesAsync();
             var discountDTO = mapper.Map<DiscountDTO>(discount);
@@ -62,7 +68,7 @@ namespace ECommerce.Business.Concrete
         public async Task<ResponseDTO<DiscountDTO>> CreateProductDiscountAsync(DiscountCreateDTO discountCreateDTO)
         {
 
-            var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(discountCreateDTO.ProductId);
+            var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(discountCreateDTO.ProductId.Value);
             if (product == null)
             {
                 return ResponseDTO<DiscountDTO>.Fail(new List<ErrorDetail>
@@ -82,9 +88,12 @@ namespace ECommerce.Business.Concrete
             discount.IsActive = true;
             discount.StartDate = DateTime.Now;
             discount.EndDate = discountCreateDTO.EndDate;
+            discount.ProductId = discountCreateDTO.ProductId;
+            discount.ApplicationUserId = httpContextAccessor.GetUserId();
 
 
-            product.Discounts.Add(discount);
+
+            // product.Discounts.Add(discount);
 
 
             await unitOfWork.GetRepository<Discount>().AddAsync(discount);
@@ -211,7 +220,7 @@ namespace ECommerce.Business.Concrete
                 }, HttpStatusCode.NotFound);
             }
 
-            var discounts = product.Discounts.Where(x => x.IsActive && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).ToList();
+            var discounts = await unitOfWork.GetRepository<Discount>().GetAllAsync(x =>x.ProductId==productId && x.IsActive && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
             if (discounts == null || !discounts.Any())
             {
                 return ResponseDTO<IEnumerable<DiscountDTO>>.Fail(new List<ErrorDetail>
