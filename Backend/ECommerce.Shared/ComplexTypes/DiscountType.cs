@@ -9,8 +9,8 @@ namespace ECommerce.Shared.ComplexTypes
     public  enum DiscountType
     {
      
-        Product = 1, // Ürün bazlı indirim
-        Coupon = 2   // Kupon bazlı indirim
+        Product = 1, 
+        Coupon = 2  
     }
 }
 
