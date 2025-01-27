@@ -14,11 +14,13 @@ namespace ECommerce.Business.Abstract
     
             Task<ResponseDTO<DiscountDTO>> UpdateDiscountAsync(DiscountUptadeDTO discountUpdateDTO);
             Task<ResponseDTO<bool>> DeleteDiscountAsync(int discountId);
-            Task<ResponseDTO<List<DiscountDTO>>> GetAllDiscountsAsync();
-            Task<ResponseDTO<DiscountDTO>> GetDiscountByIdAsync(int discountId);
+            Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetAllDiscountsAsync();
+   
             Task<ResponseDTO<DiscountDTO>> CreateProductDiscountAsync(DiscountCreateDTO discountCreateDTO);
             Task<ResponseDTO<DiscountDTO>> CreateCouponCodeAsync(DiscountCreateDTO discountCreateDTO);
-        
+            Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountByCouponCodeAsync(string couponCode);
+             Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountByProductIdAsync(int productId);  
+
 
     }
 }
