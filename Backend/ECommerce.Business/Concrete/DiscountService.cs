@@ -122,14 +122,14 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<bool>.Success(true, HttpStatusCode.OK);
         }
 
-        public async Task<ResponseDTO<List<DiscountDTO>>> GetAllDiscountsAsync()
+        public async Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetAllDiscountsAsync()
         {
             var discounts = await unitOfWork.GetRepository<Discount>()
         .GetAllAsync(x => !x.IsDeleted);
 
             if (discounts == null || !discounts.Any())
             {
-                return ResponseDTO<List<DiscountDTO>>.Fail(new List<ErrorDetail>
+                return ResponseDTO<IEnumerable<DiscountDTO>>.Fail(new List<ErrorDetail>
         {
             new ErrorDetail
             {
@@ -143,31 +143,10 @@ namespace ECommerce.Business.Concrete
 
             var discountDTOs = mapper.Map<List<DiscountDTO>>(discounts);
 
-            return ResponseDTO<List<DiscountDTO>>.Success(discountDTOs, HttpStatusCode.OK);
+            return ResponseDTO<IEnumerable<DiscountDTO>>.Success(discountDTOs, HttpStatusCode.OK);
         }
 
-        public async Task<ResponseDTO<DiscountDTO>> GetDiscountByIdAsync(int discountId)
-        {
-            var discount = unitOfWork.GetRepository<Discount>().GetByIdAsync(discountId);
-            if (discount == null)
-            {
-                return ResponseDTO<DiscountDTO>.Fail(new List<ErrorDetail>
-                {
-                    new ErrorDetail
-                    {
-                        Message = "Discount not found.",
-                        Code = "DISCOUNT_NOT_FOUND",
-                        Target = nameof(discountId)
-                    }
-                }, HttpStatusCode.NotFound);
 
-
-
-            }
-
-            var discountDTO = mapper.Map<DiscountDTO>(discount);
-            return ResponseDTO<DiscountDTO>.Success(discountDTO, HttpStatusCode.OK);
-        }
         public async Task<ResponseDTO<DiscountDTO>> UpdateDiscountAsync(DiscountUptadeDTO discountUpdateDTO)
         {
             var discount = await unitOfWork.GetRepository<Discount>()
@@ -186,13 +165,68 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-       var updatedDiscount = mapper.Map(discountUpdateDTO, discount);
+            var updatedDiscount = mapper.Map(discountUpdateDTO, discount);
             unitOfWork.GetRepository<Discount>().UpdateAsync(updatedDiscount);
             await unitOfWork.SaveChangesAsync();
 
             var discountDTO = mapper.Map<DiscountDTO>(updatedDiscount);
 
             return ResponseDTO<DiscountDTO>.Success(discountDTO, HttpStatusCode.OK);
+        }
+
+        public async Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountByCouponCodeAsync(string couponCode)
+        {
+            var discounts = await unitOfWork.GetRepository<Discount>().GetAsync(x => x.CouponCode == couponCode && x.IsActive && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+            if (discounts == null)
+            {
+                return ResponseDTO<IEnumerable<DiscountDTO>>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message = "No active discounts found with this coupon code.",
+                        Code = "NO_ACTIVE_DISCOUNTS",
+                        Target = "CouponCode"
+                    }
+                }, HttpStatusCode.NotFound);
+
+            }
+            var discountDTOs = mapper.Map<List<DiscountDTO>>(discounts);
+            return ResponseDTO<IEnumerable<DiscountDTO>>.Success(discountDTOs, HttpStatusCode.OK);
+
+        }
+
+        public async Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountByProductIdAsync(int productId)
+        {
+            var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(productId);
+            if (product == null)
+            {
+                return ResponseDTO<IEnumerable<DiscountDTO>>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message = "Product not found.",
+                        Code = "PRODUCT_NOT_FOUND",
+                        Target = "ProductId"
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+
+            var discounts = product.Discounts.Where(x => x.IsActive && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).ToList();
+            if (discounts == null || !discounts.Any())
+            {
+                return ResponseDTO<IEnumerable<DiscountDTO>>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message = "No active discounts found for this product.",
+                        Code = "NO_ACTIVE_DISCOUNTS",
+                        Target = "ProductId"
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+
+            var discountDTOs = mapper.Map<List<DiscountDTO>>(discounts);
+            return ResponseDTO<IEnumerable<DiscountDTO>>.Success(discountDTOs, HttpStatusCode.OK);
         }
     }
 }
