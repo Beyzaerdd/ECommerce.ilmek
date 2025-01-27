@@ -6,6 +6,8 @@ using ECommerce.Entity.Concrete;
 using ECommerce.Shared.ComplexTypes;
 using ECommerce.Shared.DTOs.BasketDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
+using ECommerce.Shared.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,19 +26,21 @@ namespace ECommerce.Business.Concrete
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor contextAccessor;
 
-        public BasketService(IMapper mapper, IDiscountService discountService, IUnitOfWork unitOfWork)
+        public BasketService(IMapper mapper, IDiscountService discountService, IUnitOfWork unitOfWork, IHttpContextAccessor contextAccessor)
         {
             _mapper = mapper;
             this.discountService = discountService;
             _unitOfWork = unitOfWork;
+            this.contextAccessor = contextAccessor;
         }
 
         private readonly IDiscountService discountService;
 
         public async Task<ResponseDTO<BasketDTO>> GetBasketAsync(string applicationUserId)
         {
-            var basket = _unitOfWork.GetRepository<Basket>().GetAsync(x => x.ApplicationUserId == applicationUserId);
+            var basket = await _unitOfWork.GetRepository<Basket>().GetAsync(x => x.ApplicationUserId == applicationUserId);
             if (basket == null)
             {
                 return ResponseDTO<BasketDTO>.Fail(new List<ErrorDetail>
@@ -194,9 +198,12 @@ namespace ECommerce.Business.Concrete
 
     
 
-        public async Task<ResponseDTO<decimal>> CalculateTotalAmountAsync(BasketDTO basketDTO)
+        public async Task<ResponseDTO<decimal>> CalculateTotalAmountAsync(string couponCode)
         {
-            if (basketDTO == null || !basketDTO.BasketItems.Any())
+
+            var userId = contextAccessor.GetUserId();
+            var basket = await _unitOfWork.GetRepository<Basket>().GetAsync(x => x.ApplicationUserId == userId, query => query.Include(b => b.BasketItems).ThenInclude(bi => bi.Product));
+            if (basket == null || !basket.BasketItems.Any())
             {
                 return ResponseDTO<decimal>.Fail(new List<ErrorDetail>
         {
@@ -211,7 +218,7 @@ namespace ECommerce.Business.Concrete
 
             decimal totalAmount = 0;
 
-            foreach (var item in basketDTO.BasketItems)
+            foreach (var item in basket.BasketItems)
             {
                 var product = await _unitOfWork.GetRepository<Product>().GetByIdAsync(item.ProductId);
                 if (product == null)
@@ -231,15 +238,15 @@ namespace ECommerce.Business.Concrete
             }
 
             
-            if (!string.IsNullOrEmpty(basketDTO.CouponCode))
+            if (!string.IsNullOrEmpty(couponCode))
             {
-                var coupon = await _unitOfWork.GetRepository<Discount>().GetAsync(x => x.CouponCode == basketDTO.CouponCode && x.IsActive
+                var coupon = await _unitOfWork.GetRepository<Discount>().GetAsync(x => x.CouponCode == couponCode && x.IsActive
                                                                                     && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
                 if (coupon != null)
                 {
                     if (coupon.Type == DiscountType.Coupon)
                     {
-                        totalAmount -= coupon.DiscountValue;
+                        totalAmount -= (totalAmount * coupon.DiscountValue) / 100m;
                     }
                 }
                 else
@@ -257,7 +264,7 @@ namespace ECommerce.Business.Concrete
             }
 
         
-            var productIds = basketDTO.BasketItems.Select(x => x.ProductId).ToList();
+            var productIds = basket.BasketItems.Select(x => x.ProductId).ToList();
             var discounts = await _unitOfWork.GetRepository<Discount>().GetAllAsync(x => x.Type == DiscountType.Product
                       && x.ProductId.HasValue 
                       && productIds.Contains(x.ProductId.Value) 
@@ -267,13 +274,13 @@ namespace ECommerce.Business.Concrete
 
             foreach (var discount in discounts)
             {
-                var basketItem = basketDTO.BasketItems.FirstOrDefault(x => x.ProductId == discount.ProductId);
+                var basketItem = basket.BasketItems.FirstOrDefault(x => x.ProductId == discount.ProductId);
                 if (basketItem != null)
                 {
                     var product = await _unitOfWork.GetRepository<Product>().GetByIdAsync(basketItem.ProductId);
                     if (product != null)
                     {
-                        totalAmount -= (product.UnitPrice * basketItem.Quantity * discount.DiscountValue) / 100;
+                        totalAmount -= (product.UnitPrice * basketItem.Quantity * discount.DiscountValue) / 100m;
                     }
                 }
             }
