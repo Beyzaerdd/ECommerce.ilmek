@@ -17,6 +17,7 @@ namespace ECommerce.Entity.Concrete
         public Product Product { get; set; }
 
         public int Quantity { get; set; } 
+
         [NotMapped]
         public decimal TotalPrice => Quantity * (Product?.UnitPrice ?? 0);
     }
