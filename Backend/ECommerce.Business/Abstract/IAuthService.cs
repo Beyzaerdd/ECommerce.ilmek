@@ -1,6 +1,5 @@
 ﻿using ECommerce.Shared.DTOs.AuthDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
-using ECommerce.Shared.DTOs.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
