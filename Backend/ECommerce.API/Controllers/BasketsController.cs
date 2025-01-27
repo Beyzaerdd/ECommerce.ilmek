@@ -65,11 +65,11 @@ namespace ECommerce.API.Controllers
             var response = await _basketService.ChangeProductQuantityAsync(basketItemChangeQuantityDTO);
             return CreateResponse(response);
         }
-        [Authorize(Policy = "Admin")]
+        [Authorize]
         [HttpGet("calculateTotalAmount")]
-        public async Task<IActionResult> CalculateTotalAmount([FromBody] BasketDTO basketDTO)
+        public async Task<IActionResult> CalculateTotalAmount([FromQuery] string? couponCode)
         {
-            var response = await _basketService.CalculateTotalAmountAsync(basketDTO);
+            var response = await _basketService.CalculateTotalAmountAsync(couponCode);
             return CreateResponse(response);
         }
 
