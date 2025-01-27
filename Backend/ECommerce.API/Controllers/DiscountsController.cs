@@ -56,7 +56,7 @@ namespace ECommerce.API.Controllers
         [HttpGet("getby/{id}")]
         public async Task<IActionResult> GetDiscountById([FromRoute] int id)
         {
-            var response = await _discountService.GetDiscountByIdAsync(id);
+            var response = await _discountService.GetDiscountByProductIdAsync(id);
             return CreateResponse(response);
         }
         
