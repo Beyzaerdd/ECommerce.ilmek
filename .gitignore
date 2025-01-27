@@ -367,3 +367,4 @@ FodyWeavers.xsd
 /Backend/ECommerce.API/appsettings.json
 /Backend/ECommerce.Data/Migrations/20250122171001_InitialDb.cs
 /Backend/ECommerce.Data/Migrations/20250122171001_InitialDb.Designer.cs
+/Backend/ECommerce.API/Properties/launchSettings.json

@@ -44,20 +44,21 @@ builder.Services.AddScoped<IDiscountService, DiscountService>();
 
 
 
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("SellerPolicy", policy =>
+    options.AddPolicy("Seller", policy =>
         policy.RequireRole("Seller"));
 
-    options.AddPolicy("AdminPolicy", policy =>
+    options.AddPolicy("Admin", policy =>
         policy.RequireRole("Admin"));
 
     options.AddPolicy("SellerAndAdmin", policy =>
         policy.RequireRole("Seller", "Admin"));
 
-    options.AddPolicy("UserPolicy", policy =>
-        policy.RequireRole("User", "Admin", "NormalUser"));
-
+    options.AddPolicy("User", policy => 
+        policy.RequireRole("Seller", "AdminUser", "NormalUser"));
+        
 });
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
