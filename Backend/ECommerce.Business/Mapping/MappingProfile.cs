@@ -1,7 +1,13 @@
 ﻿using AutoMapper;
 using ECommerce.Entity.Concrete;
+using ECommerce.Shared.DTOs.AuthDTOs;
+using ECommerce.Shared.DTOs.BasketDTOs;
 using ECommerce.Shared.DTOs.CategoryDTOs;
+using ECommerce.Shared.DTOs.DiscountDTOs;
+using ECommerce.Shared.DTOs.OrderDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
+using ECommerce.Shared.DTOs.UserFavDTOs;
+using ECommerce.Shared.DTOs.UsersDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +34,62 @@ namespace ECommerce.Business.Mapping
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Product, ProductUpdateDTO>().ReverseMap();
             CreateMap<Product, ProductCreateDTO>().ReverseMap();
+
+            #endregion
+            #region Discount
+            CreateMap<Discount, DiscountDTO>().ReverseMap();
+            CreateMap<Discount, DiscountCreateDTO>().ReverseMap();
+            CreateMap<Discount, DiscountUptadeDTO>().ReverseMap();
+            #endregion
+
+        
+
+            #region Order
+            CreateMap<Order, OrderDTO>().ReverseMap();
+            CreateMap<Order, OrderCreateDTO>().ReverseMap();
+            CreateMap<Order, OrderUpdateDTO>().ReverseMap();
+            #endregion
+
+            #region OrderItem
+            CreateMap<OrderItem, OrderItemDTO>().ReverseMap();
+            CreateMap<OrderItem, OrderItemCreateDTO>().ReverseMap();
+            CreateMap<OrderItem, OrderItemUpdateDTO>().ReverseMap();
+            #endregion
+
+         
+
+            #region Basket
+            CreateMap<Basket, BasketDTO>().ReverseMap();
+            CreateMap<Basket, BasketCreateDTO>().ReverseMap();
+            CreateMap<Basket, BasketUpdateDTO>().ReverseMap();
+            #endregion
+
+            #region BasketItem
+            CreateMap<BasketItem, BasketItemDTO>().ReverseMap();
+            CreateMap<BasketItem, BasketItemCreateDTO>().ReverseMap();
+            CreateMap<BasketItem, BasketItemUpdateDTO>().ReverseMap();
+            #endregion
+
+            #region UserFav
+            CreateMap<UserFav, UserFavDTO>().ReverseMap();
+            CreateMap<UserFav, UserFavCreateDTO>().ReverseMap();
+            #endregion
+
+            #region ApplicationUser
+            CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
            
             #endregion
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 }
