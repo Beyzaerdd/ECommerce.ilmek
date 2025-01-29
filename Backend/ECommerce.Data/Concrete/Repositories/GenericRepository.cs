@@ -207,5 +207,10 @@ namespace ECommerce.Data.Concrete.Repositories
 
             _dbSet.Update(entity);
         }
+
+        public Task<IQueryable<TEntity>> QueryAsync()
+        {
+            return Task.FromResult(_dbSet.AsQueryable());
+        }
     }
 }

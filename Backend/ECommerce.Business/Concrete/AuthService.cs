@@ -4,6 +4,9 @@ using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.AuthDTOs;
 using ECommerce.Shared.DTOs.BasketDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
+using ECommerce.Shared.DTOs.UsersDTO;
+using ECommerce.Shared.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -27,14 +30,16 @@ namespace ECommerce.Business.Concrete
         private readonly JwtConfig _jwtConfig;
         private readonly IEmailService _emailService;
         private readonly IBasketService _basketService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public AuthService(IBasketService basketService, IEmailService emailService, IOptions<JwtConfig> jwtConfig, IConfiguration configuration, UserManager<ApplicationUser> userManager)
+        public AuthService(IBasketService basketService, IEmailService emailService, IOptions<JwtConfig> jwtConfig, IConfiguration configuration, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _basketService = basketService;
             _emailService = emailService;
             _jwtConfig = jwtConfig.Value;
             _configuration = configuration;
             _userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResponseDTO<NoContent>> ChangePasswordAsync(ChangePasswordDTO changePasswordDTO)
@@ -439,7 +444,29 @@ namespace ECommerce.Business.Concrete
             return tokenDTO;
         }
 
+        public async Task<ResponseDTO<ApplicationUserDTO>> GetAccountDetails() { 
+        
+           var userId=  httpContextAccessor.GetUserId();
 
+           var user= await _userManager.FindByIdAsync(userId);
+
+            var userDTO = new ApplicationUserDTO
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Address = user.Address,
+                City = user.City,
+                DateOfBirth = user.DateOfBirth,
+                UserName = user.UserName,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return ResponseDTO<ApplicationUserDTO>.Success(userDTO, HttpStatusCode.OK);
+
+        }
 
     }
 }

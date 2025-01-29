@@ -43,5 +43,7 @@ namespace ECommerce.Data.Abstract
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate);
         Task<int> CountAsync();
         Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
+
+        public Task<IQueryable<TEntity>> QueryAsync();
     }
 }

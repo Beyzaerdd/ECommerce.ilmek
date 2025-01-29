@@ -27,7 +27,7 @@ namespace ECommerce.API.Controllers
             var response = await _categoryService.AddCategoryAsync(categoryCreateDTO);
             return CreateResponse(response);
         }
-        [Authorize(Policy = "User")]
+    
         [HttpGet("getall")]
         
         public async Task<IActionResult> GetAllCategories()
@@ -36,7 +36,7 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        [Authorize(Policy = "User")]
+
         [HttpGet("{id}")]
        
         public async Task<IActionResult> GetCategoryById([FromRoute] int id)
@@ -45,8 +45,9 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        [HttpGet("getByParentId")]
+   
         [Authorize(Policy = "User")]
+        [HttpGet("getCategoriesByParentId")]
         public async Task<IActionResult> GetCategoriesByParentId([FromQuery] int? parentId)
         {
             var response = await _categoryService.GetCategoriesByParentIdAsync(parentId);

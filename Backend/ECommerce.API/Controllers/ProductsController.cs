@@ -53,7 +53,6 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        [Authorize(Policy = "User")]
         [HttpGet("GetProductBy/{id}")]
    
         public async Task<IActionResult> GetProductById([FromRoute] int id)
@@ -63,7 +62,7 @@ namespace ECommerce.API.Controllers
         }
 
 
-        [Authorize(Policy = "User")]
+   
         [HttpGet("getall")]
     
         public async Task<IActionResult> GetAllProducts()
@@ -71,7 +70,7 @@ namespace ECommerce.API.Controllers
             var response = await _productService.GetAllProductsAsync();
             return CreateResponse(response);
         }
-        [Authorize(Policy = "User")]
+
         [HttpGet("getByCategory/{categoryId}")]
       
         public async Task<IActionResult> GetProductsByCategory([FromRoute] int categoryId)
@@ -79,7 +78,7 @@ namespace ECommerce.API.Controllers
             var response = await _productService.GetProductsWithCategoriesAsync(categoryId);
             return CreateResponse(response);
         }
-        [Authorize(Policy = "User")]
+
         [HttpGet("getBySubCategory/{subCategoryId}")]
        
         public async Task<IActionResult> GetProductsBySubCategory([FromRoute] int subCategoryId)
@@ -106,28 +105,13 @@ namespace ECommerce.API.Controllers
         }
 
 
-        [Authorize(Policy = "User")]
-        [HttpGet("getByColor/{productColor}")]
+       
 
-        public async Task<IActionResult> GetProductByColor([FromQuery] int productColor)
+ 
+        [HttpGet("filterProducts")]
+        public async Task<IActionResult> FilterProducts([FromQuery] int? productSize, [FromQuery] int? productColor, [FromQuery] decimal? minPrice, [FromQuery] decimal? maxPrice)
         {
-            var response = await _productService.GetProductByColor(productColor);
-            return CreateResponse(response);
-        }
-        [Authorize(Policy = "User")]
-        [HttpGet("getByPriceRange/{minPrice}/{maxPrice}")]
-        
-        public async Task<IActionResult> GetProductByPriceRange([FromQuery] decimal minPrice, [FromQuery] decimal maxPrice)
-        {
-            var response = await _productService.GetProductByPriceRange(minPrice, maxPrice);
-            return CreateResponse(response);
-        }
-        [Authorize(Policy = "User")]
-        [HttpGet("getBySize/{productSize}")]
-      
-        public async Task<IActionResult> GetProductBySize([FromQuery] int productSize)
-        {
-            var response = await _productService.GetProductBySize(productSize);
+            var response = await _productService.FilterProducts(productSize, productColor, minPrice, maxPrice);
             return CreateResponse(response);
         }
 

@@ -339,76 +339,63 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
         }
 
-        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySize(int productSize)
+      
+
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(int? productSize, int? productColor, decimal? minPrice, decimal? maxPrice)
         {
-            var size = (ProductSize)productSize;
+           
+            var query = await unitOfWork.GetRepository<Product>().QueryAsync();
 
-            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.Size == size);
-
-
-            if (products == null || !products.Any())
+           
+            if (productSize.HasValue)
             {
-                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
-        {
-            new ErrorDetail {
-                Message = "No product found",
-                Code = "ProductNotFound",
-                Target = nameof(products)
-            }
-        }, HttpStatusCode.NotFound);
+                var size = (ProductSize)productSize.Value;
+                query = query.Where(x => x.Size == size);
             }
 
-
-            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
-
-            return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
-        }
-
-        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductByColor(int productColor)
-        {
-            var color = (ProductColor)productColor;
-            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.Color == color);
-            if (products == null || !products.Any())
+           
+            if (productColor.HasValue)
             {
-                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
-        {
-            new ErrorDetail {
-                Message = "No product found",
-                Code = "ProductNotFound",
-                Target = nameof(products)
+                var color = (ProductColor)productColor.Value;
+                query = query.Where(x => x.Color == color);
             }
-        }, HttpStatusCode.NotFound);
 
+           
+            if (minPrice.HasValue && maxPrice.HasValue)
+            {
+                query = query.Where(x => x.UnitPrice >= minPrice.Value && x.UnitPrice <= maxPrice.Value);
             }
-            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
-            return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
+            else if (minPrice.HasValue)
+            {
+                query = query.Where(x => x.UnitPrice >= minPrice.Value);
+            }
+            else if (maxPrice.HasValue)
+            {
+                query = query.Where(x => x.UnitPrice <= maxPrice.Value);
+            }
 
-        }
+     
+            var products = await query.ToListAsync();
 
-        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductByPriceRange(decimal minPrice, decimal maxPrice)
-        {
-            var products = await unitOfWork.GetRepository<Product>()
-        .GetAllAsync(x => x.UnitPrice >= minPrice && x.UnitPrice <= maxPrice);
-
-          
+       
             if (products == null || !products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
         {
             new ErrorDetail
             {
-                Message = "No products found in the specified price range",
+                Message = "No products found with the specified filters",
                 Code = "ProductNotFound",
-                Target = nameof(products)
+                Target = "Filters"
             }
         }, HttpStatusCode.NotFound);
             }
 
-       
+     
             var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
 
-           
             return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
         }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Shared.DTOs.AuthDTOs;
 using ECommerce.Shared.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,6 +60,13 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
+        [Authorize]
+        [HttpGet("GetAccountDetails")]
+        public async Task<IActionResult> GetAccountDetails()
+        {
+            var response = await _authService.GetAccountDetails();
+            return CreateResponse(response);
+        }
 
     }
 }
