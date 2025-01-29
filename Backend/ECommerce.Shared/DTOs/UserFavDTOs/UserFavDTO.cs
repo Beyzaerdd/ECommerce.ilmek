@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerce.Shared.DTOs.ProductDTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ECommerce.Shared.DTOs.UserFavDTOs
         public string ApplicationUserId { get; set; }
         public string ApplicationUserFullName { get; set; }
         public int? ProductId { get; set; }
-        public string ProductName { get; set; }
+        public ProductDTO Product { get; set; }
 
     }
 }
