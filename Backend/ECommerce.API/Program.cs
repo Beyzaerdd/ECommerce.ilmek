@@ -39,7 +39,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
-
+builder.Services.AddScoped<IUserFavService, UserFavService>();
 
 
 
