@@ -3,6 +3,7 @@ using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.AuthDTOs;
 using ECommerce.Shared.DTOs.BasketDTOs;
 using ECommerce.Shared.DTOs.CategoryDTOs;
+using ECommerce.Shared.DTOs.ContactMessageDTOs;
 using ECommerce.Shared.DTOs.DiscountDTOs;
 using ECommerce.Shared.DTOs.OrderDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
@@ -77,7 +78,13 @@ namespace ECommerce.Business.Mapping
 
             #region ApplicationUser
             CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
-           
+
+            #endregion
+
+
+            #region ContactMessage
+            CreateMap<ContactMessage, ContactMessageDTO>().ReverseMap();
+            CreateMap<ContactMessage, ContactMessageCreateDTO>().ReverseMap();
             #endregion
 
 
