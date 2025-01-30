@@ -63,7 +63,7 @@ namespace ECommerce.Data.Concrete.Context
 
             // Default roles
             modelBuilder.Entity<ApplicationRole>().HasData(
-                new ApplicationRole { Id = "115c7796-cfac-44de-91b5-916eaae125b5", Name = "AdminUser", NormalizedName = "ADMINUSER", Description = "Administrator role" },
+                new ApplicationRole { Id = "115c7796-cfac-44de-91b5-916eaae125b5", Name = "Admin", NormalizedName = "ADMIN", Description = "Administrator role" },
                 new ApplicationRole { Id = "811f466c-9d06-43f8-a054-24aedbb4161b", Name = "NormalUser", NormalizedName = "NORMALUSER", Description = "Regular user role" },
                 new ApplicationRole { Id = "811f466c-9d06-43f8-a054-24aedbb4161c", Name = "Seller", NormalizedName = "SELLER", Description = "Seller role" }
             );
@@ -86,7 +86,7 @@ namespace ECommerce.Data.Concrete.Context
                 PhoneNumber = "",
                 City = "",
                 DateOfBirth = DateTime.Now,
-                PasswordHash = hasher.HashPassword(null, "Qwe123.,")
+                PasswordHash = hasher.HashPassword(null, "c")
             };
 
             // NormalUser
