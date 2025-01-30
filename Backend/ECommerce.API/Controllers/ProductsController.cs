@@ -115,5 +115,12 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
+        [HttpGet("getBySeller/{applicationUserId}")]
+        public async Task<IActionResult> GetProductBySeller([FromRoute] string applicationUserId)
+        {
+            var response = await _productService.GetProductBySellerAsync(applicationUserId);
+            return CreateResponse(response);
+        }
+
     }
 }

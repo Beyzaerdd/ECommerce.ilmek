@@ -20,7 +20,7 @@ namespace ECommerce.Business.Abstract
         Task<ResponseDTO<NoContent>> ForgotPasswordAsync(ForgotPasswordDTO forgotPasswordDTO);
         Task<ResponseDTO<NoContent>> ChangePasswordAsync(ChangePasswordDTO changePasswordDTO);
 
-        Task<ResponseDTO<ApplicationUserDTO>> GetAccountDetails();
+      
 
     }
 }

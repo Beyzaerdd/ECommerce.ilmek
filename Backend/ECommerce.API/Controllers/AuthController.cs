@@ -60,13 +60,5 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        [Authorize]
-        [HttpGet("GetAccountDetails")]
-        public async Task<IActionResult> GetAccountDetails()
-        {
-            var response = await _authService.GetAccountDetails();
-            return CreateResponse(response);
-        }
-
     }
 }

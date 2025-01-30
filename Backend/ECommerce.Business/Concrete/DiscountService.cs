@@ -93,7 +93,7 @@ namespace ECommerce.Business.Concrete
 
 
 
-            // product.Discounts.Add(discount);
+          
 
 
             await unitOfWork.GetRepository<Discount>().AddAsync(discount);
@@ -122,7 +122,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-            discount.IsDeleted = true;
+       
             discount.IsActive = false;
             unitOfWork.GetRepository<Discount>().SoftDeleteAsync(discount);
 

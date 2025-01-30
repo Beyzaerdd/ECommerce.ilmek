@@ -7,6 +7,8 @@ using ECommerce.Shared.ComplexTypes;
 using ECommerce.Shared.DTOs.CategoryDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
+using ECommerce.Shared.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,13 +25,15 @@ namespace ECommerce.Business.Concrete
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IImageService _imageService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
 
-        public ProductService(IUnitOfWork unitOfWork, IMapper mapper, IImageService imageService)
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper, IImageService imageService, IHttpContextAccessor httpContextAccessor)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             _imageService = imageService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResponseDTO<ProductDTO>> AddProductAsync(ProductCreateDTO productCreateDTO)
@@ -73,8 +77,8 @@ namespace ECommerce.Business.Concrete
             }
 
             newProduct.IsActive = true;
+            newProduct.ApplicationUserId = httpContextAccessor.GetUserId();
             newProduct.CreatedAt = DateTime.Now;
-
             await unitOfWork.GetRepository<Product>().AddAsync(newProduct);
             await unitOfWork.SaveChangesAsync();
             var productDTO = mapper.Map<ProductDTO>(newProduct);
@@ -339,28 +343,28 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
         }
 
-      
+
 
         public async Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(int? productSize, int? productColor, decimal? minPrice, decimal? maxPrice)
         {
-           
+
             var query = await unitOfWork.GetRepository<Product>().QueryAsync();
 
-           
+
             if (productSize.HasValue)
             {
                 var size = (ProductSize)productSize.Value;
                 query = query.Where(x => x.Size == size);
             }
 
-           
+
             if (productColor.HasValue)
             {
                 var color = (ProductColor)productColor.Value;
                 query = query.Where(x => x.Color == color);
             }
 
-           
+
             if (minPrice.HasValue && maxPrice.HasValue)
             {
                 query = query.Where(x => x.UnitPrice >= minPrice.Value && x.UnitPrice <= maxPrice.Value);
@@ -374,10 +378,10 @@ namespace ECommerce.Business.Concrete
                 query = query.Where(x => x.UnitPrice <= maxPrice.Value);
             }
 
-     
+
             var products = await query.ToListAsync();
 
-       
+
             if (products == null || !products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
@@ -391,11 +395,28 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-     
+
             var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
         }
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId)
+        {
 
+            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.ApplicationUserId == applicationUserId);
+            if (products == null || !products.Any())
+            {
+                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail {
+                        Message = "No product found",
+                        Code = "ProductNotFound",
+                        Target = nameof(products)
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
+            return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
+        }
     }
 }
