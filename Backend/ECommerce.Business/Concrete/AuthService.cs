@@ -73,26 +73,26 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<NoContent>> ForgotPasswordAsync(ForgotPasswordDTO forgotPasswordDTO)
         {
-           
-                var user = await _userManager.FindByEmailAsync(forgotPasswordDTO.Email);
-                if (user == null)
-                {
-                    return ResponseDTO<NoContent>.Fail("Kullanıcı bulunamadı", HttpStatusCode.NotFound);
-                }
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var resetLink = $"http://localhost:5070/resetpassword?token={token}&email={forgotPasswordDTO.Email}";
+            var user = await _userManager.FindByEmailAsync(forgotPasswordDTO.Email);
+            if (user == null)
+            {
+                return ResponseDTO<NoContent>.Fail("Kullanıcı bulunamadı", HttpStatusCode.NotFound);
+            }
 
-                var message = $"Şifrenizi sıfırlamak için <a href='{resetLink}'>buraya tıklayın</a>.";
-                await _emailService.SendEmailAsync(forgotPasswordDTO.Email, "Şifre Sıfırlama Talebi", message);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = $"http://localhost:5070/resetpassword?token={token}&email={forgotPasswordDTO.Email}";
 
-                return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
-            
+            var message = $"Şifrenizi sıfırlamak için <a href='{resetLink}'>buraya tıklayın</a>.";
+            await _emailService.SendEmailAsync(forgotPasswordDTO.Email, "Şifre Sıfırlama Talebi", message);
+
+            return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
+
         }
 
         public async Task<ResponseDTO<TokenDTO>> LoginSellerAsync(SellerLoginDTO sellerLoginDTO)
         {
-            if(string.IsNullOrEmpty(sellerLoginDTO.Email) || string.IsNullOrEmpty(sellerLoginDTO.Password))
+            if (string.IsNullOrEmpty(sellerLoginDTO.Email) || string.IsNullOrEmpty(sellerLoginDTO.Password))
             {
                 return ResponseDTO<TokenDTO>.Fail(new List<ErrorDetail>
                 {
@@ -104,6 +104,7 @@ namespace ECommerce.Business.Concrete
                     }
                 }, HttpStatusCode.BadRequest);
             }
+
             var user = await _userManager.FindByEmailAsync(sellerLoginDTO.Email);
             if (user == null)
             {
@@ -116,6 +117,18 @@ namespace ECommerce.Business.Concrete
                         Target = nameof(sellerLoginDTO.Email)
                     }
                 }, HttpStatusCode.NotFound);
+            }
+            if (user is Seller sellerUser && !sellerUser.IsApproved)
+            {
+                return ResponseDTO<TokenDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "Your account is awaiting admin approval.",
+                Code = "AccountNotApproved",
+                Target = nameof(sellerLoginDTO.Email)
+            }
+        }, HttpStatusCode.Forbidden);
             }
             if (!user.EmailConfirmed)
             {
@@ -259,11 +272,12 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.BadRequest);
             }
 
-           
+
             var sellerUser = new Seller
             {
                 UserName = sellerRegisterDTO.Email,
                 Email = sellerRegisterDTO.Email,
+         
                 FirstName = sellerRegisterDTO.FirstName,
                 LastName = sellerRegisterDTO.LastName,
                 Address = sellerRegisterDTO.Address,
@@ -271,10 +285,12 @@ namespace ECommerce.Business.Concrete
                 DateOfBirth = sellerRegisterDTO.DateOfBirth,
                 PhoneNumber = sellerRegisterDTO.PhoneNumber,
                 IdentityNumber = sellerRegisterDTO.IdentityNumber,
+               
+
                 StoreName = sellerRegisterDTO.StoreName
             };
 
-        
+
             var createResult = await _userManager.CreateAsync(sellerUser, sellerRegisterDTO.Password);
             if (!createResult.Succeeded)
             {
@@ -286,7 +302,7 @@ namespace ECommerce.Business.Concrete
                 }).ToList(), HttpStatusCode.BadRequest);
             }
 
-     
+
             var addToRoleResult = await _userManager.AddToRoleAsync(sellerUser, "Seller");
             if (!addToRoleResult.Succeeded)
             {
@@ -298,7 +314,7 @@ namespace ECommerce.Business.Concrete
                 }).ToList(), HttpStatusCode.BadRequest);
             }
 
-         
+
             var createBasketResult = await _basketService.CreateBasketAsync(new BasketCreateDTO { ApplicationUserId = sellerUser.Id });
             if (!createBasketResult.IsSucceeded)
             {
@@ -322,7 +338,7 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<NoContent>> RegisterUserAsync(UserRegisterDTO userRegisterDTO)
         {
-            
+
             var existingUser = await _userManager.FindByEmailAsync(userRegisterDTO.Email);
             if (existingUser != null)
             {
@@ -351,7 +367,7 @@ namespace ECommerce.Business.Concrete
 
             };
 
-    
+
             var createResult = await _userManager.CreateAsync(normalUser, userRegisterDTO.Password);
             if (!createResult.Succeeded)
             {
@@ -444,29 +460,7 @@ namespace ECommerce.Business.Concrete
             return tokenDTO;
         }
 
-        public async Task<ResponseDTO<ApplicationUserDTO>> GetAccountDetails() { 
-        
-           var userId=  httpContextAccessor.GetUserId();
-
-           var user= await _userManager.FindByIdAsync(userId);
-
-            var userDTO = new ApplicationUserDTO
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Address = user.Address,
-                City = user.City,
-                DateOfBirth = user.DateOfBirth,
-                UserName = user.UserName,
-                Email = user.Email,
-                EmailConfirmed = user.EmailConfirmed,
-                PhoneNumber = user.PhoneNumber
-            };
-
-            return ResponseDTO<ApplicationUserDTO>.Success(userDTO, HttpStatusCode.OK);
-
-        }
+     
 
     }
 }
