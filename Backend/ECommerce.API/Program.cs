@@ -40,7 +40,8 @@ builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IUserFavService, UserFavService>();
-
+builder.Services.AddScoped<IContactMessageService, ContactMessageService>();
+builder.Services.AddScoped<IUserAccountManagerService, UserAccountManagerService>();
 
 
 
@@ -57,7 +58,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Seller", "Admin"));
 
     options.AddPolicy("User", policy => 
-        policy.RequireRole("Seller", "AdminUser", "NormalUser"));
+        policy.RequireRole("Seller", "Admin", "NormalUser"));
         
 });
 
