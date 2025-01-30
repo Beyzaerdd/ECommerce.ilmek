@@ -16,12 +16,11 @@ namespace ECommerce.Shared.DTOs.AuthDTOs
         public string City { get; set; }
         public string Country { get; set; }
         public string PhoneNumber { get; set; }
-        public string PostalCode { get; set; }
+  
         public DateTime DateOfBirth { get; set; }
 
         public int IdentityNumber { get; set; }
         public string StoreName { get; set; }
-        public string Role { get; set; } = "Seller";
-        public bool IsApproved { get; set; } = false;
+
     }
 }
