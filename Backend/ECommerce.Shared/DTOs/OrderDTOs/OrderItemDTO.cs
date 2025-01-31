@@ -16,7 +16,7 @@ namespace ECommerce.Shared.DTOs.OrderDTOs
         public ProductDTO Product { get; set; }
 
         public int Quantity { get; set; }
-        public decimal TotalPrice => Quantity * (Product?.UnitPrice ?? 0);
+        public decimal TotalPrice { get; set; }
         public List<ReviewDTO> Reviews { get; set; }
     }
 }

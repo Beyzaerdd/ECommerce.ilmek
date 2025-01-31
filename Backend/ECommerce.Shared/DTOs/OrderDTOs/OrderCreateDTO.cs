@@ -12,9 +12,8 @@ namespace ECommerce.Shared.DTOs.OrderDTOs
     {
         public string ApplicationUserId { get; set; }
 
-        public DateTime OrderDate { get; set; }
-        public IEnumerable<OrderItemCreateDTO> OrderItems { get; set; } = new List<OrderItemCreateDTO>();
-        public InvoiceCreateDTO Invoice { get; set; }
+      
+
 
     }
 }

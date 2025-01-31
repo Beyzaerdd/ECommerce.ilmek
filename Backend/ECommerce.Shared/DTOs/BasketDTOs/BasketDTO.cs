@@ -13,6 +13,6 @@ namespace ECommerce.Shared.DTOs.BasketDTOs
         public string ApplicationUserId { get; set; }
         public ApplicationUserDTO ApplicationUser { get; set; }
         public IEnumerable<BasketItemDTO> BasketItems { get; set; } = new List<BasketItemDTO>();
-        public string CouponCode { get; set; }
+        public string? CouponCode { get; set; }
     }
 }
