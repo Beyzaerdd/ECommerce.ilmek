@@ -15,11 +15,7 @@ namespace ECommerce.Data.Concrete.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
 
-            builder
-                .HasOne(o => o.Invoice)
-                .WithOne(i => i.Order)  // Invoice ile ilişkiyi tanımlıyoruz
-                .HasForeignKey<Order>(o => o.InvoiceId) // InvoiceId foreign key olarak belirliyoruz
-                .OnDelete(DeleteBehavior.Restrict);  // Silme davranışı
+           
 
             builder
         .HasMany(o => o.OrderItems)

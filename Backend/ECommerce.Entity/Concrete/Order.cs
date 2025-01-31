@@ -25,7 +25,7 @@ namespace ECommerce.Entity.Concrete
         [Required]
         public Invoice Invoice { get; set; }
 
-        public int InvoiceId { get; set; }
+      
         public decimal TotalPrice {  get; set; }
 
 
