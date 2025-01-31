@@ -203,18 +203,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-            if (!user.EmailConfirmed)
-            {
-                return ResponseDTO<TokenDTO>.Fail(new List<ErrorDetail>
-        {
-            new ErrorDetail
-            {
-                Message = "Email is not confirmed. Please verify your email.",
-                Code = "EmailNotConfirmed",
-                Target = nameof(userLoginDTO.Email)
-            }
-        }, HttpStatusCode.BadRequest);
-            }
+          
 
             if (await _userManager.IsLockedOutAsync(user))
             {
@@ -285,6 +274,7 @@ namespace ECommerce.Business.Concrete
                 DateOfBirth = sellerRegisterDTO.DateOfBirth,
                 PhoneNumber = sellerRegisterDTO.PhoneNumber,
                 IdentityNumber = sellerRegisterDTO.IdentityNumber,
+                EmailConfirmed=true,
                
 
                 StoreName = sellerRegisterDTO.StoreName
@@ -359,9 +349,11 @@ namespace ECommerce.Business.Concrete
                 Email = userRegisterDTO.Email,
                 FirstName = userRegisterDTO.FirstName,
                 LastName = userRegisterDTO.LastName,
-                City = userRegisterDTO.City,
                 PhoneNumber = userRegisterDTO.PhoneNumber,
-                EmailConfirmed = true
+                City= userRegisterDTO.City,
+               
+                EmailConfirmed = true,
+                Address=userRegisterDTO.Adress
 
 
 
@@ -380,7 +372,7 @@ namespace ECommerce.Business.Concrete
             }
 
 
-            var addToRoleResult = await _userManager.AddToRoleAsync(normalUser, "User");
+            var addToRoleResult = await _userManager.AddToRoleAsync(normalUser, "NormalUser");
             if (!addToRoleResult.Succeeded)
             {
                 return ResponseDTO<NoContent>.Fail(addToRoleResult.Errors.Select(e => new ErrorDetail

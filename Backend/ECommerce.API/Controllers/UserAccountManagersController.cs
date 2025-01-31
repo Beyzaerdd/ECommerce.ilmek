@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Shared.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace ECommerce.API.Controllers
             _userManagerService = userManagerService;
         }
 
-        
+        [Authorize(Policy = "Admin")]
         [HttpGet("getPendingSellers")]
         public async Task<IActionResult> GetPendingSellers()
         {
@@ -24,7 +25,7 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-
+        [Authorize(Policy = "Admin")]
         [HttpPost("approveSeller")]
         public async Task<IActionResult> ApproveSeller([FromQuery] string sellerId)
         {
@@ -32,7 +33,7 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-
+        [Authorize(Policy = "Admin")]
         [HttpGet("getAllSellers")]
         public async Task<IActionResult> GetAllSellers()
         {
@@ -40,14 +41,14 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-
+        [Authorize(Policy = "Admin")]
         [HttpGet("getAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
             var response = await _userManagerService.GetAllUsersAsync();
             return CreateResponse(response);
         }
-
+        [Authorize(Policy = "Admin")]
         [HttpGet("getUserById")]
         public async Task<IActionResult> GetUserById([FromQuery] string userId)
         {
@@ -55,13 +56,14 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
+        [Authorize(Policy = "User")]
         [HttpGet("getUserAccountDetails")]
         public async Task<IActionResult> GetUserAccountDetails()
         {
             var response = await _userManagerService.GetUserAccountDetails();
             return CreateResponse(response);
         }
-
+        [Authorize(Policy = "User")]
         [HttpGet("getSellerAccountDetails")]
 
         public async Task<IActionResult> GetSellerAccountDetails()

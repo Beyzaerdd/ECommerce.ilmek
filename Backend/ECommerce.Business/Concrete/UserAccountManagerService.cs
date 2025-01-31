@@ -69,6 +69,7 @@ namespace ECommerce.Business.Concrete
             }
 
             seller.IsApproved = true;
+            seller.IsActive = true;
       
 
       

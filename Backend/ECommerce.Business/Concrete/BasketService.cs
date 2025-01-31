@@ -40,7 +40,9 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<BasketDTO>> GetBasketAsync(string applicationUserId)
         {
-            var basket = await _unitOfWork.GetRepository<Basket>().GetAsync(x => x.ApplicationUserId == applicationUserId);
+            var basket = await _unitOfWork.GetRepository<Basket>().GetAsync(x => x.ApplicationUserId == applicationUserId,
+                          query => query.Include(b => b.BasketItems).ThenInclude(bi => bi.Product));
+
             if (basket == null)
             {
                 return ResponseDTO<BasketDTO>.Fail(new List<ErrorDetail>
@@ -50,6 +52,7 @@ namespace ECommerce.Business.Concrete
                         Message = "Basket not found.",
                         Code = "BASKET_NOT_FOUND",
                         Target = "Basket"
+
                     }
                 }, HttpStatusCode.NotFound);
             }
@@ -57,17 +60,33 @@ namespace ECommerce.Business.Concrete
                 return ResponseDTO<BasketDTO>.Success(basketDTO, HttpStatusCode.OK);
             }
 
-     
+
 
         public async Task<ResponseDTO<BasketDTO>> CreateBasketAsync(BasketCreateDTO basketCreateDTO)
         {
-            var basket = _mapper.Map<Basket>(basketCreateDTO);
-           await _unitOfWork.GetRepository<Basket>().AddAsync(basket);
-           await _unitOfWork.SaveChangesAsync();
-            var basketDTO = _mapper.Map<BasketDTO>(basket);
-            return ResponseDTO<BasketDTO>.Success(basketDTO, HttpStatusCode.Created);
+            var user = await _unitOfWork.GetRepository<ApplicationUser>()
+                .GetAsync(u => u.Id == basketCreateDTO.ApplicationUserId);
 
+            if (user == null)
+            {
+                return ResponseDTO<BasketDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail { Message = "User not found.", Code = "USER_NOT_FOUND", Target = "ApplicationUser" }
+        }, HttpStatusCode.NotFound);
+            }
+
+            var basket = _mapper.Map<Basket>(basketCreateDTO);
+            basket.ApplicationUserId = basketCreateDTO.ApplicationUserId; 
+
+            await _unitOfWork.GetRepository<Basket>().AddAsync(basket);
+            await _unitOfWork.SaveChangesAsync();
+
+            var basketDTO = _mapper.Map<BasketDTO>(basket);
+
+            return ResponseDTO<BasketDTO>.Success(basketDTO, HttpStatusCode.Created);
         }
+
+
 
         public async Task<ResponseDTO<NoContent>> ClearBasketAsync(string applicationUserId)
         {
