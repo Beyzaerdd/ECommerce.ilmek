@@ -5,6 +5,7 @@ using ECommerce.Shared.DTOs.BasketDTOs;
 using ECommerce.Shared.DTOs.CategoryDTOs;
 using ECommerce.Shared.DTOs.ContactMessageDTOs;
 using ECommerce.Shared.DTOs.DiscountDTOs;
+using ECommerce.Shared.DTOs.InvoiceDTOs;
 using ECommerce.Shared.DTOs.OrderDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.UserFavDTOs;
@@ -55,9 +56,15 @@ namespace ECommerce.Business.Mapping
             CreateMap<OrderItem, OrderItemDTO>().ReverseMap();
             CreateMap<OrderItem, OrderItemCreateDTO>().ReverseMap();
             CreateMap<OrderItem, OrderItemUpdateDTO>().ReverseMap();
+
+            CreateMap<Order, OrderDTO>()
+           .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems));  // OrderItems'ı dahil et
+
+            // OrderItem -> OrderItemDTO Dönüşümü
+             // Ürün adını dahil et
             #endregion
 
-         
+
 
             #region Basket
             CreateMap<Basket, BasketDTO>().ReverseMap();
@@ -87,7 +94,8 @@ namespace ECommerce.Business.Mapping
             CreateMap<ContactMessage, ContactMessageCreateDTO>().ReverseMap();
             #endregion
 
-
+            CreateMap<Invoice, InvoiceCreateDTO>().ReverseMap();
+            CreateMap<Invoice, InvoiceDTO>().ReverseMap();
 
 
 
