@@ -16,10 +16,10 @@ namespace ECommerce.Data.Concrete.Configurations
         {
 
             builder
-       .HasOne(o => o.Invoice)
-       .WithOne()
-       .HasForeignKey<Order>(o => o.Id)
-       .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(o => o.Invoice)
+                .WithOne(i => i.Order)  // Invoice ile ilişkiyi tanımlıyoruz
+                .HasForeignKey<Order>(o => o.InvoiceId) // InvoiceId foreign key olarak belirliyoruz
+                .OnDelete(DeleteBehavior.Restrict);  // Silme davranışı
 
             builder
         .HasMany(o => o.OrderItems)

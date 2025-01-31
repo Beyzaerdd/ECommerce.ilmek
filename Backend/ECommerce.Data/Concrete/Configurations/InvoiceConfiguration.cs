@@ -25,10 +25,7 @@ namespace ECommerce.Data.Concrete.Configurations
               .IsRequired()
               .HasMaxLength(500);
 
-            builder
-             .Property(b => b.PostalCode)
-            .IsRequired()
-            .HasMaxLength(10);
+         
 
             builder
             .Property(b => b.PhoneNumber)
