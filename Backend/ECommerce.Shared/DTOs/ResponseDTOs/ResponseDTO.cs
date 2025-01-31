@@ -19,10 +19,10 @@ namespace ECommerce.Shared.DTOs.ResponseDTOs
     public bool IsSucceeded { get; set; } 
 
   
-    public HttpStatusCode StatusCode { get; set; } 
+    public HttpStatusCode StatusCode { get; set; }
+       
 
-  
-    public static ResponseDTO<T> Success(T data, HttpStatusCode statusCode)
+        public static ResponseDTO<T> Success(T data, HttpStatusCode statusCode)
     {
         return new ResponseDTO<T>
         {

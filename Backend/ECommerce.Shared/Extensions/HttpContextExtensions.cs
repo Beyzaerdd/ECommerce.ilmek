@@ -11,7 +11,15 @@ namespace ECommerce.Shared.Extensions
     {
         public static string GetUserId(this Microsoft.AspNetCore.Http.IHttpContextAccessor contextAccessor)
         {
-            return contextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var userIdClaim = contextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+            {
+                throw new InvalidOperationException("User ID claim not found in the HTTP context.");
+            }
+
+            return userIdClaim.Value;
+
         }
 
     }
