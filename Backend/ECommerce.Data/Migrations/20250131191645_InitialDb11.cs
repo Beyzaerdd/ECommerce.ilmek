@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ECommerce.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class InitialDb11 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,20 +32,34 @@ namespace ECommerce.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Baskets",
+                name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Baskets", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,6 +89,30 @@ namespace ECommerce.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Invoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InvoiceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -93,43 +131,6 @@ namespace ECommerce.Data.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BasketId = table.Column<int>(type: "int", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Baskets_BasketId",
-                        column: x => x.BasketId,
-                        principalTable: "Baskets",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -235,6 +236,29 @@ namespace ECommerce.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Baskets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Baskets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Baskets_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ContactMessages",
                 columns: table => new
                 {
@@ -272,6 +296,28 @@ namespace ECommerce.Data.Migrations
                     table.PrimaryKey("PK_NormalUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_NormalUsers_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sellers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdentityNumber = table.Column<int>(type: "int", nullable: false),
+                    WeeklyOrderLimit = table.Column<int>(type: "int", nullable: false),
+                    StoreName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sellers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sellers_AspNetUsers_Id",
                         column: x => x.Id,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -322,24 +368,36 @@ namespace ECommerce.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sellers",
+                name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IdentityNumber = table.Column<int>(type: "int", nullable: false),
-                    WeeklyOrderLimit = table.Column<int>(type: "int", nullable: false),
-                    StoreName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InvoiceId = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sellers", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sellers_AspNetUsers_Id",
-                        column: x => x.Id,
+                        name: "FK_Orders_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Invoices_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalTable: "Invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -439,62 +497,6 @@ namespace ECommerce.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    OrderId1 = table.Column<int>(type: "int", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invoices", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_Invoices_Id",
-                        column: x => x.Id,
-                        principalTable: "Invoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrderItems",
                 columns: table => new
                 {
@@ -556,29 +558,19 @@ namespace ECommerce.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "Description", "IsActive", "Name", "NormalizedName", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { "115c7796-cfac-44de-91b5-916eaae125b5", null, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7454), "Administrator role", true, "AdminUser", "ADMINUSER", null },
-                    { "811f466c-9d06-43f8-a054-24aedbb4161b", null, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7513), "Regular user role", true, "NormalUser", "NORMALUSER", null },
-                    { "811f466c-9d06-43f8-a054-24aedbb4161c", null, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7518), "Seller role", true, "Seller", "SELLER", null }
+                    { "115c7796-cfac-44de-91b5-916eaae125b5", null, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3324), "Administrator role", true, "Admin", "ADMIN", null },
+                    { "811f466c-9d06-43f8-a054-24aedbb4161b", null, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3385), "Regular user role", true, "NormalUser", "NORMALUSER", null },
+                    { "811f466c-9d06-43f8-a054-24aedbb4161c", null, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3390), "Seller role", true, "Seller", "SELLER", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "BasketId", "City", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "Address", "City", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "14a0183f-1e96-4930-a83d-6ef5f22d8c09", 0, "", null, "", "17d3129d-a0cf-4a13-87e6-0b6e533c320a", new DateTime(2025, 1, 25, 21, 23, 28, 290, DateTimeKind.Local).AddTicks(5206), null, true, "Normal", false, "User", false, null, "NORMALUSER@GMAIL.COM", "NORMALUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEFc8S/Y3y+WPQsOH1UHji77MDhu1p9mOR/3veCML2mDFlhNusVW4xXDWeG5OeDEprQ==", "", false, "c67cb8a0-b9e3-4a8f-8e5e-958fb383c279", false, "normaluser@gmail.com" },
-                    { "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac", 0, "", null, "", "cae01fd8-8cf3-4de1-93d5-2f97182fddd8", new DateTime(2025, 1, 25, 21, 23, 28, 218, DateTimeKind.Local).AddTicks(7558), "adminuser@gmail.com", true, "Admin", false, "User", false, null, "ADMINUSER@GMAIL.COM", "ADMINUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEMt6mNMvq5vIedGKhtUzffUcpmvPOmqYRgpqzBneoW/+1jF6g8Ql3tU2c1X33SV38g==", "", false, "b0eb6f60-aebe-4b0e-ab1a-b6693e1d56a3", false, "adminuser@gmail.com" },
-                    { "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 0, "", null, "", "f5f24fa7-c2d5-421d-8fe7-eed34209803f", new DateTime(2025, 1, 25, 21, 23, 28, 335, DateTimeKind.Local).AddTicks(5710), "selleruser@gmail.com", true, "Seller", false, "User", false, null, "SELLERUSER@GMAIL.COM", "SELLERUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEPeTCEU1r1KFb+433/zBqTPq7WxOHFtXXLBXmD3rkKryqz2eu4emA3Y/G2Lp1kKAMg==", "", false, "3f4165a2-17bd-4b0d-ae12-29ef0b397266", false, "selleruser@gmail.com" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Baskets",
-                columns: new[] { "Id", "ApplicationUserId", "CreatedAt", "IsActive", "IsDeleted", "UpdatedAt" },
-                values: new object[,]
-                {
-                    { 1, "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac", new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(38), true, false, null },
-                    { 2, "14a0183f-1e96-4930-a83d-6ef5f22d8c09", new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(43), true, false, null },
-                    { 3, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(47), true, false, null }
+                    { "14a0183f-1e96-4930-a83d-6ef5f22d8c09", 0, "aa", "", "11098cd7-7d04-4a76-8f2e-299a94ea6779", new DateTime(2025, 1, 31, 22, 16, 44, 549, DateTimeKind.Local).AddTicks(7822), "normaluser@gmail.com", true, "Normal", false, "User", false, null, "NORMALUSER@GMAIL.COM", "NORMALUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEL2gjc9hkjRzdqBUYSHAzMx5jP+H5aQ5QJJoD1E25SD+MaqJCkBuv/avdi6rR4Vj3Q==", "", false, "f4459108-a012-441c-aa66-38793fa60f3d", false, "normaluser@gmail.com" },
+                    { "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac", 0, "", "", "b4d183e4-049c-46a7-a277-e4bfd396c45d", new DateTime(2025, 1, 31, 22, 16, 44, 501, DateTimeKind.Local).AddTicks(3434), "adminuser@gmail.com", true, "Admin", false, "User", false, null, "ADMINUSER@GMAIL.COM", "ADMINUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEIMOQNgGgi49kk2o8tn8ncnm83q9ThHol1IJmduD3G0UCxKPYjUOOOZlTmfBGB9vtw==", "", false, "767d14e2-2061-4942-8886-62548f3b7aee", false, "adminuser@gmail.com" },
+                    { "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 0, "", "", "92b03466-188d-478c-b33f-c484380a19e4", new DateTime(2025, 1, 31, 22, 16, 44, 607, DateTimeKind.Local).AddTicks(6622), "selleruser@gmail.com", true, "Seller", false, "User", false, null, "SELLERUSER@GMAIL.COM", "SELLERUSER@GMAIL.COM", "AQAAAAIAAYagAAAAEG3sT8cQ3NZsXy1NX+nP+XEqNZgzu6ki1f5JJqLx07NqHsVV9hm9pqUTbfT8ACIBDw==", "", false, "d899f9c7-05f6-4ad5-8da1-777dcc5f4bcd", false, "selleruser@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -586,10 +578,10 @@ namespace ECommerce.Data.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "ImageUrl", "IsActive", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7321), "Woman", "x", true, false, "Woman", null, null },
-                    { 2, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7324), "Man", "x", true, false, "Man", null, null },
-                    { 3, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7326), "Baby", "x", true, false, "Baby", null, null },
-                    { 4, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7327), "Home", "x", true, false, "Home", null, null }
+                    { 1, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3201), "Woman", "x", true, false, "Woman", null, null },
+                    { 2, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3207), "Man", "x", true, false, "Man", null, null },
+                    { 3, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3208), "Baby", "x", true, false, "Baby", null, null },
+                    { 4, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3209), "Home", "x", true, false, "Home", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -608,14 +600,24 @@ namespace ECommerce.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Baskets",
+                columns: new[] { "Id", "ApplicationUserId", "CreatedAt", "IsActive", "IsDeleted", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac", new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7833), true, false, null },
+                    { 2, "14a0183f-1e96-4930-a83d-6ef5f22d8c09", new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7842), true, false, null },
+                    { 3, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7847), true, false, null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CreatedAt", "Description", "ImageUrl", "IsActive", "IsDeleted", "Name", "ParentCategoryId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 5, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7328), "Top clothing", null, true, false, "Woman Top clothing", 1, null },
-                    { 6, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7329), "Top clothing", null, true, false, "Man Top clothing", 2, null },
-                    { 7, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7330), "Top clothing", null, true, false, "Baby Top clothing", 3, null },
-                    { 8, new DateTime(2025, 1, 25, 18, 23, 28, 218, DateTimeKind.Utc).AddTicks(7331), "Blanket", null, true, false, "Home Blanket", 4, null }
+                    { 5, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3210), "Top clothing", null, true, false, "Woman Top clothing", 1, null },
+                    { 6, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3212), "Top clothing", null, true, false, "Man Top clothing", 2, null },
+                    { 7, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3214), "Top clothing", null, true, false, "Baby Top clothing", 3, null },
+                    { 8, new DateTime(2025, 1, 31, 19, 16, 44, 501, DateTimeKind.Utc).AddTicks(3215), "Blanket", null, true, false, "Home Blanket", 4, null }
                 });
 
             migrationBuilder.InsertData(
@@ -625,20 +627,21 @@ namespace ECommerce.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Sellers",
-                columns: new[] { "Id", "IdentityNumber", "IsActive", "StoreName", "WeeklyOrderLimit" },
-                values: new object[] { "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 1, false, "Store", 0 });
+                columns: new[] { "Id", "IdentityNumber", "IsActive", "IsApproved", "StoreName", "WeeklyOrderLimit" },
+                values: new object[] { "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 1, true, true, "Store", 0 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Color", "CreatedAt", "Description", "ImageUrl", "IsActive", "Name", "PreparationTimeInDays", "Size", "SubcategoryId", "UnitPrice", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 1, 2, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(81), "Elegant silk blouse for women.", "https://example.com/images/silk-blouse.jpg", true, "Silk Blouse", 3, 3, 5, 49.99m, null },
-                    { 2, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 2, 4, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(91), "Comfortable and stylish casual shirt for men.", "https://example.com/images/mens-casual-shirt.jpg", true, "Men's Casual Shirt", 2, 4, 6, 34.99m, null },
-                    { 3, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 3, 7, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(94), "Soft pajamas for babies.", "https://example.com/images/baby-pajamas.jpg", true, "Baby Pajamas", 2, 7, 7, 14.99m, null },
-                    { 4, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 3, 6, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(96), "Comfortable shoes for babies.", "https://example.com/images/baby-shoes.jpg", true, "Baby Shoes", 4, 11, 7, 25.99m, null },
-                    { 5, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 4, 4, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(98), "Soft and warm blanket for home.", "https://example.com/images/home-blanket.jpg", true, "Home Blanket", 3, 4, 8, 39.99m, null },
-                    { 6, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 4, 11, new DateTime(2025, 1, 25, 18, 23, 28, 381, DateTimeKind.Utc).AddTicks(101), "Comfortable furniture set for home.", "https://example.com/images/home-furniture-set.jpg", true, "Home Furniture Set", 7, 4, 8, 499.99m, null }
+                    { 1, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 1, 2, new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7888), "Elegant silk blouse for women.", "https://example.com/images/silk-blouse.jpg", true, "Silk Blouse", 3, 3, 5, 49.99m, null },
+                    { 2, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 2, 4, new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7897), "Comfortable and stylish casual shirt for men.", "https://example.com/images/mens-casual-shirt.jpg", true, "Men's Casual Shirt", 2, 4, 6, 34.99m, null },
+                    { 3, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 3, 7, new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7901), "Soft pajamas for babies.", "https://example.com/images/baby-pajamas.jpg", true, "Baby Pajamas", 2, 7, 7, 14.99m, null },
+                    { 4, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 3, 6, new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7904), "Comfortable shoes for babies.", "https://example.com/images/baby-shoes.jpg", true, "Baby Shoes", 4, 11, 7, 25.99m, null },
+                    { 5, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 4, 4, new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7907), "Soft and warm blanket for home.", "https://example.com/images/home-blanket.jpg", true, "Home Blanket", 3, 4, 8, 39.99m, null },
+                    { 6, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 4, 11, new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7912), "Comfortable furniture set for home.", "https://example.com/images/home-furniture-set.jpg", true, "Home Furniture Set", 7, 4, 8, 499.99m, null },
+                    { 7, "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6", 4, 4, new DateTime(2025, 1, 31, 19, 16, 44, 672, DateTimeKind.Utc).AddTicks(7909), "Soft and warm blanket for home.", "https://example.com/images/home1-blanket.jpg", true, "Home pillow", 3, 4, 8, 40.99m, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -674,13 +677,6 @@ namespace ECommerce.Data.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_BasketId",
-                table: "AspNetUsers",
-                column: "BasketId",
-                unique: true,
-                filter: "[BasketId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -696,6 +692,12 @@ namespace ECommerce.Data.Migrations
                 name: "IX_BasketItems_ProductId",
                 table: "BasketItems",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Baskets_ApplicationUserId",
+                table: "Baskets",
+                column: "ApplicationUserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_ParentCategoryId",
@@ -718,11 +720,6 @@ namespace ECommerce.Data.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_OrderId1",
-                table: "Invoices",
-                column: "OrderId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
                 column: "OrderId");
@@ -736,6 +733,12 @@ namespace ECommerce.Data.Migrations
                 name: "IX_Orders_ApplicationUserId",
                 table: "Orders",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_InvoiceId",
+                table: "Orders",
+                column: "InvoiceId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_ApplicationUserId",
@@ -766,27 +769,11 @@ namespace ECommerce.Data.Migrations
                 name: "IX_UserFavs_ProductId",
                 table: "UserFavs",
                 column: "ProductId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Invoices_Orders_OrderId1",
-                table: "Invoices",
-                column: "OrderId1",
-                principalTable: "Orders",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Orders_AspNetUsers_ApplicationUserId",
-                table: "Orders");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Invoices_Orders_OrderId1",
-                table: "Invoices");
-
             migrationBuilder.DropTable(
                 name: "Admin");
 
@@ -830,25 +817,25 @@ namespace ECommerce.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "OrderItems");
-
-            migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Baskets");
+
+            migrationBuilder.DropTable(
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "Invoices");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }
