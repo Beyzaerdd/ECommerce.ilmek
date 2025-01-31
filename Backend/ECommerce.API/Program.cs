@@ -9,7 +9,7 @@ using ECommerce.Entity.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-using ECommerce.Business.Mapping;
+
 using ECommerce.Shared.ComplexTypes;
 using Microsoft.OpenApi.Validations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -42,6 +42,8 @@ builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IUserFavService, UserFavService>();
 builder.Services.AddScoped<IContactMessageService, ContactMessageService>();
 builder.Services.AddScoped<IUserAccountManagerService, UserAccountManagerService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
 
 
