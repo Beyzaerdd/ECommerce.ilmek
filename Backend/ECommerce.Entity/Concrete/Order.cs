@@ -24,8 +24,9 @@ namespace ECommerce.Entity.Concrete
         public ICollection<OrderItem> OrderItems { get; set; }
         [Required]
         public Invoice Invoice { get; set; }
-        [NotMapped]
-        public decimal TotalPrice => OrderItems?.Sum(oi => oi.TotalPrice) ?? 0; 
+
+        public int InvoiceId { get; set; }
+        public decimal TotalPrice {  get; set; }
 
 
 

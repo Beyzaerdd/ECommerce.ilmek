@@ -14,7 +14,7 @@ namespace ECommerce.Entity.Concrete
     {
        
 
-        public string Email { get; set; }
+   
    
      
         
