@@ -102,7 +102,7 @@ namespace ECommerce.Data.Concrete.Repositories
         /// <param name="asNoTracking">If true, entities are returned without tracking.</param>
         /// <param name="includes">The functions for eager loading related entities.</param>
         /// <returns>A collection of entities based on the provided criteria.</returns>
-        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, int? take = null, bool asNoTracking = false, params Func<IQueryable<TEntity>, IQueryable<TEntity>>[] includes)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, int? take = null, bool asNoTracking = true, params Func<IQueryable<TEntity>, IQueryable<TEntity>>[] includes)
         {
             IQueryable<TEntity> query = _dbSet;
             //eager loading

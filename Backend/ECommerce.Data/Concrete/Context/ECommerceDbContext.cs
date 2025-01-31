@@ -44,11 +44,7 @@ namespace ECommerce.Data.Concrete.Context
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.Entity<ApplicationUser>()
-
-                .HasOne(p => p.Basket)
-                .WithOne(c => c.ApplicationUser)
-                .HasForeignKey<ApplicationUser>(P => P.BasketId);
+          
 
             modelBuilder.Entity<Category>().HasData(
              new Category { Id = 1, Name = "Woman", Description = "Woman", ImageUrl="x" },
@@ -72,7 +68,7 @@ namespace ECommerce.Data.Concrete.Context
             var hasher = new PasswordHasher<ApplicationUser>();
 
             // AdminUser
-            var adminUser = new Admin
+            var admin = new Admin
             {
                 Id = "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac",
                 UserName = "adminuser@gmail.com",
@@ -86,7 +82,7 @@ namespace ECommerce.Data.Concrete.Context
                 PhoneNumber = "",
                 City = "",
                 DateOfBirth = DateTime.Now,
-                PasswordHash = hasher.HashPassword(null, "c")
+                PasswordHash = hasher.HashPassword(null, "Qwe123.,")
             };
 
             // NormalUser
@@ -100,7 +96,7 @@ namespace ECommerce.Data.Concrete.Context
                 EmailConfirmed = true,
                 FirstName = "Normal",
                 LastName = "User",
-                Address = "",
+                Address = "aa",
                 PhoneNumber = "",
                 City = "",
                 DateOfBirth = DateTime.Now,
@@ -108,7 +104,7 @@ namespace ECommerce.Data.Concrete.Context
             };
 
             // SellerUser
-            var sellerUser = new Seller
+            var seller = new Seller
             {
                 Id = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                 UserName = "selleruser@gmail.com",
@@ -129,22 +125,22 @@ namespace ECommerce.Data.Concrete.Context
                 PasswordHash = hasher.HashPassword(null, "Qwe123.,")
             };
 
-            modelBuilder.Entity<Admin>().HasData(adminUser);
+            modelBuilder.Entity<Admin>().HasData(admin);
             modelBuilder.Entity<NormalUser>().HasData(normalUser);
-            modelBuilder.Entity<Seller>().HasData(sellerUser);
+            modelBuilder.Entity<Seller>().HasData(seller);
 
             // Assign roles to users
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string> { UserId = adminUser.Id, RoleId = "115c7796-cfac-44de-91b5-916eaae125b5" },
+                new IdentityUserRole<string> { UserId = admin.Id, RoleId = "115c7796-cfac-44de-91b5-916eaae125b5" },
                 new IdentityUserRole<string> { UserId = normalUser.Id, RoleId = "811f466c-9d06-43f8-a054-24aedbb4161b" },
-                new IdentityUserRole<string> { UserId = sellerUser.Id, RoleId = "811f466c-9d06-43f8-a054-24aedbb4161c" }
+                new IdentityUserRole<string> { UserId = seller.Id, RoleId = "811f466c-9d06-43f8-a054-24aedbb4161c" }
             );
 
             // Basket data
             modelBuilder.Entity<Basket>().HasData(
-                new Basket { Id = 1, ApplicationUserId = adminUser.Id },
+                new Basket { Id = 1, ApplicationUserId = admin.Id },
                 new Basket { Id = 2, ApplicationUserId = normalUser.Id },
-                new Basket { Id = 3, ApplicationUserId = sellerUser.Id }
+                new Basket { Id = 3, ApplicationUserId = seller.Id }
             );
 
 
@@ -225,6 +221,22 @@ namespace ECommerce.Data.Concrete.Context
               SubcategoryId = 8, // Home Blanket
               ImageUrl = "https://example.com/images/home-blanket.jpg"
           },
+          new Product
+          {
+              Id = 7,
+              ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
+              Name = "Home pillow",
+              Description = "Soft and warm blanket for home.",
+              UnitPrice = 40.99m,
+              Size = ProductSize.L,
+              Color = ProductColor.Blue,
+              PreparationTimeInDays = 3,
+              IsActive = true,
+              CategoryId = 4,  // Home Category
+              SubcategoryId = 8, // Home Blanket
+              ImageUrl = "https://example.com/images/home1-blanket.jpg"
+          },
+
           new Product
           {
               Id = 6,
