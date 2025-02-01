@@ -13,7 +13,7 @@ namespace ECommerce.Entity.Concrete
     {
        
 
-        public int IdentityNumber {  get; set; }
+        public string  IdentityNumber {  get; set; }
         
         public int WeeklyOrderLimit { get; set; }
 

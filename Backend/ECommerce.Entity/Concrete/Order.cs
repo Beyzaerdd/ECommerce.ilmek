@@ -28,6 +28,8 @@ namespace ECommerce.Entity.Concrete
       
         public decimal TotalPrice {  get; set; }
 
+        public string OrderNumber { get; set; }
+
 
 
 
