@@ -14,5 +14,10 @@ namespace ECommerce.Shared.DTOs.BasketDTOs
         public int ProductId { get; set; }
         public ProductDTO Product { get; set; }
         public int Quantity { get; set; }
+
+        public decimal OriginalPrice { get; set; }
+        public decimal DiscountedPrice {get;set;}
+
+       
     }
 }

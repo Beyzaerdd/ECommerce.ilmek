@@ -18,5 +18,7 @@ namespace ECommerce.Shared.DTOs.OrderDTOs
         public List<OrderItemDTO> OrderItems { get; set; } = new List<OrderItemDTO>();
         public InvoiceDTO Invoice { get; set; }
         public decimal TotalPrice {  get; set; }
+
+        public string OrderNumber { get; set; }
     }
 }

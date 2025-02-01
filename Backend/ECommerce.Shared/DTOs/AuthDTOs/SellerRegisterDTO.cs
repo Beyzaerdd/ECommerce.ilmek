@@ -19,7 +19,7 @@ namespace ECommerce.Shared.DTOs.AuthDTOs
   
         public DateTime DateOfBirth { get; set; }
 
-        public int IdentityNumber { get; set; }
+        public string IdentityNumber { get; set; }
         public string StoreName { get; set; }
 
     }
