@@ -113,7 +113,7 @@ namespace ECommerce.Data.Concrete.Context
                 NormalizedEmail = "SELLERUSER@GMAIL.COM",
                 EmailConfirmed = true,
                 FirstName = "Seller",
-                IdentityNumber = 1,
+                IdentityNumber = "1",
                 LastName = "User",
                 StoreName = "Store",
                 IsApproved = true,

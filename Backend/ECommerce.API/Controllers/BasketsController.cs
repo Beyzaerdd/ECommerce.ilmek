@@ -67,9 +67,9 @@ namespace ECommerce.API.Controllers
         }
         [Authorize]
         [HttpGet("calculateTotalAmount")]
-        public async Task<IActionResult> CalculateTotalAmount([FromQuery] string? couponCode)
+        public async Task<IActionResult> CalculateTotalAmount()
         {
-            var response = await _basketService.CalculateTotalAmountAsync(couponCode);
+            var response = await _basketService.CalculateTotalAmountAsync();
             return CreateResponse(response);
         }
 

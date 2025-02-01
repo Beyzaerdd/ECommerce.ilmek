@@ -3,6 +3,7 @@ using ECommerce.Business.Abstract;
 using ECommerce.Data.Abstract;
 using ECommerce.Entity.Concrete;
 using ECommerce.Shared.ComplexTypes;
+using ECommerce.Shared.DTOs.BasketDTOs;
 using ECommerce.Shared.DTOs.InvoiceDTOs;
 using ECommerce.Shared.DTOs.OrderDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,68 +28,56 @@ namespace ECommerce.Business.Concrete
         private readonly IBasketService basketService;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IInvoiceService ınvoiceService;
+        private readonly IEmailService emailService;
 
-        public OrderService(IBasketService basketService, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IInvoiceService ınvoiceService)
+        public OrderService(IBasketService basketService, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IInvoiceService ınvoiceService, IEmailService emailService)
         {
             this.basketService = basketService;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             this.httpContextAccessor = httpContextAccessor;
             this.ınvoiceService = ınvoiceService;
+            this.emailService = emailService;
         }
 
         public async Task<ResponseDTO<IEnumerable<OrderDTO>>> CreateOrderAsync(OrderCreateDTO orderCreateDTO)
         {
-            var basket = await _unitOfWork.GetRepository<Basket>()
-      .GetAsync(b => b.ApplicationUserId == orderCreateDTO.ApplicationUserId, b => b.Include(x => x.BasketItems));
 
-            if (basket == null || !basket.BasketItems.Any())
-            {
-                return ResponseDTO<IEnumerable<OrderDTO>>.Fail(new List<ErrorDetail>
-    {
-        new ErrorDetail { Message = "Basket is empty.", Code = "BASKET_EMPTY", Target = "Basket" }
-    }, HttpStatusCode.BadRequest);
-            }
-            
+            var basketResponse = await basketService.GetBasketAsync(orderCreateDTO.ApplicationUserId);
 
 
-            var productIds = basket.BasketItems.Select(x => x.ProductId).ToList();
-            var products = (await _unitOfWork.GetRepository<Product>().GetAllAsync(p => productIds.Contains(p.Id))).ToList();
 
-            if (products.Count != productIds.Count)
+            var basketDTO = basketResponse.Data;
+            if (basketDTO == null || !basketDTO.BasketItems.Any())
             {
                 return ResponseDTO<IEnumerable<OrderDTO>>.Fail(new List<ErrorDetail>
         {
-            new ErrorDetail { Message = "Some products could not be found.", Code = "PRODUCTS_NOT_FOUND", Target = "OrderItems" }
-        }, HttpStatusCode.NotFound);
+            new ErrorDetail { Message = "Basket is empty.", Code = "BASKET_EMPTY", Target = "Basket" }
+        }, HttpStatusCode.BadRequest);
             }
 
-            var user = await _unitOfWork.GetRepository<ApplicationUser>().GetAsync(u => u.Id == orderCreateDTO.ApplicationUserId);
+            var user = await _unitOfWork.GetRepository<ApplicationUser>()
+                .GetAsync(u => u.Id == orderCreateDTO.ApplicationUserId);
+
             if (user == null)
             {
                 return ResponseDTO<IEnumerable<OrderDTO>>.Fail(new List<ErrorDetail>
-        {
-            new ErrorDetail { Message = "User not found.", Code = "USER_NOT_FOUND", Target = "User" }
-        }, HttpStatusCode.NotFound);
+                      {
+                        new ErrorDetail { Message = "Kullanıcı bulunamadı.", Code = "USER_NOT_FOUND", Target = "User" }
+                    }, HttpStatusCode.NotFound);
             }
-           
 
-            var groupedBySeller = basket.BasketItems
-    .GroupBy(item =>
-    {
-        return item.Product.ApplicationUserId;
-    })
-    .Where(group => group.Key != null); 
-
-            List<OrderDTO> createdOrders = new List<OrderDTO>();
-
+            var groupedBySeller = basketDTO.BasketItems
+                 .GroupBy(item => item.Product.ApplicationUserId)
+                 .Where(group => group.Key != null)
+                 .ToList();
+            List<Order> createdOrders = new List<Order>();
+            List<InvoiceDTO> createdInvoice = new List<InvoiceDTO>();
             foreach (var seller in groupedBySeller)
             {
-                
-                Console.WriteLine($"Seller ID: {seller.Key}");
+                Console.WriteLine($"Satıcı ID: {seller.Key}");
 
                 decimal orderTotalAmount = 0;
-              
 
                 var order = new Order
                 {
@@ -95,51 +85,40 @@ namespace ECommerce.Business.Concrete
                     OrderDate = DateTime.Now,
                     Status = OrderStatus.Pending,
                     TotalPrice = 0,
-            
                     OrderItems = new List<OrderItem>()
                 };
 
                 foreach (var basketItem in seller)
                 {
-                    var product = products.FirstOrDefault(p => p.Id == basketItem.ProductId);
-                    if (product == null) continue;
+                    var product = basketItem.Product;
 
-                    
-               //TODO: kupon kodu hesaplaması
-
-
-
-
-                    decimal itemTotalPrice = product.UnitPrice * basketItem.Quantity;
-
-                    var productDiscounts = await _unitOfWork.GetRepository<Discount>()
-                        .GetAllAsync(x => x.Type == DiscountType.Product
-                                        && x.ProductId == product.Id
-                                        && x.IsActive
-                                        && x.StartDate <= DateTime.Now
-                                        && x.EndDate >= DateTime.Now);
-
-                    foreach (var discount in productDiscounts)
+                    var basketItemDTO = basketDTO.BasketItems.FirstOrDefault(bi => bi.ProductId == basketItem.ProductId);
+                    if (basketItemDTO != null)
                     {
-                        itemTotalPrice -= (itemTotalPrice * discount.DiscountValue) / 100m;
+                        decimal itemTotalPrice = basketItemDTO.DiscountedPrice * basketItem.Quantity;
+
+                        var orderItem = new OrderItem
+                        {
+                            ProductId = basketItem.ProductId,
+                            Quantity = basketItem.Quantity,
+                            TotalPrice = itemTotalPrice
+                        };
+
+                        orderTotalAmount += itemTotalPrice;
+                        order.OrderItems.Add(orderItem);
                     }
-
-                    var orderItem = new OrderItem
-                    {
-                        ProductId = basketItem.ProductId,
-                        Quantity = basketItem.Quantity,
-                        TotalPrice = itemTotalPrice
-                    };
-
-                    orderTotalAmount += itemTotalPrice;
-                    order.OrderItems.Add(orderItem);
                 }
 
                 order.TotalPrice = orderTotalAmount;
-                
-   
+                order.OrderNumber = GenerateOrderNumber();
+
+
                 await _unitOfWork.GetRepository<Order>().AddAsync(order);
                 await _unitOfWork.SaveChangesAsync();
+
+                
+
+
                 var invoice = await ınvoiceService.CreateInvoiceAsync(new InvoiceCreateDTO
                 {
                     Address = user.Address,
@@ -148,25 +127,77 @@ namespace ECommerce.Business.Concrete
                     LastName = user.LastName,
                     PhoneNumber = user.PhoneNumber,
                     OrderId = order.Id
-
-
                 });
 
-
-
-
-                createdOrders.Add(_mapper.Map<OrderDTO>(order));
+                createdOrders.Add(order);
+                createdInvoice.Add(invoice.Data);
             }
 
+            SendOrderMail(createdOrders);
+            
+            foreach (var invoice in createdInvoice)
+            {
+                SendInvoiceMail(invoice);
+            }
             await basketService.ClearBasketAsync(orderCreateDTO.ApplicationUserId);
 
-            return ResponseDTO<IEnumerable<OrderDTO>>.Success(createdOrders, HttpStatusCode.Created);
+            return ResponseDTO<IEnumerable<OrderDTO>>.Success(_mapper.Map<List<OrderDTO>>(createdOrders), HttpStatusCode.Created);
+        }
+
+        private void SendInvoiceMail(InvoiceDTO ınvoice)
+        {
+            string subject = "Faturanız Oluşturulmuştur!";
+            StringBuilder body = new StringBuilder();
+           
 
 
+                body.AppendLine("Fatura Numarası :" + ınvoice.InvoiceNumber);
+                body.AppendLine("Ürünler:");
+                foreach (var orderItem in ınvoice.Order.OrderItems)
+                {
+                    body.AppendLine($"{orderItem.Product.Name}  : {orderItem.Quantity} :{orderItem.TotalPrice} TL");
 
+                }
 
+                body.AppendLine("Toplam Tutar:" + ınvoice.TotalPrice);
+            
+            emailService.SendEmailAsync(ınvoice.Order.ApplicationUserName, subject, body.ToString());
 
         }
+
+        private void SendOrderMail(IEnumerable<Order> orders)
+        {
+            string subject = "Siparişiniz Alınmıştır!";
+            StringBuilder body = new StringBuilder();
+            foreach (var order in orders)
+            {
+
+
+                body.AppendLine("Sipariş Numarası :" + order.OrderNumber);
+                body.AppendLine("Ürünler:");
+                foreach (var orderItem in order.OrderItems)
+                {
+                    body.AppendLine($"{orderItem.Product.Name} : {orderItem.Product.ImageUrl} : {orderItem.TotalPrice} TL");
+
+                }
+
+                body.AppendLine("Toplam Tutar:" + order.TotalPrice);
+                }
+            emailService.SendEmailAsync(orders.FirstOrDefault().ApplicationUser.Email, subject, body.ToString());
+
+        }
+
+        private string GenerateOrderNumber(int length = 10)
+        {
+            var random = RandomNumberGenerator.Create();
+            var bytes = new byte[length];
+            random.GetNonZeroBytes(bytes);
+            var result = BitConverter.ToInt32(bytes);
+            return result.ToString();
+        }
+
+
+
         public async Task<ResponseDTO<NoContent>> DeleteOrderAsync(int id)
         {
             var order = _mapper.Map<Order>(id);

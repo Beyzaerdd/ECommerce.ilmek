@@ -19,7 +19,7 @@ namespace ECommerce.Business.Abstract
         Task<ResponseDTO<NoContent>> ChangeProductQuantityAsync(BasketItemChangeQuantityDTO basketItemChangeQuantityDTO);
 
        
-        Task<ResponseDTO<decimal>> CalculateTotalAmountAsync(string couponCode);
+        Task<ResponseDTO<decimal>> CalculateTotalAmountAsync();
 
     }
 }
