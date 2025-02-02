@@ -19,7 +19,7 @@ namespace ECommerce.Entity.Concrete
 
         public string StoreName { get; set; }
 
-        public bool IsActive { get; set; } = false;
+        public bool IsActive { get; set; } = true;
         public bool IsApproved { get; set; } = false;
     }
 }

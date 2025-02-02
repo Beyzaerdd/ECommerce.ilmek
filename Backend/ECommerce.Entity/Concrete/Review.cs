@@ -11,7 +11,7 @@ namespace ECommerce.Entity.Concrete
     {
         public int OrderItemId { get; set; } 
         public OrderItem OrderItem { get; set; }
-
+       
      
         public string Content { get; set; } 
         public int? Rating { get; set; } 
