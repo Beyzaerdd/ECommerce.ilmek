@@ -5,6 +5,7 @@ using ECommerce.Shared.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using ECommerce.Shared.DTOs.ProductDTOs;
 
 namespace ECommerce.API.Controllers
 {
@@ -22,8 +23,12 @@ namespace ECommerce.API.Controllers
         [Authorize(Policy = "Admin")]
         [HttpPost]
         
-        public async Task<IActionResult> CreateCategory([FromBody] CategoryCreateDTO categoryCreateDTO)
+        public async Task<IActionResult> CreateCategory([FromForm] CategoryCreateDTO categoryCreateDTO, [FromForm] IFormFile image )
         {
+            if (image != null)
+            {
+                categoryCreateDTO.Image = image;
+            }
             var response = await _categoryService.AddCategoryAsync(categoryCreateDTO);
             return CreateResponse(response);
         }

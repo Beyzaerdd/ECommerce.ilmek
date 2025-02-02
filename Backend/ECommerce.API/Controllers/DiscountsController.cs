@@ -21,45 +21,57 @@ namespace ECommerce.API.Controllers
             _discountService = discountService;
         }
 
+        [Authorize(Policy = "Seller")]
         [HttpPost("createProduct")]
         public async Task<IActionResult> CreateProductDiscount([FromBody] DiscountCreateDTO discountCreateDTO)
         {
             var response = await _discountService.CreateProductDiscountAsync(discountCreateDTO);
             return CreateResponse(response);
         }
-   
+        [Authorize(Policy = "Admin")]
         [HttpPost("createCoupon")]
         public async Task<IActionResult> CreateCouponCode([FromBody] DiscountCreateDTO discountCreateDTO)
         {
             var response = await _discountService.CreateCouponCodeAsync(discountCreateDTO);
             return CreateResponse(response);
         }
-      
+        [Authorize(Policy = "Seller")]
         [HttpPut]
         public async Task<IActionResult> UpdateDiscount([FromBody] DiscountUptadeDTO discountUpdateDTO)
         {
             var response = await _discountService.UpdateDiscountAsync(discountUpdateDTO);
             return CreateResponse(response);
         }
+        [Authorize(Policy = "Seller")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDiscount([FromRoute] int id)
         {
             var response = await _discountService.DeleteDiscountAsync(id);
             return CreateResponse(response);
         }
+        [Authorize(Policy = "SellerAndAdmin")]
+        
         [HttpGet("getallDiscounts")]
         public async Task<IActionResult> GetAllDiscounts([FromQuery] bool? isActive = null)
         {
             var response = await _discountService.GetAllDiscountsAsync();
             return CreateResponse(response);
         }
+        [Authorize(Policy = "SellerAndAdmin")]
         [HttpGet("getby/{id}")]
         public async Task<IActionResult> GetDiscountById([FromRoute] int id)
         {
             var response = await _discountService.GetDiscountByProductIdAsync(id);
             return CreateResponse(response);
         }
-        
 
+        [HttpGet("getDiscountBySeller")]
+        [Authorize(Policy = "SellerAndAdmin")]
+
+        public async Task<IActionResult> GetDiscountBySeller()
+        {
+            var response = await _discountService.GetDiscountBySellerAsync();
+            return CreateResponse(response);
+        }
     }
 }

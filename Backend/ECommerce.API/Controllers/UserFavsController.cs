@@ -18,6 +18,7 @@ namespace ECommerce.API.Controllers
             _userFavService = userFavService;
         }
 
+        [Authorize(Policy = "User")]
         [HttpPost("addToFavorite")]
         public async Task<IActionResult> AddToFavorites([FromBody] UserFavCreateDTO userFavCreateDTO)
         {
@@ -32,11 +33,11 @@ namespace ECommerce.API.Controllers
             var response = await _userFavService.GetFavoriteCountAsync(applicationUserId);
             return Ok(response);
         }
-
+        [Authorize(Policy = "User")]
         [HttpGet("getUserFav")]
-        public async Task<IActionResult> GetUserFavorites([FromQuery] string applicationUserId)
+        public async Task<IActionResult> GetUserFavorites()
         {
-            var response = await _userFavService.GetUserFavoritesAsync(applicationUserId);
+            var response = await _userFavService.GetUserFavoritesAsync();
             return Ok(response);
         }
     }

@@ -4,6 +4,7 @@ using ECommerce.Shared.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ECommerce.API.Controllers
 {
@@ -20,8 +21,13 @@ namespace ECommerce.API.Controllers
 
         [Authorize(Policy = "SellerAndAdmin")]
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDTO productCreateDTO)
+        public async Task<IActionResult> CreateProduct([FromForm]ProductCreateDTO productCreateDTO , [FromForm] IFormFile image)
         {
+            if (image != null)
+            {
+                productCreateDTO.Image = image;
+            }
+
             var response = await _productService.AddProductAsync(productCreateDTO);
             return CreateResponse(response);
         }
@@ -29,8 +35,12 @@ namespace ECommerce.API.Controllers
         [Authorize(Policy = "SellerAndAdmin")]
         [HttpPut]
         
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductUpdateDTO productUpdateDTO)
+        public async Task<IActionResult> UpdateProduct([FromForm] ProductUpdateDTO productUpdateDTO , [FromForm] IFormFile image)
         {
+            if (image != null)
+            {
+                productUpdateDTO.Image = image;
+            }
             var response = await _productService.UpdateProductAsync(productUpdateDTO);
             return CreateResponse(response);
         }
