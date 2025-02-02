@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -21,6 +22,14 @@ namespace ECommerce.Shared.Extensions
             return userIdClaim.Value;
 
         }
+
+        public static List<string> GetUserRoles(this IHttpContextAccessor contextAccessor)
+        {
+            var roleClaims = contextAccessor.HttpContext?.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+
+            return roleClaims ?? new List<string>(); 
+        }
+
 
     }
 }
