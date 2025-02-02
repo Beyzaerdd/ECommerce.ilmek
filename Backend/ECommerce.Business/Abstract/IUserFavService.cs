@@ -11,7 +11,7 @@ namespace ECommerce.Business.Abstract
     public interface IUserFavService
     {
         Task<ResponseDTO<NoContent>> AddToFavoritesAsync(UserFavCreateDTO userFavCreateDTO);
-        Task<ResponseDTO<IEnumerable<UserFavDTO>>> GetUserFavoritesAsync(string applicationUserId);
+        Task<ResponseDTO<IEnumerable<UserFavDTO>>> GetUserFavoritesAsync(int? take = null);
      
         Task<ResponseDTO<int>> GetFavoriteCountAsync(string applicationUserId);
     }

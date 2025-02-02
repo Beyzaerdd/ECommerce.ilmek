@@ -19,7 +19,9 @@ namespace ECommerce.Business.Abstract
             Task<ResponseDTO<DiscountDTO>> CreateProductDiscountAsync(DiscountCreateDTO discountCreateDTO);
             Task<ResponseDTO<DiscountDTO>> CreateCouponCodeAsync(DiscountCreateDTO discountCreateDTO);
             Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountByCouponCodeAsync(string couponCode);
-             Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountByProductIdAsync(int productId);  
+             Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountByProductIdAsync(int productId);
+
+            Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountBySellerAsync();
 
 
     }
