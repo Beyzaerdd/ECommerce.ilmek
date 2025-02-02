@@ -8,6 +8,7 @@ using ECommerce.Shared.DTOs.DiscountDTOs;
 using ECommerce.Shared.DTOs.InvoiceDTOs;
 using ECommerce.Shared.DTOs.OrderDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
+using ECommerce.Shared.DTOs.ReviewDTOs;
 using ECommerce.Shared.DTOs.UserFavDTOs;
 using ECommerce.Shared.DTOs.UsersDTO;
 using System;
@@ -58,10 +59,9 @@ namespace ECommerce.Business.Mapping
             CreateMap<OrderItem, OrderItemUpdateDTO>().ReverseMap();
 
             CreateMap<Order, OrderDTO>()
-           .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems));  // OrderItems'ı dahil et
+           .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems)); 
 
-            // OrderItem -> OrderItemDTO Dönüşümü
-             // Ürün adını dahil et
+            
             #endregion
 
 
@@ -98,7 +98,13 @@ namespace ECommerce.Business.Mapping
             CreateMap<Invoice, InvoiceDTO>().ReverseMap();
 
 
+            #region Review
 
+            CreateMap<Review, ReviewCreateDTO>().ReverseMap();
+            CreateMap<Review, ReviewUptadeDTO>().ReverseMap();
+            CreateMap<Review, ReviewDTO>().ReverseMap();
+
+            #endregion
 
 
 
