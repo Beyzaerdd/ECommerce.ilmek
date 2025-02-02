@@ -8,7 +8,7 @@ namespace ECommerce.Shared.DTOs.UserFavDTOs
 {
     public class UserFavCreateDTO
     {
-        public string ApplicationUserId { get; set; }
+    
         public int? ProductId { get; set; }
     }
 }
