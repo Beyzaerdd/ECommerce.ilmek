@@ -11,6 +11,6 @@ namespace ECommerce.Shared.DTOs.ReviewDTOs
         public int Id { get; set; }
         public string Content { get; set; }
         public int? Rating { get; set; }
-        public bool? IsApproved { get; set; }
+        
     }
 }
