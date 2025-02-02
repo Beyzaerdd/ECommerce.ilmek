@@ -212,6 +212,8 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<NoContent>> HardDeleteProductAsync(int id)
         {
+            var userId = httpContextAccessor.GetUserId();
+            var userRoles = httpContextAccessor.GetUserRoles();
             var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(id);
 
             if (product == null)
@@ -226,7 +228,18 @@ namespace ECommerce.Business.Concrete
             }
         }, HttpStatusCode.NotFound);
             }
-
+            if (!userRoles.Contains("Admin") && product.ApplicationUserId != userId)
+            {
+                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "You are not authorized to delete this product",
+                Code = "Unauthorized",
+                Target = nameof(id)
+            }
+        }, HttpStatusCode.Forbidden);
+            }
 
             if (product.IsDeleted)
             {
@@ -256,6 +269,9 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<NoContent>> SoftDeleteProductAsync(int id)
         {
+            var userId = httpContextAccessor.GetUserId();
+            var userRoles = httpContextAccessor.GetUserRoles();
+
             var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(id);
             if (product == null)
             {
@@ -269,6 +285,18 @@ namespace ECommerce.Business.Concrete
 
                    }, HttpStatusCode.NotFound);
 
+            }
+            if (!userRoles.Contains("Admin") && product.ApplicationUserId != userId)
+            {
+                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "You are not authorized to delete this product",
+                Code = "Unauthorized",
+                Target = nameof(id)
+            }
+        }, HttpStatusCode.Forbidden);
             }
             if (product.IsDeleted)
             {
@@ -289,7 +317,8 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<NoContent>> UpdateProductAsync(ProductUpdateDTO productUpdateDTO)
         {
-
+            var userId = httpContextAccessor.GetUserId();
+            var userRoles = httpContextAccessor.GetUserRoles();
             var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(productUpdateDTO.Id);
 
 
@@ -305,7 +334,18 @@ namespace ECommerce.Business.Concrete
             }
         }, HttpStatusCode.NotFound);
             }
-
+            if (!userRoles.Contains("Admin") && product.ApplicationUserId != userId)
+            {
+                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "You are not authorized to update this product",
+                Code = "Unauthorized",
+                Target = nameof(userId)
+            }
+        }, HttpStatusCode.Forbidden);
+            }
 
             if (!product.IsActive)
             {
@@ -332,6 +372,11 @@ namespace ECommerce.Business.Concrete
                 Target = nameof(productUpdateDTO.Id)
             }
         }, HttpStatusCode.BadRequest);
+            }
+            if (productUpdateDTO.Image != null)
+            {
+                var imageUrl = await _imageService.UploadImageAsync(productUpdateDTO.Image);
+                product.ImageUrl = imageUrl;
             }
 
             mapper.Map(productUpdateDTO, product);

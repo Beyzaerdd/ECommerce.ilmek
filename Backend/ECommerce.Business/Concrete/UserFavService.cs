@@ -7,6 +7,8 @@ using ECommerce.Shared.DTOs.BasketDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using ECommerce.Shared.DTOs.UserFavDTOs;
+using ECommerce.Shared.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,33 +23,42 @@ namespace ECommerce.Business.Concrete
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public UserFavService(IMapper mapper, IUnitOfWork unitOfWork)
+        public UserFavService(IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResponseDTO<NoContent>> AddToFavoritesAsync(UserFavCreateDTO userFavCreateDTO)
         {
-            var favorite = await unitOfWork.GetRepository<UserFav>().GetAsync(x => x.ApplicationUserId == userFavCreateDTO.ApplicationUserId && x.ProductId == userFavCreateDTO.ProductId);
+            var userId = httpContextAccessor.GetUserId();
+
+
+            var favorite = await unitOfWork.GetRepository<UserFav>()
+                .GetAsync(x => x.ApplicationUserId == userId && x.ProductId == userFavCreateDTO.ProductId);
+
             if (favorite != null)
             {
                 return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
-            {
-                new ErrorDetail { Message = "Product is already in favorites.", Code = "FAVORITE_EXISTS", Target = "UserFavorite" }
-            }, HttpStatusCode.BadRequest);
+        {
+            new ErrorDetail { Message = "Product is already in favorites.", Code = "FAVORITE_EXISTS", Target = "UserFavorite" }
+        }, HttpStatusCode.BadRequest);
             }
 
-           var userFavorite = mapper.Map<UserFavCreateDTO, UserFav>(userFavCreateDTO);
+
+            var userFavorite = mapper.Map<UserFavCreateDTO, UserFav>(userFavCreateDTO);
+            userFavorite.ApplicationUserId = userId;
+
             await unitOfWork.GetRepository<UserFav>().AddAsync(userFavorite);
             await unitOfWork.SaveChangesAsync();
-            
 
             return ResponseDTO<NoContent>.Success(HttpStatusCode.Created);
         }
 
-        public async Task<ResponseDTO<int>> GetFavoriteCountAsync(string applicationUserId)
+            public async Task<ResponseDTO<int>> GetFavoriteCountAsync(string applicationUserId)
         {
            var favoriteCount = await unitOfWork.GetRepository<UserFav>().CountAsync(x => x.ApplicationUserId == applicationUserId);
             if (favoriteCount == 0)
@@ -64,18 +75,19 @@ namespace ECommerce.Business.Concrete
 
         }
 
-        public async Task<ResponseDTO<IEnumerable<UserFavDTO>>> GetUserFavoritesAsync(string applicationUserId)
+        public async Task<ResponseDTO<IEnumerable<UserFavDTO>>> GetUserFavoritesAsync(int? take = null)
         {
+            var applicationUserId = httpContextAccessor.GetUserId();
+
+           
             var favorites = await unitOfWork.GetRepository<UserFav>()
                 .GetAllAsync(
-                    x => x.ApplicationUserId == applicationUserId, null,
-                          null,
-                          false,
-                           query => query.Include(y => y.Product)
-
-
+                    x => x.ApplicationUserId == applicationUserId, orderBy: query => query.OrderByDescending(x => x.CreatedAt),
+                take: take,false,
+                    q => q.Include(y => y.Product)  
                 );
 
+     
             if (favorites == null || !favorites.Any())
             {
                 return ResponseDTO<IEnumerable<UserFavDTO>>.Fail(new List<ErrorDetail>
@@ -84,11 +96,11 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
+           
             var favoritesDTO = mapper.Map<IEnumerable<UserFavDTO>>(favorites);
+
             return ResponseDTO<IEnumerable<UserFavDTO>>.Success(favoritesDTO, HttpStatusCode.OK);
         }
-
-
 
 
 

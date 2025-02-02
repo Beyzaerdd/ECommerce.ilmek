@@ -43,7 +43,7 @@ namespace ECommerce.Business.Concrete
         public async Task<ResponseDTO<IEnumerable<OrderDTO>>> CreateOrderAsync(OrderCreateDTO orderCreateDTO)
         {
 
-            var basketResponse = await basketService.GetBasketAsync(orderCreateDTO.ApplicationUserId);
+            var basketResponse = await basketService.GetBasketAsync();
 
 
 
@@ -63,9 +63,22 @@ namespace ECommerce.Business.Concrete
             {
                 return ResponseDTO<IEnumerable<OrderDTO>>.Fail(new List<ErrorDetail>
                       {
-                        new ErrorDetail { Message = "Kullanıcı bulunamadı.", Code = "USER_NOT_FOUND", Target = "User" }
+                        new ErrorDetail { Message = "User not found.", Code = "USER_NOT_FOUND", Target = "User" }
                     }, HttpStatusCode.NotFound);
             }
+
+           if(basketDTO.BasketItems.Any(item => !item.Product.IsActive))
+            {
+
+                return ResponseDTO<IEnumerable<OrderDTO>>.Fail(new List<ErrorDetail>
+                      {
+                        new ErrorDetail { Message = "product is not active.", Code = "PRODUCT_ISNT_ACTIVE", Target = "Product" }
+                    }, HttpStatusCode.NotFound);
+
+            }
+
+
+
 
             var groupedBySeller = basketDTO.BasketItems
                  .GroupBy(item => item.Product.ApplicationUserId)
@@ -75,7 +88,7 @@ namespace ECommerce.Business.Concrete
             List<InvoiceDTO> createdInvoice = new List<InvoiceDTO>();
             foreach (var seller in groupedBySeller)
             {
-                Console.WriteLine($"Satıcı ID: {seller.Key}");
+                Console.WriteLine($"Seller ID: {seller.Key}");
 
                 decimal orderTotalAmount = 0;
 
@@ -139,7 +152,7 @@ namespace ECommerce.Business.Concrete
             {
                 SendInvoiceMail(invoice);
             }
-            await basketService.ClearBasketAsync(orderCreateDTO.ApplicationUserId);
+            await basketService.ClearBasketAsync();
 
             return ResponseDTO<IEnumerable<OrderDTO>>.Success(_mapper.Map<List<OrderDTO>>(createdOrders), HttpStatusCode.Created);
         }

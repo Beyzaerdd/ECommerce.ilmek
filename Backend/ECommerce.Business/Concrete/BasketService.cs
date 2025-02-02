@@ -39,10 +39,11 @@ namespace ECommerce.Business.Concrete
 
         private readonly IDiscountService discountService;
 
-        public async Task<ResponseDTO<BasketDTO>> GetBasketAsync(string applicationUserId)
+        public async Task<ResponseDTO<BasketDTO>> GetBasketAsync()
         {
+            var userId = contextAccessor.GetUserId();
             var basket = await _unitOfWork.GetRepository<Basket>().GetAsync(
-                x => x.ApplicationUserId == applicationUserId,
+                x => x.ApplicationUserId == userId,
                 query => query
                     .Include(b => b.BasketItems)
                     .ThenInclude(bi => bi.Product)
@@ -103,6 +104,7 @@ namespace ECommerce.Business.Concrete
                             Name = product.Name,
                             UnitPrice = product.UnitPrice,
                             ApplicationUserId= product.ApplicationUserId,
+                            IsActive= product.IsActive
                         }
                     };
                 }).ToList()
@@ -141,11 +143,11 @@ namespace ECommerce.Business.Concrete
 
 
 
-        public async Task<ResponseDTO<NoContent>> ClearBasketAsync(string applicationUserId)
+        public async Task<ResponseDTO<NoContent>> ClearBasketAsync()
         {
-           
+            var userId = contextAccessor.GetUserId();
             var basket = await _unitOfWork.GetRepository<Basket>()
-                .GetAsync(x => x.ApplicationUserId == applicationUserId,
+                .GetAsync(x => x.ApplicationUserId == userId,
                           query => query.Include(b => b.BasketItems).ThenInclude(bi => bi.Product));
 
             if (basket == null)
@@ -174,7 +176,8 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<BasketItemDTO>> AddProductToBasketAsync(BasketItemCreateDTO basketItemCreateDTO)
         {
-            var basket = await _unitOfWork.GetRepository<Basket>().GetAsync(x => x.Id == basketItemCreateDTO.BasketId, query => query.Include(b => b.BasketItems).ThenInclude(bi => bi.Product));
+            var userId = contextAccessor.GetUserId();
+            var basket = await _unitOfWork.GetRepository<Basket>().GetAsync(x => x.ApplicationUserId == userId, query => query.Include(b => b.BasketItems).ThenInclude(bi => bi.Product));
             if (basket == null)
             {
                 return ResponseDTO<BasketItemDTO>.Fail(new List<ErrorDetail>
@@ -200,6 +203,20 @@ namespace ECommerce.Business.Concrete
                         Target = "ProductId"
                     }
                 }, HttpStatusCode.NotFound);
+            }
+
+            if (!product.IsActive)
+            {
+                return ResponseDTO<BasketItemDTO>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message = "Product is not active.",
+                        Code = "PRODUCT_ISNT_ACTIVE",
+                        Target = "ProductIsActive"
+                    }
+                }, HttpStatusCode.NotFound);
+
             }
 
             var existingBasketItem = basket.BasketItems.FirstOrDefault(x => x.ProductId == basketItemCreateDTO.ProductId);

@@ -36,6 +36,8 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<DiscountDTO>> CreateCouponCodeAsync(DiscountCreateDTO discountCreateDTO)
         {
+          
+            var userRoles = httpContextAccessor.GetUserRoles();
             var existingCouponCode = await unitOfWork.GetRepository<Discount>().GetAsync(x => x.CouponCode == discountCreateDTO.CouponCode);
 
             if (existingCouponCode != null)
@@ -50,6 +52,18 @@ namespace ECommerce.Business.Concrete
                 Target = "CouponCode"
             }
         }, HttpStatusCode.BadRequest);
+            }
+            if (!userRoles.Contains("Admin"))
+            {
+                return ResponseDTO<DiscountDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "You can only apply discounts to your own products.",
+                Code = "UNAUTHORIZED",
+                Target = nameof(discountCreateDTO.ProductId)
+            }
+        }, HttpStatusCode.Forbidden);
             }
 
             var discount = mapper.Map<Discount>(discountCreateDTO);
@@ -67,6 +81,8 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<DiscountDTO>> CreateProductDiscountAsync(DiscountCreateDTO discountCreateDTO)
         {
+            var userId = httpContextAccessor.GetUserId();
+            var userRoles = httpContextAccessor.GetUserRoles();
 
             var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(discountCreateDTO.ProductId.Value);
             if (product == null)
@@ -81,7 +97,18 @@ namespace ECommerce.Business.Concrete
             }
         }, HttpStatusCode.NotFound);
             }
-
+            if (!userRoles.Contains("Admin") && product.ApplicationUserId != userId)
+            {
+                return ResponseDTO<DiscountDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "You can only apply discounts to your own products.",
+                Code = "UNAUTHORIZED",
+                Target = nameof(discountCreateDTO.ProductId)
+            }
+        }, HttpStatusCode.Forbidden);
+            }
 
             var discount = mapper.Map<Discount>(discountCreateDTO);
             discount.Type = Shared.ComplexTypes.DiscountType.Product;
@@ -107,6 +134,7 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<bool>> DeleteDiscountAsync(int discountId)
         {
+            var userId = httpContextAccessor.GetUserId();
             var discount = await unitOfWork.GetRepository<Discount>().GetByIdAsync(discountId);
 
             if (discount == null)
@@ -121,8 +149,20 @@ namespace ECommerce.Business.Concrete
             }
         }, HttpStatusCode.NotFound);
             }
+            if (discount.ApplicationUserId != userId)
+            {
+                return ResponseDTO<bool>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "You can only apply discounts to your own products.",
+                Code = "UNAUTHORIZED",
+                Target = nameof(Discount)
+            }
+        }, HttpStatusCode.Forbidden);
+            }
 
-       
+
             discount.IsActive = false;
             unitOfWork.GetRepository<Discount>().SoftDeleteAsync(discount);
 
@@ -158,6 +198,7 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<DiscountDTO>> UpdateDiscountAsync(DiscountUptadeDTO discountUpdateDTO)
         {
+            var userId = httpContextAccessor.GetUserId();
             var discount = await unitOfWork.GetRepository<Discount>()
            .GetAsync(x => x.Id == discountUpdateDTO.Id && !x.IsDeleted);
 
@@ -172,6 +213,18 @@ namespace ECommerce.Business.Concrete
                 Target = "DiscountId"
             }
         }, HttpStatusCode.NotFound);
+            }
+            if (discount.ApplicationUserId != userId)
+            {
+                return ResponseDTO<DiscountDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "You can only apply discounts to your own products.",
+                Code = "UNAUTHORIZED",
+                Target = nameof(Discount)
+            }
+        }, HttpStatusCode.Forbidden);
             }
 
             var updatedDiscount = mapper.Map(discountUpdateDTO, discount);
@@ -203,6 +256,23 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<IEnumerable<DiscountDTO>>.Success(discountDTOs, HttpStatusCode.OK);
 
         }
+        public async Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountBySellerAsync()
+        {
+            var sellerId = httpContextAccessor.GetUserId(); 
+
+            var discounts = await unitOfWork.GetRepository<Discount>().GetAllAsync(d=>d.ApplicationUserId== sellerId, null,null,false, query=>query.Include(d => d.Product));
+
+            if (!discounts.Any())
+            {
+                return ResponseDTO<IEnumerable<DiscountDTO>>.Success(new List<DiscountDTO>(), HttpStatusCode.OK);
+            }
+
+            var discountDTOs = mapper.Map<IEnumerable<DiscountDTO>>(discounts); 
+
+            return ResponseDTO<IEnumerable<DiscountDTO>>.Success(discountDTOs, HttpStatusCode.OK);
+        }
+
+
 
         public async Task<ResponseDTO<IEnumerable<DiscountDTO>>> GetDiscountByProductIdAsync(int productId)
         {
