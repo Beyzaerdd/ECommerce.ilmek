@@ -9,7 +9,7 @@ namespace ECommerce.Shared.DTOs.BasketDTOs
     public class BasketItemCreateDTO
     {
 
-        public int BasketId { get; set; }
+      
         public int ProductId { get; set; }
         public int Quantity { get; set; }
     }
