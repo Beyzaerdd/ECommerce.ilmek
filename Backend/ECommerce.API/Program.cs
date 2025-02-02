@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ECommerce.Business.Configuration;
 using System.Security.Claims;
+using ECommerce.API.BackgroundServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +45,15 @@ builder.Services.AddScoped<IContactMessageService, ContactMessageService>();
 builder.Services.AddScoped<IUserAccountManagerService, UserAccountManagerService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<OrderLimitBackgroundService>();
+builder.Services.AddHostedService<OrderLimitBackgroundService>(f => {
+    var scope= f.CreateScope();
+   return scope.ServiceProvider.GetRequiredService<OrderLimitBackgroundService>();
+
+
+
+});
 
 
 
