@@ -21,12 +21,9 @@ namespace ECommerce.API.Controllers
 
         [Authorize(Policy = "SellerAndAdmin")]
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> CreateProduct([FromForm]ProductCreateDTO productCreateDTO , [FromForm] IFormFile image)
+        public async Task<IActionResult> CreateProduct([FromForm]ProductCreateDTO productCreateDTO )
         {
-            if (image != null)
-            {
-                productCreateDTO.Image = image;
-            }
+        
 
             var response = await _productService.AddProductAsync(productCreateDTO);
             return CreateResponse(response);
@@ -35,12 +32,9 @@ namespace ECommerce.API.Controllers
         [Authorize(Policy = "SellerAndAdmin")]
         [HttpPut]
         
-        public async Task<IActionResult> UpdateProduct([FromForm] ProductUpdateDTO productUpdateDTO , [FromForm] IFormFile image)
+        public async Task<IActionResult> UpdateProduct([FromForm] ProductUpdateDTO productUpdateDTO )
         {
-            if (image != null)
-            {
-                productUpdateDTO.Image = image;
-            }
+           
             var response = await _productService.UpdateProductAsync(productUpdateDTO);
             return CreateResponse(response);
         }

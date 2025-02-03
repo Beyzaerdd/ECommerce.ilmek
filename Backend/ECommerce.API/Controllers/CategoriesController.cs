@@ -23,12 +23,9 @@ namespace ECommerce.API.Controllers
         [Authorize(Policy = "Admin")]
         [HttpPost]
         
-        public async Task<IActionResult> CreateCategory([FromForm] CategoryCreateDTO categoryCreateDTO, [FromForm] IFormFile image )
+        public async Task<IActionResult> CreateCategory([FromForm] CategoryCreateDTO categoryCreateDTO )
         {
-            if (image != null)
-            {
-                categoryCreateDTO.Image = image;
-            }
+           
             var response = await _categoryService.AddCategoryAsync(categoryCreateDTO);
             return CreateResponse(response);
         }

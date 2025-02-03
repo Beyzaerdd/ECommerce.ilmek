@@ -31,17 +31,17 @@ namespace ECommerce.API.Controllers
 
 
         [Authorize(Policy = "User")]
-        [HttpGet("getBasketBy/{applicationUserId}")]
-        public async Task<IActionResult> GetBasket([FromRoute] string applicationUserId)
+        [HttpGet("getBasket")]
+        public async Task<IActionResult> GetBasket()
         {
-            var response = await _basketService.GetBasketAsync(applicationUserId);
+            var response = await _basketService.GetBasketAsync();
             return CreateResponse(response);
         }
         [Authorize(Policy = "User")]
-        [HttpDelete("clearBasket/{applicationUserId}")]
-        public async Task<IActionResult> ClearBasket([FromRoute] string applicationUserId)
+        [HttpDelete("clearBasket")]
+        public async Task<IActionResult> ClearBasket()
         {
-            var response = await _basketService.ClearBasketAsync(applicationUserId);
+            var response = await _basketService.ClearBasketAsync();
             return CreateResponse(response);
         }
         [Authorize(Policy = "User")]

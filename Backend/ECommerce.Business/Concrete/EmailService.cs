@@ -4,10 +4,13 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
+
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 
 namespace ECommerce.Business.Concrete
 {
@@ -25,24 +28,28 @@ namespace ECommerce.Business.Concrete
 
 
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+
+
+public async Task SendEmailAsync(string email, string subject, string message)
+    {
+        var mimeMessage = new MimeMessage();
+        mimeMessage.From.Add(new MailboxAddress(_emailConfig.UserName, _emailConfig.SmtpUser));
+        mimeMessage.To.Add(new MailboxAddress("",email));
+        mimeMessage.Subject = subject;
+
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = message;
+
+            mimeMessage.Body = bodyBuilder.ToMessageBody();
+
+            using (var smtpClient = new SmtpClient())
         {
-            using (var smtpClient = new SmtpClient(_emailConfig.SmtpServer, _emailConfig.SmtpPort))
-            {
-                smtpClient.Credentials = new NetworkCredential(_emailConfig.SmtpUser, _emailConfig.SmtpPass);
-                smtpClient.EnableSsl = true;
-
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress(_emailConfig.SmtpUser),
-                    Subject = subject,
-                    Body = message,
-                    IsBodyHtml = true,
-                };
-                mailMessage.To.Add(email);
-
-                await smtpClient.SendMailAsync(mailMessage);
-            }
+            await smtpClient.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.SmtpPort, SecureSocketOptions.StartTls);
+            await smtpClient.AuthenticateAsync(_emailConfig.SmtpUser, _emailConfig.SmtpPass);
+            await smtpClient.SendAsync(mimeMessage);
+            await smtpClient.DisconnectAsync(true);
         }
     }
+
+}
 }

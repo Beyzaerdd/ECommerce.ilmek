@@ -380,7 +380,7 @@ namespace ECommerce.Business.Concrete
             }
 
             mapper.Map(productUpdateDTO, product);
-            product.UpdatedAt = DateTime.UtcNow;
+            product.UpdatedAt = DateTime.Now;
 
             unitOfWork.GetRepository<Product>().UpdateAsync(product);
             await unitOfWork.SaveChangesAsync();

@@ -79,14 +79,15 @@ namespace ECommerce.Business.Concrete
             invoice.FirstName= user.FirstName;
             invoice.LastName= user.LastName;
             invoice.Email = user.Email;
+        
 
           
             await unitOfWork.GetRepository<Invoice>().AddAsync(invoice);
             await unitOfWork.SaveChangesAsync();
 
             var invoiceDTO = mapper.Map<InvoiceDTO>(invoice);
-            invoiceDTO.IssueDate = DateTime.Now; 
-
+            invoiceDTO.IssueDate = DateTime.Now;
+            invoiceDTO.Order.ApplicationUserName = user.Email;
             return ResponseDTO<InvoiceDTO>.Success(invoiceDTO, HttpStatusCode.Created);
         }
 

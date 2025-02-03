@@ -8,10 +8,13 @@ using ECommerce.Shared.DTOs.InvoiceDTOs;
 using ECommerce.Shared.DTOs.OrderDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using ECommerce.Shared.Extensions;
+using Fluid.Values;
+using Fluid;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -67,7 +70,7 @@ namespace ECommerce.Business.Concrete
                     }, HttpStatusCode.NotFound);
             }
 
-           if(basketDTO.BasketItems.Any(item => !item.Product.IsActive))
+            if (basketDTO.BasketItems.Any(item => !item.Product.IsActive))
             {
 
                 return ResponseDTO<IEnumerable<OrderDTO>>.Fail(new List<ErrorDetail>
@@ -129,7 +132,7 @@ namespace ECommerce.Business.Concrete
                 await _unitOfWork.GetRepository<Order>().AddAsync(order);
                 await _unitOfWork.SaveChangesAsync();
 
-                
+
 
 
                 var invoice = await ınvoiceService.CreateInvoiceAsync(new InvoiceCreateDTO
@@ -146,58 +149,146 @@ namespace ECommerce.Business.Concrete
                 createdInvoice.Add(invoice.Data);
             }
 
-            SendOrderMail(createdOrders);
-            
+            await SendOrderMailAsync(createdOrders);
+
             foreach (var invoice in createdInvoice)
             {
-                SendInvoiceMail(invoice);
+                await SendInvoiceMail(invoice);
             }
             await basketService.ClearBasketAsync();
 
             return ResponseDTO<IEnumerable<OrderDTO>>.Success(_mapper.Map<List<OrderDTO>>(createdOrders), HttpStatusCode.Created);
         }
 
-        private void SendInvoiceMail(InvoiceDTO ınvoice)
+        private async Task SendInvoiceMail(InvoiceDTO invoice)
         {
             string subject = "Faturanız Oluşturulmuştur!";
-            StringBuilder body = new StringBuilder();
-           
 
+            try
+            {
+               
+                var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "InvoiceMailTemplate.liquid");
 
-                body.AppendLine("Fatura Numarası :" + ınvoice.InvoiceNumber);
-                body.AppendLine("Ürünler:");
-                foreach (var orderItem in ınvoice.Order.OrderItems)
+               
+                if (!File.Exists(templatePath))
                 {
-                    body.AppendLine($"{orderItem.Product.Name}  : {orderItem.Quantity} :{orderItem.TotalPrice} TL");
-
+                    throw new FileNotFoundException($"Şablon dosyası bulunamadı: {templatePath}");
                 }
 
-                body.AppendLine("Toplam Tutar:" + ınvoice.TotalPrice);
-            
-            emailService.SendEmailAsync(ınvoice.Order.ApplicationUserName, subject, body.ToString());
+           
+                var templateText = await File.ReadAllTextAsync(templatePath);
 
+                var parser = new FluidParser();
+                if (!parser.TryParse(templateText, out var template, out var error))
+                {
+                    throw new InvalidOperationException("Şablon ayrıştırma hatası: " + error);
+                }
+
+                var templateContext = new TemplateContext();
+
+            
+                var orderItemsList = new List<Dictionary<string, object>>();
+
+                foreach (var orderItem in invoice.Order.OrderItems)
+                {
+                    orderItemsList.Add(new Dictionary<string, object>
+            {
+                { "Name", orderItem.Product.Name },
+                { "Quantity", orderItem.Quantity },
+                { "TotalPrice", orderItem.TotalPrice }
+            });
+                }
+
+                var invoiceData = new Dictionary<string, object>
+        {
+            { "InvoiceNumber", invoice.InvoiceNumber },
+            { "OrderItems", orderItemsList },
+            { "TotalPrice", invoice.TotalPrice }
+        };
+
+            
+                templateContext.SetValue("invoice", invoiceData);
+
+         
+                var body = template.Render(templateContext);
+
+          
+                await emailService.SendEmailAsync(invoice.Order.ApplicationUserName, subject, body);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("E-posta gönderme hatası: " + ex.Message);
+                throw;
+            }
         }
 
-        private void SendOrderMail(IEnumerable<Order> orders)
+
+
+
+        private async Task SendOrderMailAsync(IEnumerable<Order> orders)
         {
             string subject = "Siparişiniz Alınmıştır!";
-            StringBuilder body = new StringBuilder();
-            foreach (var order in orders)
+
+            try
             {
 
+                var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "OrderMailTemplate.liquid");
 
-                body.AppendLine("Sipariş Numarası :" + order.OrderNumber);
-                body.AppendLine("Ürünler:");
-                foreach (var orderItem in order.OrderItems)
+                if (!File.Exists(templatePath))
                 {
-                    body.AppendLine($"{orderItem.Product.Name} : {orderItem.Product.ImageUrl} : {orderItem.TotalPrice} TL");
-
+                    throw new FileNotFoundException($"Şablon dosyası bulunamadı: {templatePath}");
                 }
 
-                body.AppendLine("Toplam Tutar:" + order.TotalPrice);
-                }
-            emailService.SendEmailAsync(orders.FirstOrDefault().ApplicationUser.Email, subject, body.ToString());
+                var templateText = await File.ReadAllTextAsync(templatePath);
 
+                var parser = new FluidParser();
+                if (!parser.TryParse(templateText, out var template, out var error))
+                {
+                    throw new InvalidOperationException("Şablon ayrıştırma hatası: " + error);
+                }
+
+                var templateContext = new TemplateContext();
+
+                var orderList = new List<Dictionary<string, object>>();
+
+                foreach (var order in orders)
+                {
+                    var orderItems = new List<Dictionary<string, object>>();
+
+                    foreach (var orderItem in order.OrderItems)
+                    {
+                        orderItems.Add(new Dictionary<string, object>
+                      {
+                           { "Name", orderItem.Product.Name },
+                          { "ImageUrl", orderItem.Product.ImageUrl ?? "https://example.com/no-image.png" },
+                          { "Quantity", orderItem.Quantity },
+                          { "UnitPrice", orderItem.TotalPrice },
+                          { "TotalPrice", orderItem.TotalPrice }
+                           });
+                    }
+
+                    var orderData = new Dictionary<string, object>
+                      {
+                       { "OrderNumber", order.OrderNumber },
+                        { "OrderItems", orderItems },
+                        { "TotalPrice", order.TotalPrice }
+                         };
+
+                    orderList.Add(orderData);
+                }
+
+                templateContext.SetValue("orders", orderList);
+
+                var body = template.Render(templateContext);
+
+             
+                await emailService.SendEmailAsync(orders.First().ApplicationUser.Email, subject, body);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("E-posta gönderme hatası: " + ex.Message);
+                throw;
+            }
         }
 
         private string GenerateOrderNumber(int length = 10)

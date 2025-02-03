@@ -55,7 +55,7 @@ namespace ECommerce.Business.Concrete
         {
             var user = httpContextAccessor.GetUserId();
          
-            var review = await unitOfWork.GetRepository<Review>().GetAsync(r => r.Id == reviewId, query => query.Include(r => r.OrderItem));
+            var review = await unitOfWork.GetRepository<Review>().GetAsync(r => r.Id == reviewId, query => query.Include(r => r.OrderItem).ThenInclude(r=>r.Order));
 
             
             if (review == null)
@@ -82,7 +82,7 @@ namespace ECommerce.Business.Concrete
             }
         }, HttpStatusCode.Forbidden);
             }
-
+            review.UpdatedAt = DateTime.Now;
             unitOfWork.GetRepository<Review>().SoftDeleteAsync(review);
             await unitOfWork.SaveChangesAsync();
 
@@ -104,7 +104,7 @@ namespace ECommerce.Business.Concrete
         public async Task<ResponseDTO<NoContent>> UpdateReviewAsync(ReviewUptadeDTO reviewUptadeDTO)
         {
             var user = httpContextAccessor.GetUserId();
-            var review = await unitOfWork.GetRepository<Review>().GetAsync(r => r.Id == reviewUptadeDTO.Id);
+            var review = await unitOfWork.GetRepository<Review>().GetAsync(r => r.Id == reviewUptadeDTO.Id,query=>query.Include(r=>r.OrderItem).ThenInclude(r=>r.Order));
 
 
             if (review == null)
@@ -137,9 +137,9 @@ namespace ECommerce.Business.Concrete
 
             review.Content = reviewUptadeDTO.Content;
             review.Rating = reviewUptadeDTO.Rating;
-        
 
-         
+
+            review.UpdatedAt = DateTime.Now;
             unitOfWork.GetRepository<Review>().UpdateAsync(review);
             await unitOfWork.SaveChangesAsync();
 

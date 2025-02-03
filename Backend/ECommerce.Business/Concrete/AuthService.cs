@@ -55,6 +55,11 @@ namespace ECommerce.Business.Concrete
             {
                 return ResponseDTO<NoContent>.Fail("Geçersiz şifre", HttpStatusCode.BadRequest);
             }
+            if (changePasswordDTO.NewPassword == changePasswordDTO.CurrentPassword)
+            {
+                return ResponseDTO<NoContent>.Fail("Yakın zamanda kullandınız başka bir şifre giriniz", HttpStatusCode.BadRequest);
+
+            }
 
 
             var result = await _userManager.ChangePasswordAsync(user, changePasswordDTO.CurrentPassword, changePasswordDTO.NewPassword);
@@ -81,7 +86,7 @@ namespace ECommerce.Business.Concrete
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var resetLink = $"http://localhost:5070/resetpassword?token={token}&email={forgotPasswordDTO.Email}";
+            var resetLink = $"http://localhost:1406/resetpassword?token={token}&email={forgotPasswordDTO.Email}";
 
             var message = $"Şifrenizi sıfırlamak için <a href='{resetLink}'>buraya tıklayın</a>.";
             await _emailService.SendEmailAsync(forgotPasswordDTO.Email, "Şifre Sıfırlama Talebi", message);
@@ -430,7 +435,7 @@ namespace ECommerce.Business.Concrete
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
 
-            var expiry = DateTime.UtcNow.AddMinutes(_jwtConfig.AccessTokenExpiration);
+            var expiry = DateTime.Now.AddMinutes(_jwtConfig.AccessTokenExpiration);
 
 
             var token = new JwtSecurityToken(
