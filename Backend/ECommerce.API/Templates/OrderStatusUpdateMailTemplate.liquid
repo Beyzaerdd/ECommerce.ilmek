@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Sipariş Durumu Güncellenmiştir!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #e67e22;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #e67e22;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.imgur.com/kGseOlZ.png" alt="Şirket Logosu" style="max-width: 200px;">
+        <h1>Sipariş Durumunuz Güncellendi! 🧾</h1>
+        <p>Merhaba, siparişinizin durumu aşağıda güncellenmiştir:</p>
+        <p><strong>Sipariş Numarası:</strong> {{ order.OrderNumber }}</p>
+        <p><strong>Yeni Durum:</strong> {{ order.OrderStatus }}</p>
+        <a href="#" class="btn">Siparişinizi Görüntüleyin 📄</a>
+        <p>Teşekkür ederiz! 💖</p>
+    </div>
+</body>
+</html>

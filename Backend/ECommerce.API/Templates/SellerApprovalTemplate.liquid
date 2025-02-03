@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mağazanız Onaylandı!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .header img {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+        .content h1 {
+            color: #333;
+        }
+        .content p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-top: 15px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+           
+        </div>
+        <div class="content">
+            <h1>Tebrikler! Mağazanız Onaylandı 🎉</h1>
+            <p>
+                Merhaba <strong>{{ seller.FirstName }}</strong>,<br>
+                Satıcı olarak başvurunuz onaylandı! 🎊<br>
+                Artık mağazanızı oluşturabilir, ürünlerinizi ekleyebilir ve satış yapmaya başlayabilirsiniz. 🚀
+            </p>
+            <p>Başlangıç için **satıcı panelinize** giriş yaparak mağaza ayarlarınızı tamamlayabilirsiniz.</p>
+            <a href="{{ sellerPanelUrl }}" class="btn">Satıcı Paneline Git</a>
+        </div>
+        <div class="footer">
+            <p>Herhangi bir sorunuz olursa bizimle iletişime geçmekten çekinmeyin. 📩</p>
+            <p><strong>İlmek Ekibi</strong></p>
+        </div>
+    </div>
+</body>
+</html>
