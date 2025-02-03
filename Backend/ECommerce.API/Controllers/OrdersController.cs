@@ -84,6 +84,13 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
 
         }
+      
+        [HttpPut("UpdateStatus/{orderId}")]
+        public async Task<IActionResult> UpdateOrdersStatus(int orderId, [FromBody] OrderStatus status)
+        {
+            var response = await orderService.UpdateOrderStatusAsync(orderId, status);
+            return CreateResponse(response);
+        }
 
     }
 

@@ -127,6 +127,7 @@ namespace ECommerce.Business.Concrete
 
                 order.TotalPrice = orderTotalAmount;
                 order.OrderNumber = GenerateOrderNumber();
+                order.Status= OrderStatus.Processing;
 
 
                 await _unitOfWork.GetRepository<Order>().AddAsync(order);
@@ -195,12 +196,14 @@ namespace ECommerce.Business.Concrete
             {
                 { "Name", orderItem.Product.Name },
                 { "Quantity", orderItem.Quantity },
-                { "TotalPrice", orderItem.TotalPrice }
+                { "TotalPrice", orderItem.TotalPrice },
+                        {"UnitPrice", orderItem.Product.UnitPrice  }
             });
                 }
 
                 var invoiceData = new Dictionary<string, object>
         {
+
             { "InvoiceNumber", invoice.InvoiceNumber },
             { "OrderItems", orderItemsList },
             { "TotalPrice", invoice.TotalPrice }
@@ -296,8 +299,10 @@ namespace ECommerce.Business.Concrete
             var random = RandomNumberGenerator.Create();
             var bytes = new byte[length];
             random.GetNonZeroBytes(bytes);
-            var result = BitConverter.ToInt32(bytes);
-            return result.ToString();
+        
+            var result = BitConverter.ToInt32(bytes, 0); 
+            return Math.Abs(result).ToString();
+          
         }
 
 
@@ -516,7 +521,62 @@ namespace ECommerce.Business.Concrete
 
             return ResponseDTO<IEnumerable<OrderDTO>>.Success(orderDTOs, HttpStatusCode.OK);
         }
+        public async Task<ResponseDTO<NoContent>> UpdateOrderStatusAsync(int orderId, OrderStatus orderStatus)
+        {
+            var order = await _unitOfWork.GetRepository<Order>().GetAsync(x=>x.Id==orderId, query=>query.Include(x=>x.Invoice));
+            if (order == null)
+            {
+                return ResponseDTO<NoContent>.Fail("Sipariş bulunamadı!", HttpStatusCode.NotFound);
+            }
+            order.Status= orderStatus;
+             _unitOfWork.GetRepository<Order>().UpdateAsync(order);
+            await _unitOfWork.SaveChangesAsync();
+            await SendOrderStatusUpdateEmail(order);
+            return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
+        }
 
+        private async Task SendOrderStatusUpdateEmail(Order order)
+        {
+            string subject = $"Siparişinizin Durumu Güncellendi: {order.Status.ToString()}";
+
+            try
+            {
+                var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "OrderStatusUpdateMailTemplate.liquid");
+
+                if (!File.Exists(templatePath))
+                {
+                    throw new FileNotFoundException($"Şablon dosyası bulunamadı: {templatePath}");
+                }
+
+                var templateText = await File.ReadAllTextAsync(templatePath);
+
+                var parser = new FluidParser();
+                if (!parser.TryParse(templateText, out var template, out var error))
+                {
+                    throw new InvalidOperationException("Şablon ayrıştırma hatası: " + error);
+                }
+
+                var templateContext = new TemplateContext();
+
+                var orderData = new Dictionary<string, object>
+        {
+            { "OrderNumber", order.OrderNumber.ToString() },
+            { "OrderStatus", order.Status.ToString() }
+        };
+                //TODO : Invoicenumber
+
+                templateContext.SetValue("order", orderData);
+
+                var body = template.Render(templateContext);
+
+                await emailService.SendEmailAsync(order.Invoice.Email, subject, body);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("E-posta gönderme hatası: " + ex.Message);
+                throw;
+            }
+        }
     }
 }
 

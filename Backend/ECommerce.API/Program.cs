@@ -88,6 +88,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 }).AddEntityFrameworkStores<ECommerceDbContext>().AddDefaultTokenProviders();
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
+builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("EmailSettings"));
 
 var jwtConfig = builder.Configuration.GetSection("JwtConfig").Get<JwtConfig>();
 

@@ -22,7 +22,9 @@ namespace ECommerce.Business.Abstract
         
        Task<ResponseDTO<IEnumerable<OrderDTO>>> GetOrdersBySellerIdAsync(string sellerId);
 
-    
+        Task<ResponseDTO<NoContent>> UpdateOrderStatusAsync(int orderId, OrderStatus orderStatus);
+
+
 
 
     }

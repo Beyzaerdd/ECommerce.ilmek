@@ -3,9 +3,11 @@ using ECommerce.Business.Configuration;
 using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.AuthDTOs;
 using ECommerce.Shared.DTOs.BasketDTOs;
+using ECommerce.Shared.DTOs.InvoiceDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using ECommerce.Shared.DTOs.UsersDTO;
 using ECommerce.Shared.Extensions;
+using Fluid;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +33,7 @@ namespace ECommerce.Business.Concrete
         private readonly IEmailService _emailService;
         private readonly IBasketService _basketService;
         private readonly IHttpContextAccessor httpContextAccessor;
+
 
         public AuthService(IBasketService basketService, IEmailService emailService, IOptions<JwtConfig> jwtConfig, IConfiguration configuration, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
@@ -328,6 +331,7 @@ namespace ECommerce.Business.Concrete
         }
 
 
+      
 
 
 
@@ -402,9 +406,53 @@ namespace ECommerce.Business.Concrete
             }
         }, HttpStatusCode.BadRequest);
             }
+            await SendWelcomeEmailAsync(normalUser);
 
             return ResponseDTO<NoContent>.Success(HttpStatusCode.Created);
         }
+
+
+        private async Task SendWelcomeEmailAsync(NormalUser user)
+        {
+            string subject = "Aramıza Hoşgeldiniz!";
+
+            try
+            {
+                var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "RegisterTemplate.liquid");
+
+                if (!File.Exists(templatePath))
+                {
+                    throw new FileNotFoundException($"Şablon dosyası bulunamadı: {templatePath}");
+                }
+
+                var templateText = await File.ReadAllTextAsync(templatePath);
+                var parser = new FluidParser();
+
+                if (!parser.TryParse(templateText, out var template, out var error))
+                {
+                    throw new InvalidOperationException("Şablon ayrıştırma hatası: " + error);
+                }
+
+                var templateContext = new TemplateContext();
+                var userData = new Dictionary<string, object>
+        {
+            { "FirstName", user.FirstName },
+            { "LastName", user.LastName },
+            { "Email", user.Email }
+        };
+
+                templateContext.SetValue("user", userData);
+                var body = template.Render(templateContext);
+
+                await _emailService.SendEmailAsync(user.Email, subject, body);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("E-posta gönderme hatası: " + ex.Message);
+                throw;
+            }
+        }
+
 
         private async Task<TokenDTO> GenerateJwtToken(ApplicationUser user)
         {

@@ -6,6 +6,7 @@ using ECommerce.Shared.DTOs.CategoryDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using ECommerce.Shared.DTOs.UsersDTO;
 using ECommerce.Shared.Extensions;
+using Fluid;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -25,15 +26,17 @@ namespace ECommerce.Business.Concrete
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailService emailService;
 
 
-        public UserAccountManagerService(IHttpContextAccessor httpContextAccessor,  IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public UserAccountManagerService(IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, IEmailService emailService)
         {
             this.httpContextAccessor = httpContextAccessor;
-         
+
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             _userManager = userManager;
+            this.emailService = emailService;
         }
 
         public async Task<ResponseDTO<ApplicationUserDTO>> ApproveSellerAsync(string sellerId)
@@ -75,11 +78,54 @@ namespace ECommerce.Business.Concrete
       
             unitOfWork.GetRepository<Seller>().UpdateAsync(seller);
             await unitOfWork.SaveChangesAsync();
+            await SendSellerApprovalMail(seller);
 
             var sellerDTO = mapper.Map<ApplicationUserDTO>(seller);
             return ResponseDTO<ApplicationUserDTO>.Success(sellerDTO, HttpStatusCode.OK);
         }
 
+        private async Task SendSellerApprovalMail(Seller seller)
+        {
+            string subject = "Tebrikler! Mağazanız Onaylandı 🎉";
+
+            try
+            {
+                var basePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates");
+                var templatePath = Path.Combine(basePath, "SellerApprovalTemplate.liquid");
+
+                if (!File.Exists(templatePath))
+                {
+                    throw new FileNotFoundException($"Şablon dosyası bulunamadı: {templatePath}");
+                }
+
+                var templateText = await File.ReadAllTextAsync(templatePath);
+                var parser = new FluidParser();
+
+                if (!parser.TryParse(templateText, out var template, out var error))
+                {
+                    throw new InvalidOperationException("Şablon ayrıştırma hatası: " + error);
+                }
+
+                var templateContext = new TemplateContext();
+                var sellerData = new Dictionary<string, object>
+        {
+            { "FirstName", seller.FirstName },
+            { "LastName", seller.LastName },
+            { "Email", seller.Email },
+            { "sellerPanelUrl", "https://ilmek.com/seller-panel" }
+        };
+
+                templateContext.SetValue("seller", sellerData);
+                var body = template.Render(templateContext);
+
+                await emailService.SendEmailAsync(seller.Email, subject, body);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("E-posta gönderme hatası: " + ex.Message);
+                throw;
+            }
+        }
 
         public async Task<ResponseDTO<IEnumerable<ApplicationUserDTO>>> GetAllSellersAsync()
         {
