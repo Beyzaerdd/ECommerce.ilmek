@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Faturanız Oluşturulmuştur!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        img {
+            max-width: 50px;
+        }
+    </style>
+</head>
+
+<body>
+ <img src="https://i.imgur.com/kGseOlZ.png" alt="Şirket Logosu" style="max-width: 400px; max-height: 400px;  margin-bottom: 10px;">
+    <h1>Faturanız Oluşturulmuştur!</h1>
+
+    <p>Fatura Numarası: {{ invoice.InvoiceNumber }}</p>
+
+    <h3>Ürünler:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Ürün Adı</th>
+                <th>Adet</th>
+                <th>Toplam</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for orderItem in invoice.OrderItems %}
+                <tr>
+                    <td>{{ orderItem.Name }}</td>
+                    <td>{{ orderItem.Quantity }}</td>
+                    <td>{{ orderItem.TotalPrice }} TL</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><strong>Toplam Tutar: {{ invoice.TotalPrice }} TL</strong></p>
+</body>
+</html>
+
