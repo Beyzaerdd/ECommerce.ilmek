@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: sans-serif;
-            background-color: #f8f8f8; /* Açık gri */
+            background-color: #f8f8f8; 
             color: #333;
             margin: 0;
             padding: 0;
@@ -61,19 +61,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="logo.png" alt="İlmek Logosu">
+        
         </div>
         <div class="content">
-            <h1>El Yapımı Güzelliklere Hoş Geldiniz! <span class="emoji"></span></h1>
+            <h1>El Yapımı Güzelliklere Hoş Geldiniz! 🧶✨</h1>
             <p>
-                Merhaba [Kullanıcı Adı],<br>
-                Örgü tutkunlarının buluşma noktası İlmek'e hoş geldiniz! <span class="emoji"></span><br>
-                Kaydınız başarıyla tamamlandı. Artık birbirinden güzel el yapımı örgü ürünleri keşfedebilir, beğendiklerinizi satın alabilirsiniz. <span class="emoji"></span>
+                Merhaba <strong>{{ user.FirstName }}</strong>,<br>
+                Örgü tutkunlarının buluşma noktası <strong>İlmek</strong>'e hoş geldiniz! 💖<br>
+                Kaydınız başarıyla tamamlandı. Artık birbirinden güzel el yapımı örgü ürünlerini keşfedebilir ve beğendiklerinizi satın alabilirsiniz. 🛍️
             </p>
-            <a href="[Etkinleştirme Bağlantısı]" class="cta-button">Hesabımı Etkinleştir</a>
+            <a href="{{ siteUrl }}" class="btn">Şimdi Keşfet</a>
         </div>
         <div class="footer">
-            <p>&copy; [Yıl] İlmek. Tüm hakları saklıdır.</p>
+            <p>Herhangi bir sorunuz olursa bizimle iletişime geçmekten çekinmeyin. 📩</p>
+            <p><strong>İlmek Ekibi</strong></p>
         </div>
     </div>
 </body>

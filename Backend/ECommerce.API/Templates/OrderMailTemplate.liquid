@@ -1,71 +1,92 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Siparişiniz Alınmıştır!</title>
+    <title>Siparişiniz Alınmıştır! 🎉</title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
         }
-        table {
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color:#e67e22;
+        }
+        .order-table {
             width: 100%;
             border-collapse: collapse;
-            border: 1px solid #ddd;
+            margin-top: 20px;
         }
-        th, td {
-            padding: 8px;
+        .order-table th, .order-table td {
             border: 1px solid #ddd;
+            padding: 8px;
             text-align: left;
         }
-        img {
-            max-width: 50px;
+        .order-table th {
+            background-color: #e67e22;
+            color: white;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #e67e22;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
-
- <img src="https://i.imgur.com/kGseOlZ.png" alt="Şirket Logosu" style="max-width: 400px; max-height: 400px;  margin-bottom: 10px;">
-
-    <h1>Siparişiniz Alınmıştır!</h1>
-
-    {% for order in orders %}
-        <div style="margin-bottom: 20px;">
-            <h2>Sipariş Numarası: {{ order.OrderNumber }}</h2>
-
-            <h3>Ürünler:</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Resim</th>
-                        <th>Ürün Adı</th>
-                        <th>Adet</th>
-                        <th>Birim Fiyat</th>
-                        <th>Toplam</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for orderItem in order.OrderItems %}
+    <div class="container">
+        <img src="https://i.imgur.com/kGseOlZ.png" alt="Şirket Logosu" style="max-width: 200px;">
+        <h1>Siparişiniz Alınmıştır! 🎉</h1>
+        <p>Merhaba, siparişiniz başarıyla alınmıştır! Aşağıda detayları görebilirsiniz. 🛍️</p>
+        {% for order in orders %}
+            <div>
+                <h2>Sipariş Numarası: {{ order.OrderNumber }}</h2>
+                <table class="order-table">
+                    <thead>
                         <tr>
-                            <td>
-                                {% if orderItem.ImageUrl %}
-                                    <img src="{{ orderItem.ImageUrl }}" alt="{{ orderItem.Name }}">
-                                {% else %}
-                                    Görsel Yok
-                                {% endif %}
-                            </td>
-                            <td>{{ orderItem.Name }}</td>
-                            <td>{{ orderItem.Quantity }}</td>
-                            <td>{{ orderItem.UnitPrice }} TL</td>
-                            <td>{{ orderItem.TotalPrice }} TL</td>
+                            <th>Resim</th>
+                            <th>Ürün Adı</th>
+                            <th>Adet</th>
+                            <th>Birim Fiyat</th>
+                            <th>Toplam</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <p><strong>Toplam Sipariş Tutarı: {{ order.TotalPrice }} TL</strong></p>
-        </div>
-        <hr>
-    {% endfor %}
-
-    <p>Teşekkür ederiz!</p>
+                    </thead>
+                    <tbody>
+                        {% for orderItem in order.OrderItems %}
+                            <tr>
+                                <td>
+                                    {% if orderItem.ImageUrl %}
+                                        <img src="{{ orderItem.ImageUrl }}" alt="{{ orderItem.Name }}" style="max-width: 50px;">
+                                    {% else %}
+                                        Görsel Yok
+                                    {% endif %}
+                                </td>
+                                <td>{{ orderItem.Name }}</td>
+                                <td>{{ orderItem.Quantity }}</td>
+                                <td>{{ orderItem.Product.UnitPrice }} TL</td>
+                                <td>{{ orderItem.TotalPrice }} TL</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p><strong>Toplam Sipariş Tutarı: {{ order.TotalPrice }} TL</strong></p>
+            </div>
+            <hr>
+        {% endfor %}
+        <a href="#" class="btn">Siparişinizi Takip Edin 🚚</a>
+        <p>Teşekkür ederiz! 💖</p>
+    </div>
 </body>
 </html>
+

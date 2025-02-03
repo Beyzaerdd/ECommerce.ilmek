@@ -1,54 +1,78 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Faturanız Oluşturulmuştur!</title>
+    <title>Faturanız Oluşturuldu! 🧾</title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
         }
-        table {
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #e67e22;
+        }
+        .invoice-table {
             width: 100%;
             border-collapse: collapse;
-            border: 1px solid #ddd;
+            margin-top: 20px;
         }
-        th, td {
-            padding: 8px;
+        .invoice-table th, .invoice-table td {
             border: 1px solid #ddd;
+            padding: 8px;
             text-align: left;
         }
-        img {
-            max-width: 50px;
+        .invoice-table th {
+            background-color: #e67e22;
+            color: white;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #e67e22;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
         }
     </style>
 </head>
-
 <body>
- <img src="https://i.imgur.com/kGseOlZ.png" alt="Şirket Logosu" style="max-width: 400px; max-height: 400px;  margin-bottom: 10px;">
-    <h1>Faturanız Oluşturulmuştur!</h1>
-
-    <p>Fatura Numarası: {{ invoice.InvoiceNumber }}</p>
-
-    <h3>Ürünler:</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Ürün Adı</th>
-                <th>Adet</th>
-                <th>Toplam</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for orderItem in invoice.OrderItems %}
+    <div class="container">
+        <img src="https://i.imgur.com/kGseOlZ.png" alt="Şirket Logosu" style="max-width: 200px;">
+        <h1>Faturanız Oluşturuldu! 🧾</h1>
+        <p>Merhaba, siparişinize ait fatura oluşturulmuştur. Detayları aşağıda bulabilirsiniz. 📄</p>
+        <p><strong>Fatura Numarası:</strong> {{ invoice.InvoiceNumber }}</p>
+        <table class="invoice-table">
+            <thead>
                 <tr>
-                    <td>{{ orderItem.Name }}</td>
-                    <td>{{ orderItem.Quantity }}</td>
-                    <td>{{ orderItem.TotalPrice }} TL</td>
+                    <th>Ürün Adı</th>
+                    <th>Adet</th>
+                    <th>Birim Fiyat</th>
+                    <th>Toplam</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <p><strong>Toplam Tutar: {{ invoice.TotalPrice }} TL</strong></p>
+            </thead>
+            <tbody>
+                {% for orderItem in invoice.OrderItems %}
+                    <tr>
+                        <td>{{ orderItem.Name }}</td>
+                        <td>{{ orderItem.Quantity }}</td>
+                        <td>{{ orderItem.UnitPrice }} TL</td>
+                        <td>{{ orderItem.TotalPrice }} TL</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p><strong>Genel Toplam: {{ invoice.TotalPrice }} TL</strong></p>
+        <a href="#" class="btn">Faturanızı Görüntüleyin 📄</a>
+        <p>Teşekkür ederiz! 💖</p>
+    </div>
 </body>
 </html>
-
