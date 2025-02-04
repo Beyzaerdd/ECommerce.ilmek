@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" />
+    <Compile Include="obj\Debug\net8.0\ECommerce.MVC.AssemblyInfo.cs" />
+    <Compile Include="obj\Debug\net8.0\ECommerce.MVC.GlobalUsings.g.cs" />
+    <Compile Include="obj\Debug\net8.0\ECommerce.MVC.RazorAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="obj\ECommerce.MVC.csproj.nuget.dgspec.json" />
+    <Content Include="obj\project.assets.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\" />
+    <Folder Include="bin\Debug\net8.0\" />
+    <Folder Include="obj\Debug\net8.0\refint\" />
+    <Folder Include="obj\Debug\net8.0\ref\" />
+    <Folder Include="obj\Debug\net8.0\staticwebassets\" />
+    <Folder Include="ViewsCompanents\" />
+    <Folder Include="Views\Account\" />
+    <Folder Include="Views\Auth\" />
+    <Folder Include="Views\Basket\" />
+    <Folder Include="Views\Contact\" />
+    <Folder Include="Views\Order\" />
+    <Folder Include="Views\Product\" />
+    <Folder Include="Views\UserFavorites\" />
+    <Folder Include="Views\UserProfile\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="obj\Debug\net8.0\ECommerce.MVC.AssemblyInfoInputs.cache" />
+    <None Include="obj\Debug\net8.0\ECommerce.MVC.assets.cache" />
+    <None Include="obj\Debug\net8.0\ECommerce.MVC.GeneratedMSBuildEditorConfig.editorconfig" />
+    <None Include="obj\Debug\net8.0\ECommerce.MVC.RazorAssemblyInfo.cache" />
+    <None Include="obj\ECommerce.MVC.csproj.nuget.g.props" />
+    <None Include="obj\ECommerce.MVC.csproj.nuget.g.targets" />
+    <None Include="obj\project.nuget.cache" />
+  </ItemGroup>
+
+</Project>
