@@ -25,8 +25,9 @@ namespace ECommerce.Business.Mapping
         {
             #region Category
             CreateMap<Category, CategoryDTO>()
-                .ForMember(src => src.ParentCategoryName, opt => opt.MapFrom(dest => dest.ParentCategory.Name)).ReverseMap();
-           
+                .ForMember(src => src.ParentCategoryName, opt => opt.MapFrom(dest => dest.ParentCategory.Name))
+                .ForMember(src => src.ProductCount, opt => opt.MapFrom(dest => dest.Products.Count()))
+                .ReverseMap();
               //  .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ParentCategoryName));
             CreateMap<Category, CategoryCreateDTO>().ReverseMap();
             CreateMap<Category, CategoryUpdateDTO>().ReverseMap();

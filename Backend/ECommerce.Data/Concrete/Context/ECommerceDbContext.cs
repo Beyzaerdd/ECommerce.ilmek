@@ -157,8 +157,8 @@ namespace ECommerce.Data.Concrete.Context
               Color = ProductColor.White,
               PreparationTimeInDays = 3,
               IsActive = true,
-              CategoryId = 1,
-              SubcategoryId = 5,
+              CategoryId = 5,
+             
               ImageUrl = "https://example.com/images/silk-blouse.jpg"
           },
           new Product
@@ -172,8 +172,8 @@ namespace ECommerce.Data.Concrete.Context
               Color = ProductColor.Blue,
               PreparationTimeInDays = 2,
               IsActive = true,
-              CategoryId = 2,
-              SubcategoryId = 6,
+              CategoryId = 6,
+           
               ImageUrl = "https://example.com/images/mens-casual-shirt.jpg"
           },
           new Product
@@ -187,8 +187,8 @@ namespace ECommerce.Data.Concrete.Context
               Color = ProductColor.Pink,
               PreparationTimeInDays = 2,
               IsActive = true,
-              CategoryId = 3,  // Baby Category
-              SubcategoryId = 7, // Baby Top Clothing
+              CategoryId = 7,  // Baby Category
+           
               ImageUrl = "https://example.com/images/baby-pajamas.jpg"
           },
           new Product
@@ -202,8 +202,8 @@ namespace ECommerce.Data.Concrete.Context
               Color = ProductColor.Yellow,
               PreparationTimeInDays = 4,
               IsActive = true,
-              CategoryId = 3,  // Baby Category
-              SubcategoryId = 7, // Baby Shoes
+              CategoryId = 7,  // Baby Category
+       
               ImageUrl = "https://example.com/images/baby-shoes.jpg"
           },
           new Product
@@ -217,8 +217,8 @@ namespace ECommerce.Data.Concrete.Context
               Color = ProductColor.Blue,
               PreparationTimeInDays = 3,
               IsActive = true,
-              CategoryId = 4,  // Home Category
-              SubcategoryId = 8, // Home Blanket
+              CategoryId = 8,  // Home Category
+
               ImageUrl = "https://example.com/images/home-blanket.jpg"
           },
           new Product
@@ -232,8 +232,8 @@ namespace ECommerce.Data.Concrete.Context
               Color = ProductColor.Blue,
               PreparationTimeInDays = 3,
               IsActive = true,
-              CategoryId = 4,  // Home Category
-              SubcategoryId = 8, // Home Blanket
+              CategoryId = 8,  // Home Category
+   
               ImageUrl = "https://example.com/images/home1-blanket.jpg"
           },
 
@@ -248,8 +248,8 @@ namespace ECommerce.Data.Concrete.Context
               Color = ProductColor.Brown,
               PreparationTimeInDays = 7,
               IsActive = true,
-              CategoryId = 4,  // Home Category
-              SubcategoryId = 8, // Home Furniture
+              CategoryId = 8,  // Home Category
+   
               ImageUrl = "https://example.com/images/home-furniture-set.jpg"
           }
       );

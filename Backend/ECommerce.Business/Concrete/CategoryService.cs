@@ -164,7 +164,7 @@ namespace ECommerce.Business.Concrete
             try
             {
 
-                var categories = await unitOfWork.GetRepository<Category>().GetAllAsync();
+                var categories = await unitOfWork.GetRepository<Category>().GetAllAsync(includes: query=>query.Include(p=>p.Products).Include(p=>p.SubCategories));
 
                 if (categories == null || !categories.Any())
                 {

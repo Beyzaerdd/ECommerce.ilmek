@@ -108,9 +108,9 @@ namespace ECommerce.Business.Concrete
 
         }
 
-        public async Task<ResponseDTO<int>> GetCountBySubCategory(int subCategoryId)
+        public async Task<ResponseDTO<int>> GetCountByCategory(int categoryId)
         {
-            var categoryIsAny = await unitOfWork.GetRepository<Product>().AnyAsync(x => x.SubcategoryId == subCategoryId);
+            var categoryIsAny = await unitOfWork.GetRepository<Product>().AnyAsync(x => x.CategoryId == categoryId);
             if (!categoryIsAny)
             {
                 return ResponseDTO<int>.Fail(new List<ErrorDetail>
@@ -122,7 +122,7 @@ namespace ECommerce.Business.Concrete
                     }
                 }, HttpStatusCode.NotFound);
             }
-            var count = unitOfWork.GetRepository<Product>().CountAsync(x => x.SubcategoryId == subCategoryId);
+            var count = unitOfWork.GetRepository<Product>().CountAsync(x => x.CategoryId == categoryId);
             return ResponseDTO<int>.Success(count.Result, HttpStatusCode.OK);
         }
 
@@ -191,9 +191,9 @@ namespace ECommerce.Business.Concrete
         }
 
 
-        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsBySubCategoryIdAsync(int subCategoryId)
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsByCategoryIdAsync(int categoryId)
         {
-            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.SubcategoryId == subCategoryId);
+            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.CategoryId == categoryId);
             if (products == null || !products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>

@@ -75,7 +75,7 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        [HttpGet("getByCategory/{categoryId}")]
+        [HttpGet("getWithCategories/{categoryId}")]
       
         public async Task<IActionResult> GetProductsByCategory([FromRoute] int categoryId)
         {
@@ -83,11 +83,11 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        [HttpGet("getBySubCategory/{subCategoryId}")]
+        [HttpGet("getByCategory/{categoryId}")]
        
-        public async Task<IActionResult> GetProductsBySubCategory([FromRoute] int subCategoryId)
+        public async Task<IActionResult> GetProductsByCategoryId([FromRoute] int categoryId)
         {
-            var response = await _productService.GetProductsBySubCategoryIdAsync(subCategoryId);
+            var response = await _productService.GetProductsByCategoryIdAsync(categoryId);
             return CreateResponse(response);
         }
         [Authorize(Policy = "SellerAndAdmin")]
@@ -100,11 +100,11 @@ namespace ECommerce.API.Controllers
         }
 
         [Authorize(Policy = "SellerAndAdmin")]
-        [HttpGet("getCountBySubCategory/{subCategoryId}")]
+        [HttpGet("getCountByCategory/{categoryId}")]
 
-        public async Task<IActionResult> GetCountByCategory([FromRoute] int subCategoryId)
+        public async Task<IActionResult> GetCountByCategory([FromRoute] int categoryId)
         {
-            var response = await _productService.GetCountBySubCategory(subCategoryId);
+            var response = await _productService.GetCountByCategory(categoryId);
             return CreateResponse(response);
         }
 
