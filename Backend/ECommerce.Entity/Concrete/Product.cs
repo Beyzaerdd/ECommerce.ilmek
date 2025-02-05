@@ -36,8 +36,7 @@ namespace ECommerce.Entity.Concrete
        
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-        public int? SubcategoryId { get; set; } 
-        public Category Subcategory { get; set; }
+     
 
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
