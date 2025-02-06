@@ -33,7 +33,7 @@ namespace ECommerce.API.BackgroundServices
             foreach (var seller in sellers.Data)
             {
                 var user = await userManager.FindByIdAsync(seller.Id) as Seller;
-                user.WeeklyOrderLimit = 2;
+                user.WeeklyOrderLimit = Math.Min(user.WeeklyOrderLimit, 20);
                 await userManager.UpdateAsync(user);
             }
         }
