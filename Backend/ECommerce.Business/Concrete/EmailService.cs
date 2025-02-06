@@ -24,12 +24,6 @@ namespace ECommerce.Business.Concrete
             _emailConfig = emailConfig.Value;
         }
 
-
-
-
-
-
-
 public async Task SendEmailAsync(string email, string subject, string message)
     {
         var mimeMessage = new MimeMessage();
