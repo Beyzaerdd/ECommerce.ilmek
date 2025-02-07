@@ -21,7 +21,8 @@ namespace ECommerce.Shared.DTOs.ProductDTOs
         [Range(0.01, double.MaxValue, ErrorMessage = "Unit price must be greater than zero.")]
         public decimal UnitPrice { get; set; }
 
-
+        public List<ProductSize> AvailableSizes { get; set; }
+        public List<ProductColor> AvailableColors { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Preparation time must be a non-negative value.")]
         public int PreparationTimeInDays { get; set; }

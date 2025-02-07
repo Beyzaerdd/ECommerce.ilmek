@@ -399,14 +399,14 @@ namespace ECommerce.Business.Concrete
             if (productSize.HasValue)
             {
                 var size = (ProductSize)productSize.Value;
-                query = query.Where(x => x.Size == size);
+                query = query.Where(x => x.AvailableSizes.Contains(size));
             }
 
 
             if (productColor.HasValue)
             {
                 var color = (ProductColor)productColor.Value;
-                query = query.Where(x => x.Color == color);
+                query = query.Where(x => x.AvailableColors.Contains(color));
             }
 
 

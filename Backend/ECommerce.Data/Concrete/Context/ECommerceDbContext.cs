@@ -153,13 +153,15 @@ namespace ECommerce.Data.Concrete.Context
               Name = "Silk Blouse",
               Description = "Elegant silk blouse for women.",
               UnitPrice = 49.99m,
-              Size = ProductSize.BirBeden,
-              Color = ProductColor.White,
+             // Size = ProductSize.BirBeden,
+             // Color = ProductColor.White,
               PreparationTimeInDays = 3,
               IsActive = true,
               CategoryId = 5,
              
-              ImageUrl = "https://example.com/images/silk-blouse.jpg"
+              ImageUrl = "https://example.com/images/silk-blouse.jpg",
+              AvailableSizes=new List<ProductSize>() { ProductSize.BirBeden, ProductSize.İkiBeden},
+              AvailableColors=new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown}
           },
           new Product
           {
@@ -168,13 +170,16 @@ namespace ECommerce.Data.Concrete.Context
               Name = "Men's Casual Shirt",
               Description = "Comfortable and stylish casual shirt for men.",
               UnitPrice = 34.99m,
-              Size = ProductSize.İkiBeden,
-              Color = ProductColor.Blue,
+             // Size = ProductSize.İkiBeden,
+             // Color = ProductColor.Blue,
               PreparationTimeInDays = 2,
               IsActive = true,
               CategoryId = 6,
            
-              ImageUrl = "https://example.com/images/mens-casual-shirt.jpg"
+              ImageUrl = "https://example.com/images/mens-casual-shirt.jpg",
+              AvailableSizes = new List<ProductSize>() { ProductSize.BirBeden, ProductSize.İkiBeden },
+              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
+
           },
           new Product
           {
@@ -183,13 +188,15 @@ namespace ECommerce.Data.Concrete.Context
               Name = "Baby Pajamas",
               Description = "Soft pajamas for babies.",
               UnitPrice = 14.99m,
-              Size = ProductSize.Bebek,
-              Color = ProductColor.Pink,
+             // Size = ProductSize.Bebek,
+              //Color = ProductColor.Pink,
               PreparationTimeInDays = 2,
               IsActive = true,
               CategoryId = 7,  // Baby Category
            
-              ImageUrl = "https://example.com/images/baby-pajamas.jpg"
+              ImageUrl = "https://example.com/images/baby-pajamas.jpg",
+              AvailableSizes = new List<ProductSize>() { ProductSize.BirBeden, ProductSize.İkiBeden },
+              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
           },
           new Product
           {
@@ -198,13 +205,15 @@ namespace ECommerce.Data.Concrete.Context
               Name = "Baby Shoes",
               Description = "Comfortable shoes for babies.",
               UnitPrice = 25.99m,
-              Size = ProductSize.Çocuk,
-              Color = ProductColor.Yellow,
+              //Size = ProductSize.Çocuk,
+              //Color = ProductColor.Yellow,
               PreparationTimeInDays = 4,
               IsActive = true,
               CategoryId = 7,  // Baby Category
        
-              ImageUrl = "https://example.com/images/baby-shoes.jpg"
+              ImageUrl = "https://example.com/images/baby-shoes.jpg",
+              AvailableSizes = new List<ProductSize>() { ProductSize.BirBeden, ProductSize.İkiBeden },
+              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
           },
           new Product
           {
@@ -213,13 +222,15 @@ namespace ECommerce.Data.Concrete.Context
               Name = "Home Blanket",
               Description = "Soft and warm blanket for home.",
               UnitPrice = 39.99m,
-              Size = ProductSize.None,
-              Color = ProductColor.Blue,
+              //Size = ProductSize.None,
+              //Color = ProductColor.Blue,
               PreparationTimeInDays = 3,
               IsActive = true,
               CategoryId = 8,  // Home Category
 
-              ImageUrl = "https://example.com/images/home-blanket.jpg"
+              ImageUrl = "https://example.com/images/home-blanket.jpg",
+                AvailableSizes = new List<ProductSize>() { ProductSize.None},
+              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
           },
           new Product
           {
@@ -228,13 +239,15 @@ namespace ECommerce.Data.Concrete.Context
               Name = "Home pillow",
               Description = "Soft and warm blanket for home.",
               UnitPrice = 40.99m,
-              Size = ProductSize.None,
-              Color = ProductColor.Blue,
+              //Size = ProductSize.None,
+              //Color = ProductColor.Blue,
               PreparationTimeInDays = 3,
               IsActive = true,
               CategoryId = 8,  // Home Category
    
-              ImageUrl = "https://example.com/images/home1-blanket.jpg"
+              ImageUrl = "https://example.com/images/home1-blanket.jpg",
+              AvailableSizes = new List<ProductSize>() { ProductSize.None },
+              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
           },
 
           new Product
@@ -244,13 +257,15 @@ namespace ECommerce.Data.Concrete.Context
               Name = "Home Furniture Set",
               Description = "Comfortable furniture set for home.",
               UnitPrice = 499.99m,
-              Size = ProductSize.None,
-              Color = ProductColor.Orange,
+              //Size = ProductSize.None,
+              //Color = ProductColor.Orange,
               PreparationTimeInDays = 7,
               IsActive = true,
               CategoryId = 8,  // Home Category
    
-              ImageUrl = "https://example.com/images/home-furniture-set.jpg"
+              ImageUrl = "https://example.com/images/home-furniture-set.jpg",
+              AvailableSizes = new List<ProductSize>() { ProductSize.None },
+              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
           }
       );
 

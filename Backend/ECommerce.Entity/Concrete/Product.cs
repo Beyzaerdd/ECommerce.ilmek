@@ -23,10 +23,7 @@ namespace ECommerce.Entity.Concrete
   
         public decimal UnitPrice { get; set; } 
      
-        public ProductSize Size { get; set; } 
-    
-
-        public ProductColor Color { get; set; } 
+       
     
         public int PreparationTimeInDays { get; set; } 
         public bool IsActive { get; set; } 
@@ -41,6 +38,9 @@ namespace ECommerce.Entity.Concrete
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
+
+        public List<ProductSize> AvailableSizes { get; set; }
+        public List<ProductColor> AvailableColors { get; set; }
 
         public ICollection<UserFav> UserFavs { get; set; } 
         public ICollection<OrderItem> OrderItems { get; set; }

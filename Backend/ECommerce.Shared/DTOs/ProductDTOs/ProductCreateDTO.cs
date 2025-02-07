@@ -14,9 +14,10 @@ namespace ECommerce.Shared.DTOs.ProductDTOs
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal UnitPrice { get; set; }
-        public ProductSize Size { get; set; }
-        public ProductColor Color { get; set; }
- 
+    
+        public List<ProductSize> AvailableSizes { get; set; }
+        public List<ProductColor> AvailableColors { get; set; }
+
         public int PreparationTimeInDays { get; set; }
         public bool IsActive { get; set; }
 
