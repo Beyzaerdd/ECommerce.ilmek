@@ -222,6 +222,32 @@ namespace ECommerce.Business.Concrete
                 }, HttpStatusCode.NotFound);
 
             }
+            if (!product.AvailableSizes.Contains(basketItemCreateDTO.Size))
+            {
+                return ResponseDTO<BasketItemDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "Selected size is not available for this product.",
+                Code = "SIZE_NOT_AVAILABLE",
+                Target = "Size"
+            }
+        }, HttpStatusCode.BadRequest);
+            }
+
+            if (!product.AvailableColors.Contains(basketItemCreateDTO.Color))
+            {
+                return ResponseDTO<BasketItemDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "Selected color is not available for this product.",
+                Code = "COLOR_NOT_AVAILABLE",
+                Target = "Color"
+            }
+        }, HttpStatusCode.BadRequest);
+            }
+
 
             var existingBasketItem = basket.BasketItems.FirstOrDefault(x =>
         x.ProductId == basketItemCreateDTO.ProductId &&

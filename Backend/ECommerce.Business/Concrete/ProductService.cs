@@ -52,23 +52,7 @@ namespace ECommerce.Business.Concrete
             }, HttpStatusCode.NotFound);
 
             }
-            if (productCreateDTO.SubcategoryId.HasValue)
-            {
-                var subcategory = await unitOfWork.GetRepository<Category>().GetByIdAsync(productCreateDTO.SubcategoryId.Value);
-                if (subcategory == null)
-                {
-                    return ResponseDTO<ProductDTO>.Fail(new List<ErrorDetail>
-                    {
-                        new ErrorDetail {
-
-                            Message = $"Subcategory not found with id: {productCreateDTO.SubcategoryId}",
-                            Code = "SubcategoryNotFound",
-                            Target = nameof(productCreateDTO.SubcategoryId)
-                        }
-                    }, HttpStatusCode.NotFound);
-
-                }
-            }
+         
             var newProduct = mapper.Map<Product>(productCreateDTO);
             if (productCreateDTO.Image != null)
             {
