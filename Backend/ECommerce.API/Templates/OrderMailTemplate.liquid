@@ -58,6 +58,8 @@
                             <th>Resim</th>
                             <th>Ürün Adı</th>
                             <th>Adet</th>
+                             <th>Beden</th>
+                        <th>Renk</th>
                             <th>Birim Fiyat</th>
                             <th>Toplam</th>
                         </tr>
@@ -74,7 +76,9 @@
                                 </td>
                                 <td>{{ orderItem.Name }}</td>
                                 <td>{{ orderItem.Quantity }}</td>
-                                <td>{{ orderItem.Product.UnitPrice }} TL</td>
+                                 <td>{{ orderItem.Size }}</td>
+                                 <td>{{ orderItem.Color }}</td>
+                                <td>{{ orderItem.UnitPrice }} TL</td>
                                 <td>{{ orderItem.TotalPrice }} TL</td>
                             </tr>
                         {% endfor %}

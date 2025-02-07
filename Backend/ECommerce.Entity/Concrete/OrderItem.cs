@@ -1,4 +1,5 @@
 ﻿using ECommerce.Entity.Abstract;
+using ECommerce.Shared.ComplexTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,8 @@ namespace ECommerce.Entity.Concrete
         public int ProductId { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
-
+        public ProductSize Size { get; set; }
+        public ProductColor Color { get; set; }
         public ICollection<Review> Reviews { get; set; }
 
         [NotMapped]

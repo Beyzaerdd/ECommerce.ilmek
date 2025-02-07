@@ -72,6 +72,7 @@ namespace ECommerce.Business.Concrete
                     decimal originalPrice = product.UnitPrice;
                     decimal discountedPrice = originalPrice; 
 
+
                 
                     if (product.Discounts != null)
                     {
@@ -98,13 +99,16 @@ namespace ECommerce.Business.Concrete
                         Quantity = item.Quantity,
                         OriginalPrice = originalPrice,
                         DiscountedPrice = discountedPrice,
+                        Size = item.Size,   
+                        Color = item.Color,
                         Product = new ProductDTO
                         {
                             Id = product.Id,
                             Name = product.Name,
                             UnitPrice = product.UnitPrice,
                             ApplicationUserId= product.ApplicationUserId,
-                            IsActive= product.IsActive
+                            IsActive= product.IsActive,
+                            
                         }
                     };
                 }).ToList()
@@ -219,7 +223,10 @@ namespace ECommerce.Business.Concrete
 
             }
 
-            var existingBasketItem = basket.BasketItems.FirstOrDefault(x => x.ProductId == basketItemCreateDTO.ProductId);
+            var existingBasketItem = basket.BasketItems.FirstOrDefault(x =>
+        x.ProductId == basketItemCreateDTO.ProductId &&
+        x.Size == basketItemCreateDTO.Size && 
+        x.Color == basketItemCreateDTO.Color); 
             if (existingBasketItem != null)
             {
                 existingBasketItem.Quantity += basketItemCreateDTO.Quantity;

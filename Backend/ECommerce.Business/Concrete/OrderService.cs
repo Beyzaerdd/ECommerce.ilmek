@@ -108,16 +108,25 @@ namespace ECommerce.Business.Concrete
                 {
                     var product = basketItem.Product;
 
-                    var basketItemDTO = basketDTO.BasketItems.FirstOrDefault(bi => bi.ProductId == basketItem.ProductId);
+                    var basketItemDTO = basketDTO.BasketItems.FirstOrDefault(bi =>
+               bi.ProductId == basketItem.ProductId &&
+               bi.Size == basketItem.Size && 
+               bi.Color == basketItem.Color 
+               ); 
                     if (basketItemDTO != null)
                     {
                         decimal itemTotalPrice = basketItemDTO.DiscountedPrice * basketItem.Quantity;
+
 
                         var orderItem = new OrderItem
                         {
                             ProductId = basketItem.ProductId,
                             Quantity = basketItem.Quantity,
-                            TotalPrice = itemTotalPrice
+                            
+                            
+                            TotalPrice = itemTotalPrice,
+                            Size = basketItem.Size,
+                            Color = basketItem.Color,
                         };
 
                         orderTotalAmount += itemTotalPrice;
@@ -197,7 +206,11 @@ namespace ECommerce.Business.Concrete
                 { "Name", orderItem.Product.Name },
                 { "Quantity", orderItem.Quantity },
                 { "TotalPrice", orderItem.TotalPrice },
-                        {"UnitPrice", orderItem.Product.UnitPrice  }
+                { "UnitPrice", orderItem.TotalPrice / orderItem.Quantity },
+
+              { "Size", orderItem.Size.GetDisplayName() },
+                { "Color", orderItem.Color.GetDisplayName() },
+
             });
                 }
 
@@ -260,13 +273,16 @@ namespace ECommerce.Business.Concrete
 
                     foreach (var orderItem in order.OrderItems)
                     {
+
                         orderItems.Add(new Dictionary<string, object>
                       {
                            { "Name", orderItem.Product.Name },
                           { "ImageUrl", orderItem.Product.ImageUrl ?? "https://example.com/no-image.png" },
                           { "Quantity", orderItem.Quantity },
-                          { "UnitPrice", orderItem.TotalPrice },
-                          { "TotalPrice", orderItem.TotalPrice }
+                        { "UnitPrice", orderItem.TotalPrice / orderItem.Quantity },
+                          { "TotalPrice", orderItem.TotalPrice },
+                            { "Size", orderItem.Size.GetDisplayName() },
+                         { "Color", orderItem.Color.GetDisplayName() },
                            });
                     }
 

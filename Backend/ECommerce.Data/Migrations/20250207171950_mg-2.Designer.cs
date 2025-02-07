@@ -4,6 +4,7 @@ using ECommerce.Data.Concrete.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Data.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    partial class ECommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250207171950_mg-2")]
+    partial class mg2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,7 +68,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = "115c7796-cfac-44de-91b5-916eaae125b5",
-                            CreatedDate = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9800),
+                            CreatedDate = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2443),
                             Description = "Administrator role",
                             IsActive = true,
                             Name = "Admin",
@@ -74,7 +77,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = "811f466c-9d06-43f8-a054-24aedbb4161b",
-                            CreatedDate = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9857),
+                            CreatedDate = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2505),
                             Description = "Regular user role",
                             IsActive = true,
                             Name = "NormalUser",
@@ -83,7 +86,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = "811f466c-9d06-43f8-a054-24aedbb4161c",
-                            CreatedDate = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9868),
+                            CreatedDate = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2509),
                             Description = "Seller role",
                             IsActive = true,
                             Name = "Seller",
@@ -216,7 +219,7 @@ namespace ECommerce.Data.Migrations
                         {
                             Id = 1,
                             ApplicationUserId = "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac",
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4602),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2418),
                             IsActive = true,
                             IsDeleted = false
                         },
@@ -224,7 +227,7 @@ namespace ECommerce.Data.Migrations
                         {
                             Id = 2,
                             ApplicationUserId = "14a0183f-1e96-4930-a83d-6ef5f22d8c09",
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4614),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2428),
                             IsActive = true,
                             IsDeleted = false
                         },
@@ -232,7 +235,7 @@ namespace ECommerce.Data.Migrations
                         {
                             Id = 3,
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4615),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2429),
                             IsActive = true,
                             IsDeleted = false
                         });
@@ -247,9 +250,6 @@ namespace ECommerce.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BasketId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Color")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -268,9 +268,6 @@ namespace ECommerce.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -332,7 +329,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9695),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2338),
                             Description = "Woman",
                             ImageUrl = "x",
                             IsActive = true,
@@ -342,7 +339,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9707),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2349),
                             Description = "Man",
                             ImageUrl = "x",
                             IsActive = true,
@@ -352,7 +349,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9708),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2350),
                             Description = "Baby",
                             ImageUrl = "x",
                             IsActive = true,
@@ -362,7 +359,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9709),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2351),
                             Description = "Home",
                             ImageUrl = "x",
                             IsActive = true,
@@ -372,7 +369,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9710),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2352),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -382,7 +379,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9711),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2353),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -392,7 +389,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9712),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2354),
                             Description = "Top clothing",
                             IsActive = true,
                             IsDeleted = false,
@@ -402,7 +399,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9713),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2354),
                             Description = "Blanket",
                             IsActive = true,
                             IsDeleted = false,
@@ -629,9 +626,6 @@ namespace ECommerce.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Color")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -648,9 +642,6 @@ namespace ECommerce.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Size")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -735,7 +726,7 @@ namespace ECommerce.Data.Migrations
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                             CategoryId = 5,
                             Color = 2,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4633),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2448),
                             Description = "Elegant silk blouse for women.",
                             ImageUrl = "https://example.com/images/silk-blouse.jpg",
                             IsActive = true,
@@ -751,7 +742,7 @@ namespace ECommerce.Data.Migrations
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                             CategoryId = 6,
                             Color = 4,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4638),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2454),
                             Description = "Comfortable and stylish casual shirt for men.",
                             ImageUrl = "https://example.com/images/mens-casual-shirt.jpg",
                             IsActive = true,
@@ -767,7 +758,7 @@ namespace ECommerce.Data.Migrations
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                             CategoryId = 7,
                             Color = 7,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4700),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2455),
                             Description = "Soft pajamas for babies.",
                             ImageUrl = "https://example.com/images/baby-pajamas.jpg",
                             IsActive = true,
@@ -783,7 +774,7 @@ namespace ECommerce.Data.Migrations
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                             CategoryId = 7,
                             Color = 6,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4702),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2457),
                             Description = "Comfortable shoes for babies.",
                             ImageUrl = "https://example.com/images/baby-shoes.jpg",
                             IsActive = true,
@@ -799,7 +790,7 @@ namespace ECommerce.Data.Migrations
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                             CategoryId = 8,
                             Color = 4,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4704),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2546),
                             Description = "Soft and warm blanket for home.",
                             ImageUrl = "https://example.com/images/home-blanket.jpg",
                             IsActive = true,
@@ -815,7 +806,7 @@ namespace ECommerce.Data.Migrations
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                             CategoryId = 8,
                             Color = 4,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4705),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2547),
                             Description = "Soft and warm blanket for home.",
                             ImageUrl = "https://example.com/images/home1-blanket.jpg",
                             IsActive = true,
@@ -831,7 +822,7 @@ namespace ECommerce.Data.Migrations
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                             CategoryId = 8,
                             Color = 8,
-                            CreatedAt = new DateTime(2025, 2, 7, 21, 19, 7, 427, DateTimeKind.Local).AddTicks(4707),
+                            CreatedAt = new DateTime(2025, 2, 7, 20, 19, 49, 811, DateTimeKind.Local).AddTicks(2549),
                             Description = "Comfortable furniture set for home.",
                             ImageUrl = "https://example.com/images/home-furniture-set.jpg",
                             IsActive = true,
@@ -1055,8 +1046,8 @@ namespace ECommerce.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "",
                             City = "",
-                            ConcurrencyStamp = "7fe3753f-99a5-4cbd-b75a-fd0a826969d4",
-                            DateOfBirth = new DateTime(2025, 2, 7, 21, 19, 7, 324, DateTimeKind.Local).AddTicks(9899),
+                            ConcurrencyStamp = "fb213665-08e3-47a0-9d55-cf286cd84d1d",
+                            DateOfBirth = new DateTime(2025, 2, 7, 20, 19, 49, 709, DateTimeKind.Local).AddTicks(2546),
                             Email = "adminuser@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -1065,10 +1056,10 @@ namespace ECommerce.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINUSER@GMAIL.COM",
                             NormalizedUserName = "ADMINUSER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIm47zYKInaiNWNwoQ72PlLNeNxKSTGDjURBv3o4GFqple4lyxhomYt4krymeMUIdA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK4nP7btkiTyj+TKndUHaJLqOTBOvV4+/CJp4U5wR6SHEtDKl/tRa67cKuz/FtpK2w==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2d575cc9-7af4-4879-a264-cbdb416e82cd",
+                            SecurityStamp = "671f95d6-6e87-47fe-8b2b-1520f4196a16",
                             TwoFactorEnabled = false,
                             UserName = "adminuser@gmail.com"
                         });
@@ -1087,8 +1078,8 @@ namespace ECommerce.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "aa",
                             City = "",
-                            ConcurrencyStamp = "6aeefff1-3db0-4546-bf0b-7ae42d1b051e",
-                            DateOfBirth = new DateTime(2025, 2, 7, 21, 19, 7, 359, DateTimeKind.Local).AddTicks(847),
+                            ConcurrencyStamp = "cb9728fa-bafd-45ef-8f2c-a1f415a40acb",
+                            DateOfBirth = new DateTime(2025, 2, 7, 20, 19, 49, 743, DateTimeKind.Local).AddTicks(5261),
                             Email = "normaluser@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Normal",
@@ -1097,10 +1088,10 @@ namespace ECommerce.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NORMALUSER@GMAIL.COM",
                             NormalizedUserName = "NORMALUSER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAkWIasPXcTNubpshcCHHHpPT5EDXy3XI8jACivL5vwcGi+3O51kZAyI8G9+v3hNkA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL07bxlA1XFHvF2KRfbCUd1XymcCO+KsJi5Sb1Ujw7+75385suzPxCUqD3l5BMZUSg==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "72292035-4688-4889-a99d-72d714c228d8",
+                            SecurityStamp = "8821f1e8-cf41-4e96-b0df-a7667fd2d1d3",
                             TwoFactorEnabled = false,
                             UserName = "normaluser@gmail.com"
                         });
@@ -1136,8 +1127,8 @@ namespace ECommerce.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "",
                             City = "",
-                            ConcurrencyStamp = "20168b58-0856-4be1-b726-4d2a5a5c1aaf",
-                            DateOfBirth = new DateTime(2025, 2, 7, 21, 19, 7, 393, DateTimeKind.Local).AddTicks(1117),
+                            ConcurrencyStamp = "1a67a4f0-ab26-408c-b5f0-40eaf48d5994",
+                            DateOfBirth = new DateTime(2025, 2, 7, 20, 19, 49, 778, DateTimeKind.Local).AddTicks(971),
                             Email = "selleruser@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Seller",
@@ -1146,10 +1137,10 @@ namespace ECommerce.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SELLERUSER@GMAIL.COM",
                             NormalizedUserName = "SELLERUSER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL0wTsKHlpbWmsqr8AMeh9Wg/W8tEKrnRSp5cty+oDHIFjSTfGi21N4oAj8sjhFMjA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPZFAhani1N5C4JUpX3MNG+vgiAIczmxpJZ9E0ZVqmOOHTuk7YQYEqM/GJW5xkTBwg==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e52a60ae-c87d-4eb8-8862-c70931620d13",
+                            SecurityStamp = "e71e9ec8-ab3c-48b5-b195-1aba12b4b82a",
                             TwoFactorEnabled = false,
                             UserName = "selleruser@gmail.com",
                             IdentityNumber = "1",

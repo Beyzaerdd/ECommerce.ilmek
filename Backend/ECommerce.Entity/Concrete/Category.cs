@@ -18,5 +18,12 @@ namespace ECommerce.Entity.Concrete
         public ICollection<Category> SubCategories { get; set; } 
         public ICollection<Product> Products { get; set; }
         public string? ImageUrl { get; set; }
+        [Flags]
+        public enum ProductOptions
+        {
+            None = 0,
+            Size = 1,
+          
+        }
     }
 }
