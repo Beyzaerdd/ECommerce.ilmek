@@ -22,7 +22,7 @@ namespace ECommerce.Shared.DTOs.ProductDTOs
         public bool IsActive { get; set; }
 
         public int CategoryId { get; set; }
-        public int? SubcategoryId { get; set; }
+      
         public IFormFile Image { get; set; }
     }
 }
