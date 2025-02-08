@@ -10,17 +10,19 @@ using System.Threading.Tasks;
 namespace ECommerce.Shared.DTOs.ResponseDTOs
 {
     public class ResponseDTO<T>
-    { 
-     public T? Data { get; set; } 
+    {
+        [JsonPropertyName("data")]
+        public T? Data { get; set; }
 
-    public List<ErrorDetail>? Errors { get; set; }
+        [JsonPropertyName("errors")]
+        public List<ErrorDetail>? Errors { get; set; }
 
-    [JsonPropertyName("success")]
-    public bool IsSucceeded { get; set; } 
+        [JsonPropertyName("success")]
+        public bool IsSucceeded { get; set; }
 
-  
-    public HttpStatusCode StatusCode { get; set; }
-       
+        [JsonPropertyName("statusCode")]
+        public HttpStatusCode StatusCode { get; set; }
+
 
         public static ResponseDTO<T> Success(T data, HttpStatusCode statusCode)
     {
