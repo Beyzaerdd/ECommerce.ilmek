@@ -48,7 +48,7 @@ namespace ECommerce.API.Controllers
         }
 
    
-        [Authorize(Policy = "User")]
+
         [HttpGet("getCategoriesByParentId")]
         public async Task<IActionResult> GetCategoriesByParentId([FromQuery] int? parentId)
         {
@@ -79,14 +79,14 @@ namespace ECommerce.API.Controllers
             await _categoryService.HardDeleteCategoryAsync(id);
             return NoContent();
         }
-        [Authorize(Policy = "Admin")]
+  
         [HttpGet("count/{isActive?}")]
         public async Task<IActionResult> GetCategoryCount([FromQuery] bool? isActive)
         {
             var response = await _categoryService.GetCategoryCountAsync(isActive);
             return CreateResponse(response);
         }
-        [Authorize(Policy = "Admin")]
+     
         [HttpGet("countAll")]
         public async Task<IActionResult> GetCategoryCount()
         {

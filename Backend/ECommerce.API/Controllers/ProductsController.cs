@@ -112,9 +112,9 @@ namespace ECommerce.API.Controllers
 
 
         [HttpGet("filterProducts")]
-        public async Task<IActionResult> FilterProducts([FromQuery] List<int>? productSizes, [FromQuery] List<int>? productColors, decimal? minPrice, decimal? maxPrice)
+        public async Task<IActionResult> FilterProducts(int categoryId,[FromQuery] List<int>? productSizes, [FromQuery] List<int>? productColors, decimal? minPrice, decimal? maxPrice)
         {
-            var response = await _productService.FilterProducts(productSizes, productColors, minPrice, maxPrice);
+            var response = await _productService.FilterProducts(categoryId, productSizes, productColors, minPrice, maxPrice);
             return CreateResponse(response);
         }
 

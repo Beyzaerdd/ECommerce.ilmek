@@ -168,8 +168,14 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsByCategoryIdAsync(int categoryId)
         {
-            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.CategoryId == categoryId);
-            if (products == null || !products.Any())
+          
+
+            var category = await unitOfWork.GetRepository<Category>().GetAsync(x=>x.Id==categoryId, includes: query=>query.Include(y=>y.Products).Include(y=>y.SubCategories).ThenInclude(y=>y.Products));
+            var products = category.Products.ToList();
+            products.AddRange(category.SubCategories.SelectMany(category => category.Products));
+          
+            
+            if (products == null ||  !products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
                 {
@@ -181,7 +187,9 @@ namespace ECommerce.Business.Concrete
                 }, HttpStatusCode.NotFound);
 
             }
-            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
+
+          
+            var productDTOs=mapper.Map<IEnumerable<ProductDTO>>(products);
             return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
         }
 
@@ -366,55 +374,63 @@ namespace ECommerce.Business.Concrete
 
 
         public async Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(
-      List<int>? productSizes, List<int>? productColors, decimal? minPrice, decimal? maxPrice)
+      int categoryId, List<int>? productSizes, List<int>? productColors, decimal? minPrice, decimal? maxPrice)
         {
+            var category = await unitOfWork.GetRepository<Category>().GetAsync(
+                x => x.Id == categoryId,
+                includes: query => query
+                    .Include(y => y.Products)
+                    .Include(y => y.SubCategories)
+                    .ThenInclude(y => y.Products));
 
-            var query = await unitOfWork.GetRepository<Product>().QueryAsync();
-
-
-
-
-            if (minPrice.HasValue && maxPrice.HasValue)
+            if (category == null)
             {
-                query = query.Where(x => x.UnitPrice >= minPrice.Value && x.UnitPrice <= maxPrice.Value);
+                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail {
+                Message = "Category not found",
+                Code = "CategoryNotFound",
+                Target = nameof(categoryId)
             }
-            else if (minPrice.HasValue)
-            {
-                query = query.Where(x => x.UnitPrice >= minPrice.Value);
-            }
-            else if (maxPrice.HasValue)
-            {
-                query = query.Where(x => x.UnitPrice <= maxPrice.Value);
+        }, HttpStatusCode.NotFound);
             }
 
+           
+            var products = category.Products.ToList();
+            products.AddRange(category.SubCategories.SelectMany(sub => sub.Products));
 
+           
+            if (minPrice.HasValue)
+            {
+                products = products.Where(p => p.UnitPrice >= minPrice.Value).ToList();
+            }
+
+            if (maxPrice.HasValue)
+            {
+                products = products.Where(p => p.UnitPrice <= maxPrice.Value).ToList();
+            }
+
+           
             if (productSizes != null && productSizes.Any())
             {
-                var productIds = query.ToList().Where(x => x.AvailableSizes
-                                           .Select(size => (int)size)
-                                           .Intersect(productSizes)
-                                           .Any())
-                                          .Select(p => p.Id).ToList();
-                query=query.Where(p=>productIds.Contains(p.Id));
-
+                products = products.Where(p => p.AvailableSizes.Any(size => productSizes.Contains((int)size))).ToList();
             }
 
+          
             if (productColors != null && productColors.Any())
             {
-                var productIds = query.ToList().Where(x => x.AvailableColors
-                                             .Select(color => (int)color)
-                                             .Intersect(productColors)
-                                             .Any())
-                                            .Select(p => p.Id).ToList();
-                query = query.Where(p => productIds.Contains(p.Id));
+                products = products.Where(p => p.AvailableColors.Any(color => productColors.Contains((int)color))).ToList();
             }
-            var products = await query.ToListAsync();
 
             if (!products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
         {
-            new ErrorDetail { Message = "No products found with the specified filters", Code = "ProductNotFound", Target = "Filters" }
+            new ErrorDetail {
+                Message = "No products found with the specified filters",
+                Code = "ProductNotFound",
+                Target = "Filters"
+            }  
         }, HttpStatusCode.NotFound);
             }
 
