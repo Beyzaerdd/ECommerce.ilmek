@@ -1,22 +1,13 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration.Annotations;
 using ECommerce.Business.Abstract;
 using ECommerce.Data.Abstract;
 using ECommerce.Entity.Concrete;
-using ECommerce.Shared.ComplexTypes;
-using ECommerce.Shared.DTOs.CategoryDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using ECommerce.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerce.Business.Concrete
 {
@@ -52,7 +43,7 @@ namespace ECommerce.Business.Concrete
             }, HttpStatusCode.NotFound);
 
             }
-         
+
             var newProduct = mapper.Map<Product>(productCreateDTO);
             if (productCreateDTO.Image != null)
             {
@@ -374,24 +365,13 @@ namespace ECommerce.Business.Concrete
 
 
 
-        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(int? productSize, int? productColor, decimal? minPrice, decimal? maxPrice)
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(
+      List<int>? productSizes, List<int>? productColors, decimal? minPrice, decimal? maxPrice)
         {
 
             var query = await unitOfWork.GetRepository<Product>().QueryAsync();
 
 
-            if (productSize.HasValue)
-            {
-                var size = (ProductSize)productSize.Value;
-                query = query.Where(x => x.AvailableSizes.Contains(size));
-            }
-
-
-            if (productColor.HasValue)
-            {
-                var color = (ProductColor)productColor.Value;
-                query = query.Where(x => x.AvailableColors.Contains(color));
-            }
 
 
             if (minPrice.HasValue && maxPrice.HasValue)
@@ -408,27 +388,40 @@ namespace ECommerce.Business.Concrete
             }
 
 
+            if (productSizes != null && productSizes.Any())
+            {
+                var productIds = query.ToList().Where(x => x.AvailableSizes
+                                           .Select(size => (int)size)
+                                           .Intersect(productSizes)
+                                           .Any())
+                                          .Select(p => p.Id).ToList();
+                query=query.Where(p=>productIds.Contains(p.Id));
+
+            }
+
+            if (productColors != null && productColors.Any())
+            {
+                var productIds = query.ToList().Where(x => x.AvailableColors
+                                             .Select(color => (int)color)
+                                             .Intersect(productColors)
+                                             .Any())
+                                            .Select(p => p.Id).ToList();
+                query = query.Where(p => productIds.Contains(p.Id));
+            }
             var products = await query.ToListAsync();
 
-
-            if (products == null || !products.Any())
+            if (!products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
         {
-            new ErrorDetail
-            {
-                Message = "No products found with the specified filters",
-                Code = "ProductNotFound",
-                Target = "Filters"
-            }
+            new ErrorDetail { Message = "No products found with the specified filters", Code = "ProductNotFound", Target = "Filters" }
         }, HttpStatusCode.NotFound);
             }
 
-
             var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
-
             return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
         }
+
         public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId)
         {
 

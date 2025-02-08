@@ -109,22 +109,15 @@ namespace ECommerce.API.Controllers
         }
 
 
-       
 
- 
+
         [HttpGet("filterProducts")]
-        public async Task<IActionResult> FilterProducts([FromQuery] int? productSize, [FromQuery] int? productColor, [FromQuery] decimal? minPrice, [FromQuery] decimal? maxPrice)
+        public async Task<IActionResult> FilterProducts([FromQuery] List<int>? productSizes, [FromQuery] List<int>? productColors, decimal? minPrice, decimal? maxPrice)
         {
-            var response = await _productService.FilterProducts(productSize, productColor, minPrice, maxPrice);
+            var response = await _productService.FilterProducts(productSizes, productColors, minPrice, maxPrice);
             return CreateResponse(response);
         }
 
-        [HttpGet("getBySeller/{applicationUserId}")]
-        public async Task<IActionResult> GetProductBySeller([FromRoute] string applicationUserId)
-        {
-            var response = await _productService.GetProductBySellerAsync(applicationUserId);
-            return CreateResponse(response);
-        }
 
     }
 }

@@ -25,7 +25,7 @@ namespace ECommerce.Business.Abstract
 
         Task<ResponseDTO<int>> GetCountByCategory(int categoryId);
 
-        Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(int? productSize, int? productColor, decimal? minPrice, decimal? maxPrice);
+        Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(List<int>? productSizes, List<int>? productColors, decimal? minPrice, decimal? maxPrice);
 
         Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId);
 
