@@ -1,0 +1,48 @@
+﻿using ECommerce.Shared.ComplexTypes;
+using ECommerce.Shared.DTOs.DiscountDTOs;
+using System.Text.Json.Serialization;
+
+namespace ECommerce.MVC.Models.ProductModels
+{
+    public class ProductModel
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("unitPrice")]
+        public decimal UnitPrice { get; set; }
+
+        [JsonPropertyName("availableSizes")]
+        public List<ProductSize> AvailableSizes { get; set; } = new();
+
+        [JsonPropertyName("availableColors")]
+        public List<ProductColor> AvailableColors { get; set; } = new();
+
+        [JsonPropertyName("applicationUserId")]
+        public string ApplicationUserId { get; set; }
+
+        [JsonPropertyName("preparationTimeInDays")]
+        public int PreparationTimeInDays { get; set; }
+
+        [JsonPropertyName("isActive")]
+        public bool IsActive { get; set; }
+
+        [JsonPropertyName("categoryName")]
+        public string CategoryName { get; set; }
+
+        [JsonPropertyName("subCategoryName")]
+        public string SubcategoryName { get; set; }
+
+        [JsonPropertyName("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonPropertyName("discounts")]
+        public IEnumerable<DiscountDTO> Discounts { get; set; }
+    }
+}
