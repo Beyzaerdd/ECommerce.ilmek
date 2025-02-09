@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ECommerce.MVC.Models.AuthModels
 {
-    public class SellerLoginModel
+    public class LoginUserModel
     {
         [Required, EmailAddress]
         [JsonPropertyName("email")]

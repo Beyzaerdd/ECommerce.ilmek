@@ -13,3 +13,4 @@ namespace ECommerce.MVC.Models.BasketModels
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
     }
+}

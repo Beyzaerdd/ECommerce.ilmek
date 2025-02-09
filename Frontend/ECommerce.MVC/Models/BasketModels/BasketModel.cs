@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ECommerce.MVC.Models.UserModels;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 

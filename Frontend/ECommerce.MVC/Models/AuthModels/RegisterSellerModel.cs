@@ -3,50 +3,54 @@ using System.Text.Json.Serialization;
 
 namespace ECommerce.MVC.Models.AuthModels
 {
-    public class SellerRegisterModel
+    public class RegisterSellerModel
     {
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "E-posta adresi boş bırakılamaz.")]
+        [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi girin.")]
         [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Ad alanı boş bırakılamaz.")]
         [JsonPropertyName("firstname")]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Soyad alanı boş bırakılamaz.")]
         [JsonPropertyName("lastname")]
         public string LastName { get; set; }
 
-        [Required, DataType(DataType.Password)]
+        [Required(ErrorMessage = "Parola alanı boş bırakılamaz.")]
+        [DataType(DataType.Password)]
         [JsonPropertyName("password")]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Adres alanı boş bırakılamaz.")]
         [JsonPropertyName("address")]
         public string Address { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Şehir alanı boş bırakılamaz.")]
         [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Ülke alanı boş bırakılamaz.")]
         [JsonPropertyName("country")]
         public string Country { get; set; }
 
-        [Required, Phone]
+        [Required(ErrorMessage = "Telefon numarası alanı boş bırakılamaz.")]
+        [Phone(ErrorMessage = "Geçerli bir telefon numarası girin.")]
         [JsonPropertyName("phonenumber")]
         public string PhoneNumber { get; set; }
 
-        [Required, DataType(DataType.Date)]
+        [Required(ErrorMessage = "Doğum tarihi alanı boş bırakılamaz.")]
+        [DataType(DataType.Date)]
         [JsonPropertyName("dateofbirth")]
         public DateTime DateOfBirth { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Kimlik numarası alanı boş bırakılamaz.")]
         [StringLength(11, MinimumLength = 11, ErrorMessage = "Kimlik numarası 11 haneli olmalıdır.")]
         [JsonPropertyName("identitynumber")]
         public string IdentityNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Mağaza adı alanı boş bırakılamaz.")]
         [JsonPropertyName("storename")]
         public string StoreName { get; set; }
     }

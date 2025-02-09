@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ECommerce.MVC.Models.AuthModels
 {
-    public class UserRegisterModel
+    public class RegisterUserModel
     {
         [Required]
         [JsonPropertyName("firstname")]

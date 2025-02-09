@@ -3,7 +3,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Reflection;
-namespace ECommerce.MVC.Areas.Admin.Models.DiscountModels
+     namespace ECommerce.MVC.Areas.Admin.Models.DiscountModels
+{ 
 
     public class DiscountCreateModel
     {
@@ -38,4 +39,5 @@ namespace ECommerce.MVC.Areas.Admin.Models.DiscountModels
         [JsonPropertyName("productId")]
         public int? ProductId { get; set; }
     }
+
 }
