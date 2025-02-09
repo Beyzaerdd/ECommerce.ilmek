@@ -1,0 +1,98 @@
+﻿@model ECommerce.MVC.Models.AuthModels.LoginSellerModel
+
+@{
+    Layout = "_AuthLayout";
+}
+
+<body class="login-page">
+    <div class="login-header box-shadow">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="brand-logo">
+                <a asp-controller="Home" asp-action="Index">
+                  
+                    <img src="~/Admin/vendors/images/deskapp-logo.svg" alt=""> 
+                </a>
+            </div>
+            <div class="login-menu">
+                <ul>
+                    <li><a asp-controller="Auth" asp-action="RegisterSeller">Kayıt Ol</a></li> 
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 col-lg-7">
+                    <img src="~/Admin/vendors/images/login-page-img.png" alt="">
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <div class="login-box bg-white box-shadow border-radius-10">
+                        <div class="login-title">
+                            <h2 class="text-center text-primary">Satıcı Girişi</h2> 
+                        </div>
+                        <form asp-controller="Auth" asp-action="LoginSeller" method="post">
+                          
+                            @Html.AntiForgeryToken() 
+
+                            <div class="select-role">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn active">
+                                        <input type="radio" name="options" id="admin">
+                                        <div class="icon"><img src="~/Admin/vendors/images/briefcase.svg" class="svg" alt=""></div>
+                                        <span>Ben</span>
+                                        Yöneticiyim 
+                                    </label>
+                                    <label class="btn">
+                                        <input type="radio" name="options" id="user">
+                                        <div class="icon"><img src="~/Admin/vendors/images/person.svg" class="svg" alt=""></div>
+                                        <span>Ben</span>
+                                        Çalışanım 
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="input-group custom">
+                                <label asp-for="Email" class="form-label visually-hidden">E-posta</label> 
+                                <input asp-for="Email" type="email" class="form-control form-control-lg" placeholder="E-postanızı girin" required> 
+                                <div class="input-group-append custom">
+                                    <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span> 
+                            </div>
+                            <div class="input-group custom">
+                                <label asp-for="Password" class="form-label visually-hidden">Şifre</label> 
+                                <input asp-for="Password" type="password" class="form-control form-control-lg" placeholder="Şifrenizi girin" required> 
+                                <div class="input-group-append custom">
+                                    <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger"></span> 
+                            </div>
+                            <div class="row pb-30">
+                                <div class="col-6">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                        <label class="custom-control-label" for="customCheck1">Beni Hatırla</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="forgot-password"><a asp-controller="Auth" asp-action="ForgotPassword">Şifremi Unuttum?</a></div> 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="input-group mb-0">
+                                        <button class="btn btn-primary btn-lg btn-block" type="submit">Giriş Yap</button> 
+                                    </div>
+                                    <div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">VEYA</div> 
+                                    <div class="input-group mb-0">
+                                        <a asp-controller="Auth" asp-action="RegisterSeller" class="btn btn-outline-primary btn-lg btn-block">Hesap Oluştur</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
