@@ -18,28 +18,28 @@ namespace ECommerce.API.Controllers
             _authService = authService;
         }
 
-        [HttpPost("Userlogin")]
+        [HttpPost("LoginUser")]
         public async Task<IActionResult> LoginUser([FromBody] UserLoginDTO userLoginDTO)
         {
             var response = await _authService.LoginUserAsync(userLoginDTO);
             return CreateResponse(response);
         }
 
-        [HttpPost("UserRegister")]
+        [HttpPost("RegisterUser")]
         public async Task<IActionResult> RegisterUser([FromBody] UserRegisterDTO userRegisterDTO)
         {
             var response = await _authService.RegisterUserAsync(userRegisterDTO);
             return CreateResponse(response);
         }
 
-        [HttpPost("SellerLogin")]
+        [HttpPost("LoginSeller")]
         public async Task<IActionResult> LoginSeller([FromBody] SellerLoginDTO sellerLoginDTO)
         {
             var response = await _authService.LoginSellerAsync(sellerLoginDTO);
             return CreateResponse(response);
         }
 
-        [HttpPost("SellerRegister")]
+        [HttpPost("RegisterSeller")]
         public async Task<IActionResult> RegisterSeller([FromBody] SellerRegisterDTO sellerRegisterDTO)
         {
             var response = await _authService.RegisterSellerAsync(sellerRegisterDTO);

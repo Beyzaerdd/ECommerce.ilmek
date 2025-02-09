@@ -85,8 +85,18 @@ namespace ECommerce.Business.Concrete
             var user = await _userManager.FindByEmailAsync(forgotPasswordDTO.Email);
             if (user == null)
             {
-                return ResponseDTO<NoContent>.Fail("Kullanıcı bulunamadı", HttpStatusCode.NotFound);
+                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message = "Email or Password cannot be empty.",
+                        Code = "InvalidInput",
+                        Target = "Email/Password"
+                    }
+                }, HttpStatusCode.BadRequest);
             }
+          
+            
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var resetLink = $"http://localhost:1406/resetpassword?token={token}&email={forgotPasswordDTO.Email}";
