@@ -295,7 +295,7 @@ namespace ECommerce.Business.Concrete
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Address = user.Address,
-                City = user.City,
+           
                 DateOfBirth = user.DateOfBirth,
                 PhoneNumber = user.PhoneNumber,
             };

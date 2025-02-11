@@ -80,7 +80,7 @@ namespace ECommerce.Data.Concrete.Context
                 LastName = "User",
                 Address = "",
                 PhoneNumber = "",
-                City = "",
+        
                 DateOfBirth = DateTime.Now,
                 PasswordHash = hasher.HashPassword(null, "Qwe123.,")
             };
@@ -98,7 +98,7 @@ namespace ECommerce.Data.Concrete.Context
                 LastName = "User",
                 Address = "aa",
                 PhoneNumber = "",
-                City = "",
+         
                 DateOfBirth = DateTime.Now,
                 PasswordHash = hasher.HashPassword(null, "Qwe123.,")
             };
@@ -120,7 +120,7 @@ namespace ECommerce.Data.Concrete.Context
                 IsActive = true,
                 Address = "",
                 PhoneNumber = "",
-                City = "",
+              
                 DateOfBirth = DateTime.Now,
                 PasswordHash = hasher.HashPassword(null, "Qwe123.,")
             };
