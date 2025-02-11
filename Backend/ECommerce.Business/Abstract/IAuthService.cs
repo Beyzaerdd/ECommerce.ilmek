@@ -12,6 +12,7 @@ namespace ECommerce.Business.Abstract
 {
     public interface IAuthService
     {
+        Task<ResponseDTO<NoContent>> ResetPasswordAsync(ResetPasswordDTO resetPasswordDTO);
         Task<ResponseDTO<TokenDTO>> LoginUserAsync(UserLoginDTO userLoginDTO);
         Task<ResponseDTO<NoContent>> RegisterUserAsync(UserRegisterDTO userRegisterDTO);
         Task<ResponseDTO<TokenDTO>> LoginSellerAsync(SellerLoginDTO sellerLoginDTO);

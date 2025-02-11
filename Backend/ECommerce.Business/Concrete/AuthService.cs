@@ -81,32 +81,99 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<NoContent>> ForgotPasswordAsync(ForgotPasswordDTO forgotPasswordDTO)
         {
-
             var user = await _userManager.FindByEmailAsync(forgotPasswordDTO.Email);
             if (user == null)
             {
                 return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
-                {
-                    new ErrorDetail
-                    {
-                        Message = "Email or Password cannot be empty.",
-                        Code = "InvalidInput",
-                        Target = "Email/Password"
-                    }
-                }, HttpStatusCode.BadRequest);
+        {
+            new ErrorDetail
+            {
+                Message = "Email or Password cannot be empty.",
+                Code = "InvalidInput",
+                Target = "Email/Password"
             }
-          
-            
+        }, HttpStatusCode.BadRequest);
+            }
 
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var resetLink = $"http://localhost:1406/resetpassword?token={token}&email={forgotPasswordDTO.Email}";
-
-            var message = $"Şifrenizi sıfırlamak için <a href='{resetLink}'>buraya tıklayın</a>.";
-            await _emailService.SendEmailAsync(forgotPasswordDTO.Email, "Şifre Sıfırlama Talebi", message);
+           
+            await SendResetPasswordAsync(user);
 
             return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
-
         }
+
+        private async Task SendResetPasswordAsync(ApplicationUser user)
+        {
+            string subject = "Şifre Sıfırlama Talebi";
+
+            try
+            {
+                // Load the template for the reset password email
+                var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "ForgotPasswordTemplate.liquid");
+
+                if (!File.Exists(templatePath))
+                {
+                    throw new FileNotFoundException($"Şablon dosyası bulunamadı: {templatePath}");
+                }
+
+                var templateText = await File.ReadAllTextAsync(templatePath);
+                var parser = new FluidParser();
+
+                if (!parser.TryParse(templateText, out var template, out var error))
+                {
+                    throw new InvalidOperationException("Şablon ayrıştırma hatası: " + error);
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+              
+                var resetLink = $"http://localhost:7269/Auth/ResetPassword?token={token}&email={user.Email}";
+
+
+
+                var templateContext = new TemplateContext();
+                var userData = new Dictionary<string, object>
+        {
+            { "FirstName", user.FirstName },
+            { "Email", user.Email },
+            { "ResetLink", resetLink }
+        };
+
+                templateContext.SetValue("user", userData);
+
+                // Render the email body with the template
+                var body = template.Render(templateContext);
+
+                // Send the email to the user
+                await _emailService.SendEmailAsync(user.Email, subject, body);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("E-posta gönderme hatası: " + ex.Message);
+                throw;
+            }
+        }
+        public async Task<ResponseDTO<NoContent>> ResetPasswordAsync(ResetPasswordDTO resetPasswordDTO)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordDTO.Email);
+            if (user == null)
+            {
+                return ResponseDTO<NoContent>.Fail("Kullanıcı bulunamadı", HttpStatusCode.NotFound);
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, resetPasswordDTO.Token, resetPasswordDTO.NewPassword);
+            if (!result.Succeeded)
+            {
+                return ResponseDTO<NoContent>.Fail(result.Errors.Select(e => new ErrorDetail
+                {
+                    Message = e.Description,
+                    Code = "ResetPasswordFailed",
+                    Target = nameof(resetPasswordDTO)
+                }).ToList(), HttpStatusCode.BadRequest);
+            }
+
+            return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
+        }
+
+
 
         public async Task<ResponseDTO<TokenDTO>> LoginSellerAsync(SellerLoginDTO sellerLoginDTO)
         {
@@ -288,7 +355,7 @@ namespace ECommerce.Business.Concrete
                 FirstName = sellerRegisterDTO.FirstName,
                 LastName = sellerRegisterDTO.LastName,
                 Address = sellerRegisterDTO.Address,
-                City = sellerRegisterDTO.City,
+              
                 DateOfBirth = sellerRegisterDTO.DateOfBirth,
                 PhoneNumber = sellerRegisterDTO.PhoneNumber,
                 IdentityNumber = sellerRegisterDTO.IdentityNumber,
@@ -369,10 +436,9 @@ namespace ECommerce.Business.Concrete
                 FirstName = userRegisterDTO.FirstName,
                 LastName = userRegisterDTO.LastName,
                 PhoneNumber = userRegisterDTO.PhoneNumber,
-                City= userRegisterDTO.City,
-               
+              
                 EmailConfirmed = true,
-                Address=userRegisterDTO.Adress
+                Address = userRegisterDTO.Adress
 
 
 

@@ -60,5 +60,12 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDTO)
+        {
+            var response = await _authService.ResetPasswordAsync(resetPasswordDTO);
+            return CreateResponse(response);
+        }
+
     }
 }
