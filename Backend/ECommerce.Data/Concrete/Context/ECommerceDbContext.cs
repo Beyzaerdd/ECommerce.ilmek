@@ -120,7 +120,7 @@ namespace ECommerce.Data.Concrete.Context
                 IsActive = true,
                 Address = "",
                 PhoneNumber = "",
-              
+                WeeklyOrderLimit =10,
                 DateOfBirth = DateTime.Now,
                 PasswordHash = hasher.HashPassword(null, "Qwe123.,")
             };

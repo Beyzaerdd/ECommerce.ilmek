@@ -30,12 +30,27 @@ namespace ECommerce.API.BackgroundServices
         private async Task ExecuteSellerUpdate()
         {
             var sellers = await userAccountManagerService.GetAllSellersAsync();
+
+           
+            if (sellers.Data == null || !sellers.Data.Any())
+            {
+                return; 
+            }
+
             foreach (var seller in sellers.Data)
             {
                 var user = await userManager.FindByIdAsync(seller.Id) as Seller;
+
+             
+                if (user == null)
+                {
+                    continue;
+                }
+
                 user.WeeklyOrderLimit = Math.Min(user.WeeklyOrderLimit, 20);
                 await userManager.UpdateAsync(user);
             }
-        }
+        
+    }
     }
 }

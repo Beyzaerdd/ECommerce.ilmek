@@ -124,8 +124,8 @@ namespace ECommerce.Business.Concrete
                 }
 
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-              
-                var resetLink = $"http://localhost:7269/Auth/ResetPassword?token={token}&email={user.Email}";
+                var encodedToken = WebUtility.UrlEncode(token);
+                var resetLink = $"http://localhost:7269/Auth/ResetPassword?token={encodedToken}&email={user.Email}";
 
 
 
