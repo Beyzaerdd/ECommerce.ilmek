@@ -1,0 +1,113 @@
+﻿@model ECommerce.MVC.Models.AuthModels.RegisterUserModel
+
+@{
+    Layout = "_AuthLayout";
+}
+
+
+
+<body class="h-100 bg-light">
+    <div class="container-fluid h-100 d-flex justify-content-center align-items-center">
+        <div class="row w-100">
+            <!-- Sağ Tarafta Fotoğraf -->
+            <div class="col-lg-6 col-md-12 p-0">
+                <img src="@Url.Content("~/Admin/larkon/admin/assets/images/user-profile.png")" alt="Register Image" class="img-fluid h-100" style="object-fit: cover;">
+            </div>
+
+            <!-- Sol Tarafta Form -->
+            <div class="col-lg-6 col-md-10 col-sm-12 bg-white p-4 rounded shadow-lg">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold fs-32 text-primary">Kullanıcı Kaydı</h2>
+                    <p class="text-muted">Kullanıcı Kayıt Ekranına Hoşgeldiniz!</p>
+
+                    <form asp-action="RegisterUser" asp-controller="Auth" method="post">
+                        @Html.AntiForgeryToken()
+
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label text-secondary">Ad</label>
+                            <input asp-for="FirstName" class="form-control border-primary" placeholder="Adınızı girin">
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label text-secondary">Soyad</label>
+                            <input asp-for="LastName" class="form-control border-primary" placeholder="Soyadınızı girin">
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label text-secondary">E-posta</label>
+                            <input asp-for="Email" class="form-control border-primary" placeholder="E-posta adresinizi girin">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label text-secondary">Şifre</label>
+                            <input asp-for="Password" class="form-control border-primary" type="password" placeholder="Şifrenizi girin">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label text-secondary">Şifre Onayı</label>
+                            <input asp-for="ConfirmPassword" class="form-control border-primary" type="password" placeholder="Şifrenizi Onaylayın">
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                       
+
+                        <div class="mb-3">
+                            <label asp-for="PhoneNumber" class="form-label text-secondary">Telefon</label>
+                            <input asp-for="PhoneNumber" class="form-control border-primary" placeholder="Telefon numaranızı girin">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+
+                     
+                        <div class="mb-3">
+                            <label asp-for="Adress" class="form-label text-secondary">Adres </label>
+                            <input asp-for="Adress" class="form-control border-primary" placeholder="Adresinizi girin">
+                            <span asp-validation-for="Adress" class="text-danger"></span>
+                        </div>
+
+                   
+
+
+                        <div class="mb-1 text-center d-grid">
+                            <button class="btn btn-soft-primary" type="submit">Kaydı Tamamla</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
