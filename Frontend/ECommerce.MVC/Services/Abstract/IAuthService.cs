@@ -13,6 +13,7 @@ namespace ECommerce.MVC.Services.Abstract
 
         Task<ResponseViewModel<NoContentViewModel>> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel);
         Task<ResponseViewModel<NoContentViewModel>> ChangePasswordAsync(ChangePasswordModel changePasswordModel);
+        Task<ResponseViewModel<NoContentViewModel>> ResetPasswordAsync(ResetPasswordModel resetPasswordModel);
 
     }
 }

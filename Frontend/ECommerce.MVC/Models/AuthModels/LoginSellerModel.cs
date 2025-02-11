@@ -5,11 +5,14 @@ namespace ECommerce.MVC.Models.AuthModels
 {
     public class LoginSellerModel
     {
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "E-posta adresi gereklidir.")]
+        [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi girin.")]
         [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [Required, DataType(DataType.Password)]
+        [Required(ErrorMessage = "Şifre gereklidir.")]
+        [MinLength(8, ErrorMessage = "Lütfen şifrenizi doğru giriniz")]
+        [DataType(DataType.Password)]
         [JsonPropertyName("password")]
         public string Password { get; set; }
     }

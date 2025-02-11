@@ -5,7 +5,8 @@ namespace ECommerce.MVC.Models.AuthModels
 {
     public class ForgotPasswordModel
     {
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "E-posta adresi gereklidir.")]
+        [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi girin.")]
         [JsonPropertyName("email")]
         public string Email { get; set; }
     }

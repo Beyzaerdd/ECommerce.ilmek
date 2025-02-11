@@ -52,8 +52,8 @@ namespace ECommerce.MVC.Services.Concrete
             }
 
             return result;
-        
-    }
+
+        }
 
         public async Task<ResponseViewModel<NoContentViewModel>> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
         {
@@ -78,7 +78,17 @@ namespace ECommerce.MVC.Services.Concrete
 
             var result = JsonSerializer.Deserialize<ResponseViewModel<NoContentViewModel>>(responseBody, _jsonSerializerOptions);
 
-            if (result?.Data == null)
+            
+
+            return result;
+        }
+        public async Task<ResponseViewModel<NoContentViewModel>> ResetPasswordAsync(ResetPasswordModel resetPasswordModel)
+        {
+            var client = GetHttpClient();
+            var response = await client.PostAsJsonAsync("auth/ResetPassword", resetPasswordModel);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
             {
                 return new ResponseViewModel<NoContentViewModel>
                 {
@@ -87,11 +97,15 @@ namespace ECommerce.MVC.Services.Concrete
                 {
                     new ErrorViewModel
                     {
-                        Message = "Şifre sıfırlama sırasında bir hata oluştu."
+                        Message = "Şifre sıfırlama isteği başarısız, lütfen tekrar deneyin."
                     }
                 }
                 };
             }
+
+            var result = JsonSerializer.Deserialize<ResponseViewModel<NoContentViewModel>>(responseBody, _jsonSerializerOptions);
+
+
 
             return result;
         }
@@ -119,20 +133,7 @@ namespace ECommerce.MVC.Services.Concrete
 
             var result = JsonSerializer.Deserialize<ResponseViewModel<TokenModel>>(responseBody, _jsonSerializerOptions);
 
-            if (result?.Data == null)
-            {
-                return new ResponseViewModel<TokenModel>
-                {
-                    IsSucceeded = false,
-                    Errors = new List<ErrorViewModel>
-                {
-                    new ErrorViewModel
-                    {
-                        Message = "Geçersiz satıcı giriş bilgileri."
-                    }
-                }
-                };
-            }
+           
 
             return result;
         }
@@ -176,8 +177,8 @@ namespace ECommerce.MVC.Services.Concrete
             }
 
             return result;
-        
-    }
+
+        }
 
         public async Task<ResponseViewModel<string>> RegisterSellerAsync(RegisterSellerModel sellerRegisterModel)
         {
@@ -199,56 +200,54 @@ namespace ECommerce.MVC.Services.Concrete
                 }
                 };
             }
-          
+
             var result = JsonSerializer.Deserialize<ResponseViewModel<string>>(responseBody, _jsonSerializerOptions);
 
-           
+
 
             return result;
-        
-    }
-    
+
+        }
+
 
         public async Task<ResponseViewModel<NoContentViewModel>> RegisterUserAsync(RegisterUserModel userRegisterModel)
         {
             var client = GetHttpClient();
-            var response = await client.PostAsJsonAsync("auth/RegisterUser", userRegisterModel);
-            var responseBody = await response.Content.ReadAsStringAsync();
+            var fullUrl = new Uri(client.BaseAddress, "auth/RegisterUser");
 
-            if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
+            Console.WriteLine($"API'ye giden URL: {fullUrl}");
+
+            var response = await client.PostAsJsonAsync(fullUrl, userRegisterModel);
+
+            Console.WriteLine($"Yanıt Kodu: {response.StatusCode}");
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Yanıt İçeriği: {responseBody}");
+
+
+            if (!response.IsSuccessStatusCode)
             {
+                var errorMessage = !string.IsNullOrEmpty(responseBody) ? responseBody : "Kayıt başarısız, lütfen tekrar deneyin.";
+
                 return new ResponseViewModel<NoContentViewModel>
                 {
                     IsSucceeded = false,
                     Errors = new List<ErrorViewModel>
+            {
+                new ErrorViewModel
                 {
-                    new ErrorViewModel
-                    {
-                        Message = "Kayıt başarısız, lütfen tekrar deneyin."
-                    }
+                    Message = $"Kayıt başarısız: {errorMessage}"
                 }
+            }
                 };
             }
 
             var result = JsonSerializer.Deserialize<ResponseViewModel<NoContentViewModel>>(responseBody, _jsonSerializerOptions);
 
-            if (result?.Data == null)
-            {
-                return new ResponseViewModel<NoContentViewModel>
-                {
-                    IsSucceeded = false,
-                    Errors = new List<ErrorViewModel>
-                {
-                    new ErrorViewModel
-                    {
-                        Message = "Kayıt sırasında bir hata oluştu."
-                    }
-                }
-                };
-            }
+           
 
             return result;
         }
-    }
+
     }
 
+}

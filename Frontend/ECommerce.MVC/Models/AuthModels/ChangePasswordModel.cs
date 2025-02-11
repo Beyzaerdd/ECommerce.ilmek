@@ -5,7 +5,8 @@ namespace ECommerce.MVC.Models.AuthModels
 {
     public class ChangePasswordModel
     {
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "E-posta adresi gereklidir.")]
+        [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi girin.")]
         [JsonPropertyName("email")]
         public string Email { get; set; }
 
@@ -14,7 +15,9 @@ namespace ECommerce.MVC.Models.AuthModels
         public string CurrentPassword { get; set; }
 
         [Required, DataType(DataType.Password)]
-        [MinLength(6, ErrorMessage = "Yeni şifre en az 6 karakter olmalıdır.")]
+        [MinLength(8, ErrorMessage = "Yeni şifre en az 8 karakter olmalıdır.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$",
+ErrorMessage = "Şifre en az bir büyük harf, bir küçük harf, bir rakam ve bir özel karakter içermelidir.")]
         [JsonPropertyName("newpassword")]
         public string NewPassword { get; set; }
 

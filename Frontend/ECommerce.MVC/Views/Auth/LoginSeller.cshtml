@@ -4,95 +4,77 @@
     Layout = "_AuthLayout";
 }
 
-<body class="login-page">
-    <div class="login-header box-shadow">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="brand-logo">
-                <a asp-controller="Home" asp-action="Index">
-                  
-                    <img src="~/Admin/vendors/images/deskapp-logo.svg" alt=""> 
-                </a>
-            </div>
-            <div class="login-menu">
-                <ul>
-                    <li><a asp-controller="Auth" asp-action="RegisterSeller">Kayıt Ol</a></li> 
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 col-lg-7">
-                    <img src="~/Admin/vendors/images/login-page-img.png" alt="">
-                </div>
-                <div class="col-md-6 col-lg-5">
-                    <div class="login-box bg-white box-shadow border-radius-10">
-                        <div class="login-title">
-                            <h2 class="text-center text-primary">Satıcı Girişi</h2> 
-                        </div>
-                        <form asp-controller="Auth" asp-action="LoginSeller" method="post">
-                          
-                            @Html.AntiForgeryToken() 
+<body class="h-100">
+    <div class="d-flex flex-column h-100 p-3">
+        <div class="d-flex flex-column flex-grow-1">
+            <div class="row h-100">
+                <div class="col-xxl-7">
+                    <div class="row justify-content-center h-100">
+                        <div class="col-lg-6 py-lg-5">
+                            <div class="d-flex flex-column h-100 justify-content-center">
+                                <div class="auth-logo mb-4">
+                                    
+                                </div>
+                                <h2 class="fw-bold fs-24">Satıcı Girişine Hoşgeldiniz!</h2>
+                                <p class="text-muted mt-1 mb-4">Satıcı paneline giriş yapmak için e-posta adresinizi ve şifrenizi girin.</p>
 
-                            <div class="select-role">
-                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn active">
-                                        <input type="radio" name="options" id="admin">
-                                        <div class="icon"><img src="~/Admin/vendors/images/briefcase.svg" class="svg" alt=""></div>
-                                        <span>Ben</span>
-                                        Yöneticiyim 
-                                    </label>
-                                    <label class="btn">
-                                        <input type="radio" name="options" id="user">
-                                        <div class="icon"><img src="~/Admin/vendors/images/person.svg" class="svg" alt=""></div>
-                                        <span>Ben</span>
-                                        Çalışanım 
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="input-group custom">
-                                <label asp-for="Email" class="form-label visually-hidden">E-posta</label> 
-                                <input asp-for="Email" type="email" class="form-control form-control-lg" placeholder="E-postanızı girin" required> 
-                                <div class="input-group-append custom">
-                                    <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
-                                </div>
-                                <span asp-validation-for="Email" class="text-danger"></span> 
-                            </div>
-                            <div class="input-group custom">
-                                <label asp-for="Password" class="form-label visually-hidden">Şifre</label> 
-                                <input asp-for="Password" type="password" class="form-control form-control-lg" placeholder="Şifrenizi girin" required> 
-                                <div class="input-group-append custom">
-                                    <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
-                                </div>
-                                <span asp-validation-for="Password" class="text-danger"></span> 
-                            </div>
-                            <div class="row pb-30">
-                                <div class="col-6">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1">Beni Hatırla</label>
+                                <div class="mb-5">
+                                    <form asp-controller="Auth" asp-action="LoginSeller" method="post" class="authentication-form">
+
+                                        @Html.AntiForgeryToken()
+
+                                  
+                                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Email" class="form-label"></label>
+                                            <input asp-for="Email" class="form-control" placeholder="E-postanızı girin">
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <a asp-action="ForgotPassword" class="float-end text-muted text-unline-dashed ms-1">Şifremi unuttum</a>
+                                            <label asp-for="Password" class="form-label"></label>
+                                            <input asp-for="Password" class="form-control" type="password" placeholder="Şifrenizi girin">
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="checkbox-signin">
+                                                <label class="form-check-label" for="checkbox-signin">Beni Hatırla</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-1 text-center d-grid">
+                                            <button type="submit" class="btn btn-soft-primary">Giriş Yap</button>
+                                        </div>
+                                    </form>
+
+                                    <p class="mt-3 fw-semibold no-span">Veya farklı bir hesapla giriş yapın</p>
+                                    <div class="d-grid gap-2">
+                                        <a href="javascript:void(0);" class="btn btn-soft-dark"><i class="bx bxl-google fs-20 me-1"></i> Google ile giriş yap</a>
+                                        <a href="javascript:void(0);" class="btn btn-soft-primary"><i class="bx bxl-facebook fs-20 me-1"></i> Facebook ile giriş yap</a>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="forgot-password"><a asp-controller="Auth" asp-action="ForgotPassword">Şifremi Unuttum?</a></div> 
-                                </div>
+
+                                <p class="text-danger text-center">Hesabınız yok mu? <a asp-controller="Auth"  asp-action="RegisterSeller" method="post" class="text-dark fw-bold ms-1">Kayıt Ol</a></p>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="input-group mb-0">
-                                        <button class="btn btn-primary btn-lg btn-block" type="submit">Giriş Yap</button> 
-                                    </div>
-                                    <div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">VEYA</div> 
-                                    <div class="input-group mb-0">
-                                        <a asp-controller="Auth" asp-action="RegisterSeller" class="btn btn-outline-primary btn-lg btn-block">Hesap Oluştur</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-5 d-none d-xxl-flex">
+                    <div class="card h-100 mb-0 overflow-hidden">
+                        <div class="d-flex flex-column h-100">
+                            <img src="~/Admin/larkon/admin/assets/images/small/img-10.jpg" alt="" class="w-100 h-100">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
 </body>

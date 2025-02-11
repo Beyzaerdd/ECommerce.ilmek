@@ -1,15 +1,21 @@
+using ECommerce.MVC.Services.Abstract;
+using ECommerce.MVC.Services.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using NToastNotify;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+var cultureInfo = new CultureInfo("tr-TR");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
                 .AddNToastNotifyToastr(new ToastrOptions
                 {
                     ProgressBar = true,
-                    PositionClass =           ToastPositions.TopRight,
+                    PositionClass =ToastPositions.TopRight,
                     CloseButton = true,
                     TimeOut = 5000,
                     ShowDuration = 1000,
@@ -20,7 +26,7 @@ builder.Services.AddControllersWithViews()
                     HideMethod="fadeOut"
 
                 });
-
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddHttpClient("ECommerceAPI", client => client.BaseAddress = new Uri("http://localhost:1406/api/"));
 
@@ -45,6 +51,8 @@ builder.Services.AddDataProtection()
     .SetDefaultKeyLifetime(TimeSpan.FromDays(14));
 
 builder.Services.AddDistributedMemoryCache();
+
+
 
 #endregion
 

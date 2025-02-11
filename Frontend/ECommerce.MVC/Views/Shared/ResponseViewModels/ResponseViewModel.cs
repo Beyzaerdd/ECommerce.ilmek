@@ -30,4 +30,4 @@ namespace ECommerce.MVC.Views.Shared.ResponseViewModels
         }
     }
 }
-}
+
