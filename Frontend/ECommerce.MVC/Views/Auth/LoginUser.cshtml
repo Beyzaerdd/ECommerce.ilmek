@@ -30,7 +30,7 @@
                                             <span asp-validation-for="Email" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3">
-                                            <a asp-action="ForgotPassword" class="float-end text-muted text-unline-dashed ms-1">Şifremi Unuttum</a>
+                                            <a href="/Auth/ForgotPassword" class="float-end text-muted text-unline-dashed ms-1">Şifremi Unuttum</a>
                                             <label asp-for="Password" class="form-label"></label>
                                             <input asp-for="Password" class="form-control" type="password" placeholder="Şifrenizi girin">
                                             <span asp-validation-for="Password" class="text-danger"></span>
@@ -51,7 +51,10 @@
                                         <a href="javascript:void(0);" class="btn btn-soft-primary"><i class="bx bxl-facebook fs-20 me-1"></i> Facebook ile Giriş Yap</a>
                                     </div>
                                 </div>
-                                <p class="text-danger text-center">Henüz hesabınız yok mu? <a asp-controller="Auth"  asp-action="RegisterUser" method="post "class="text-dark fw-bold ms-1">Kayıt Ol</a></p>
+                                <p class="text-danger text-center">
+                                    Henüz hesabınız yok mu? <a href="/Auth/RegisterUser" class="text-dark fw-bold ms-1">Kayıt Ol</a>
+
+</p>
                             </div>
                         </div>
                     </div>

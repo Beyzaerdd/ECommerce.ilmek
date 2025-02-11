@@ -50,7 +50,12 @@
                             <input asp-for="Password" class="form-control border-primary" type="password" placeholder="Şifrenizi girin">
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
-
+                            <div class="mb-3">
+                                <label asp-for="IdentityNumber" class="form-label text-secondary">Kimlik Numarası</label>
+                                <input asp-for="IdentityNumber" class="form-control border-primary" placeholder="Kimlik numaranızı girin">
+                                <span asp-validation-for="IdentityNumber" class="text-danger"></span>
+                            </div>
+                            
                         <button type="button" class="btn btn-primary" onclick="nextStep(2)">İleri</button>
                     </div>
 
@@ -68,32 +73,25 @@
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="IdentityNumber" class="form-label text-secondary">Kimlik Numarası</label>
-                            <input asp-for="IdentityNumber" class="form-control border-primary" placeholder="Kimlik numaranızı girin">
-                            <span asp-validation-for="IdentityNumber" class="text-danger"></span>
-                        </div>
-
-                        <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Geri</button>
-                        <button type="button" class="btn btn-primary" onclick="nextStep(3)">İleri</button>
-                    </div>
-
-                        <!-- Step 2: Mağaza Bilgileri -->
-                        <div id="step3" style="display: none;">
                             <div class="mb-3">
                                 <label asp-for="Address" class="form-label text-secondary">Adres </label>
                                 <input asp-for="Address" class="form-control border-primary" placeholder="Adresinizi girin">
                                 <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>  
+                            <div class="mb-3">
+                                <label asp-for="WeeklyOrderLimit" class="form-label text-secondary">Haftalık Sipariş Limiti </label>
+                                <input asp-for="WeeklyOrderLimit" class="form-control border-primary" placeholder="Haftalık Sipariş Limiti">
+                                <span asp-validation-for="WeeklyOrderLimit" class="text-danger"></span>
                             </div>
 
-                        
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Geri</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(3)">İleri</button>
+                    </div>
 
-                            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Geri</button>
-                            <button type="button" class="btn btn-primary" onclick="nextStep(4)">İleri</button>
-                        </div>
+                       
 
                     <!-- Step 3: Özet & Onay -->
-                    <div id="step4" style="display: none;">
+                    <div id="step3" style="display: none;">
                         <h3 class="text-success mb-3">Özet:</h3>
                         <ul id="summary" class="text-left text-dark"></ul>
 
@@ -110,8 +108,8 @@
             document.getElementById('step' + (step - 1)).style.display = 'none';
             document.getElementById('step' + step).style.display = 'block';
 
-            if (step === 4) {
-                // Özet kısmını güncelle
+            if (step === 3) {
+              
                 updateSummary();
             }
         }
@@ -131,6 +129,7 @@
             summary.innerHTML += `<li><strong>Telefon:</strong> ${document.getElementById('PhoneNumber').value}</li>`;
                 summary.innerHTML += `<li><strong>Kimlik Numarası:</strong> ${document.getElementById('IdentityNumber').value}</li>`;
                 summary.innerHTML += `<li><strong>Adres:</strong> ${document.getElementById('Adress').value}</li>`;
+                summary.innerHTML += `<li><strong>HaftalıkSiparişLimiti:</strong> ${document.getElementById('WeeklyOrderLimit').value}</li>`;
               
           
         }

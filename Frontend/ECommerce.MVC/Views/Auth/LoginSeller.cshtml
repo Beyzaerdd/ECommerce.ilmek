@@ -33,7 +33,7 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <a asp-action="ForgotPassword" class="float-end text-muted text-unline-dashed ms-1">Şifremi unuttum</a>
+                                            <a href="/Auth/ForgotPassword" class="float-end text-muted text-unline-dashed ms-1">Şifremi Unuttum</a>
                                             <label asp-for="Password" class="form-label"></label>
                                             <input asp-for="Password" class="form-control" type="password" placeholder="Şifrenizi girin">
                                             <span asp-validation-for="Password" class="text-danger"></span>
@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
 
-                                <p class="text-danger text-center">Hesabınız yok mu? <a asp-controller="Auth"  asp-action="RegisterSeller" method="post" class="text-dark fw-bold ms-1">Kayıt Ol</a></p>
+                                <p class="text-danger text-center">Hesabınız yok mu?  <a href="/Auth/RegisterSeller" class="text-dark fw-bold ms-1">Kayıt Ol</a></p>
                             </div>
                         </div>
                     </div>

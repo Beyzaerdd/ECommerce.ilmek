@@ -32,7 +32,7 @@ ErrorMessage = "Şifre en az bir büyük harf, bir küçük harf, bir rakam ve b
      
 
         [Required(ErrorMessage = "Telefon numarası alanı boş bırakılamaz.")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage = "Kimlik numarası 11 haneli olmalıdır.")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "Telefon Numarası 11 haneli olmalıdır.")]
         [Phone(ErrorMessage = "Geçerli bir telefon numarası girin.")]
         [JsonPropertyName("phonenumber")]
         public string PhoneNumber { get; set; }
@@ -47,5 +47,11 @@ ErrorMessage = "Şifre en az bir büyük harf, bir küçük harf, bir rakam ve b
         [Required(ErrorMessage = "Mağaza adı alanı boş bırakılamaz.")]
         [JsonPropertyName("storename")]
         public string StoreName { get; set; }
+
+        [Required(ErrorMessage = "Haftalık sipariş alanı boş bırakılamaz.")]
+        [JsonPropertyName("weeklyorderlimit")]
+        [Range(0, 20, ErrorMessage = "Haftalık sipariş limiti 20'den fazla olamaz.")]
+        public int WeeklyOrderLimit { get; set; }
+    
     }
 }

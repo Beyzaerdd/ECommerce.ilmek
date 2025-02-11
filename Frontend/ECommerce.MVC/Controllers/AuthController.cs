@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace ECommerce.MVC.Controllers
 {
-  
+   
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
@@ -28,30 +28,31 @@ namespace ECommerce.MVC.Controllers
         {
             return View();
         }
-        [HttpGet]
+    
         public async Task<IActionResult> LoginSeller()
         {
             return View();
         }
 
-        [HttpGet]
+      
         public async Task<IActionResult> RegisterSeller()
         {
             return View();
         }
-        [HttpGet]
+    
         public async Task<IActionResult> RegisterUser()
         {
             return View();
         }
 
-        [HttpGet]
 
         public async Task<IActionResult> ForgotPassword()
         {
             return View();
         }
-        [HttpGet("ResetPassword")]
+
+
+      
         public IActionResult ResetPassword(string token, string email)
         {
             if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
@@ -259,7 +260,7 @@ namespace ECommerce.MVC.Controllers
                 {
                     _toaster.AddSuccessToastMessage("Mağazanız başarıyla oluşturulmuştur. Onaylandıktan sonra size bir e-posta gönderilecektir.");
 
-                    return Redirect("/Auth/LoginSeller");
+                    return RedirectToAction("RegistrationSuccess");
 
                 }
 

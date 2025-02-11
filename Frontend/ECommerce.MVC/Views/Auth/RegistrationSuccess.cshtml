@@ -3,22 +3,28 @@
     Layout = "_EmptyLayout";
 }
 
-<body class="d-flex justify-content-center align-items-center h-100 mt-10 bg-light">
-    <div class="container text-center">
-        <!-- Success Icon -->
+<body class="d-flex justify-content-center align-items-center h-100 mt-10 bg-gradient">
+    <div class="container text-center p-5 rounded shadow-lg" style="background: #fff; max-width: 500px;">
+        <!-- Success Icon with Emoji -->
         <div class="mb-6">
-            <i class="fas fa-check-circle fa-7x text-success"></i> <!-- İkon boyutunu büyüttüm -->
+            <i class="fas fa-check-circle fa-8x text-success animated bounceIn"></i> 
+            <span class="fs-2 text-success" style="font-size: 48px;"></span> 
         </div>
 
         <!-- Success Message -->
-        <h1 class="fw-bold fs-48 text-success mb-4" style="font-size: 48px;">KAYDINIZ BAŞARIYLA TAMAMLANDI!</h1> <!-- Başlık boyutunu büyüttüm -->
-        <p class="fs-40 text-muted mb-4" style="font-size: 28px;">
-            Onay maili geldikten sonra satıcı panelinize giriş yaparak mağaza ayarlarınızı tamamlayabilirsiniz.
-        </p>
-
+        <h1 class="fw-bold fs-40 text-success mb-4" style="font-size: 48px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);">
+            KAYDINIZ BAŞARIYLA TAMAMLANDI! 🎉
+        </h1> <!-- Başlığa emoji ekledik -->
+        <p class="fs-40 text-muted mb-4" style="font-size: 28px; line-height: 1.5; color: #555;">
+            Onay maili geldikten sonra satıcı panelinize giriş yaparak mağaza ayarlarınızı tamamlayabilirsiniz. 🚀
+        </p> <!-- Metne emoji ekledik -->
         <!-- Ana Sayfaya Dön Butonu -->
-        <a asp-controller="Home" asp-action="Index" class="btn btn-success btn-lg mt-3">Ana Sayfaya Dön</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-success btn-lg mt-3 shadow-lg hover-zoom">
+            Ana Sayfaya Dön 🏠
+        </a> <!-- Butona emoji ekledik -->
     </div>
 </body>
+
+
 
 
