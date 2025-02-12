@@ -94,6 +94,12 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
-        
+        [HttpGet("getCategoriesByParent")]
+        public async Task<IActionResult> getcaGetCategoriesByParent()
+        {
+            var response = await _categoryService.GetCategoriesByParent();
+            return CreateResponse(response);
+        }
+
     }
 }

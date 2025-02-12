@@ -24,8 +24,8 @@ namespace ECommerce.Business.Abstract
             Task<ResponseDTO<CategoryDTO>> GetCategoryByIdAsync(int id);
             Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetAllCategoriesAsync();
             Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetCategoriesByParentIdAsync(int? parentId);
-
-           Task<ResponseDTO<int>> GetCategoryCountAsync(bool? isActive);
+           Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetCategoriesByParent();
+        Task<ResponseDTO<int>> GetCategoryCountAsync(bool? isActive);
            Task<ResponseDTO<int>> GetCategoryCountAsync();
             Task<ResponseDTO<bool>> AnyCategoryAsync(Expression<Func<Category, bool>> predicate);
         }

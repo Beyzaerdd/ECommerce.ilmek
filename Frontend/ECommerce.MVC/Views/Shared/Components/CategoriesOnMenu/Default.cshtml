@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ECommerce.MVC.Models.CategoryModels.CategoryModel>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-3 col-lg-2">
+            <div class="header__logo">
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="~/ui/img/logo.png" alt="Logo">
+                </a>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-7">
+            <nav class="header__menu">
+                <ul>
+                    @foreach (var category in Model)
+                    {
+                        <li>
+                            <a asp-controller="Shop" asp-action="Index" asp-route-categoryId="@category.Id">
+                                @category.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="canvas__open">
+        <i class="fa fa-bars"></i>
+    </div>
+</div>

@@ -164,7 +164,7 @@ namespace ECommerce.Business.Concrete
             try
             {
 
-                var categories = await unitOfWork.GetRepository<Category>().GetAllAsync(includes: query=>query.Include(p=>p.Products).Include(p=>p.SubCategories));
+                var categories = await unitOfWork.GetRepository<Category>().GetAllAsync(includes: query => query.Include(p => p.Products).Include(p => p.SubCategories));
 
                 if (categories == null || !categories.Any())
                 {
@@ -292,7 +292,17 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<bool>.Success(any, HttpStatusCode.OK);
         }
 
+     public async   Task<ResponseDTO<IEnumerable<CategoryDTO>>> GetCategoriesByParent()
+        {
+            var categories = await unitOfWork.GetRepository<Category>().GetAllAsync(x => x.ParentCategoryId == null || x.ParentCategoryId == 0);
+
+            var result=mapper.Map<IEnumerable<CategoryDTO>>(categories);
+            return ResponseDTO<IEnumerable<CategoryDTO>>.Success(result, HttpStatusCode.OK);
+
+
+      }
 
     }
 
 }
+
