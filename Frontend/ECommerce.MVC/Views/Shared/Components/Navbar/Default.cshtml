@@ -1,0 +1,64 @@
+﻿@using System.Security.Claims
+
+<!-- Font Awesome for icons -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-3 col-lg-2">
+            <div class="header__logo">
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="~/ui/img/logo.png" alt="Logo">
+                </a>
+            </div>
+        </div>
+        @await Component.InvokeAsync("CategoriesOnMenu")
+
+        <div class="col-lg-3">
+            <div class="header__right">
+                <div class="header__right__auth">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="dropdown">
+                            <button class="site-btn btn-outline-secondary rounded-circle p-2" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User Menu" title="Hesap">
+                                <i class="fa fa-user"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="fa fa-user me-2"></i> Profile</a></li>
+                                <li><a class="dropdown-item" asp-controller="Order" asp-action="Index"><i class="fa fa-shopping-cart me-2"></i> Siparişlerim</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form asp-controller="Auth" asp-action="Logout" method="post" class="d-flex">
+                                        <button type="submit" class="dropdown-item text-danger w-100"><i class="fa fa-sign-out-alt me-2"></i> Çıkış Yap</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="/Auth/LoginUser">Login</a>
+                         <a href="/Auth/RegisterUser">Register</a>
+                    }
+                </div>
+                <ul class="header__right__widget">
+                  
+                    <li>
+                        <a href="#">
+                            <span class="icon_heart_alt"></span>
+                            <div class="tip">2</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon_bag_alt"></span>
+                            <div class="tip">2</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="canvas__open">
+        <i class="fa fa-bars"></i>
+    </div>
+</div>
