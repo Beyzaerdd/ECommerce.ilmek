@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Shared.ComplexTypes;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -64,9 +65,22 @@ namespace ECommerce.API.Controllers
             var response = await _productService.GetProductByIdAsync(id);
             return CreateResponse(response);
         }
+        [HttpGet("colors")]
+        public ActionResult<List<ProductColor>> GetColors()
+        {
+            var colors = _productService.GetAvailableColors();
+            return Ok(colors);
+        }
+
+ 
+        [HttpGet("sizes")]
+        public ActionResult<List<ProductSize>> GetSizes()
+        {
+            var sizes = _productService.GetAvailableSizes();
+            return Ok(sizes);
+        }
 
 
-   
         [HttpGet("getall")]
     
         public async Task<IActionResult> GetAllProducts()

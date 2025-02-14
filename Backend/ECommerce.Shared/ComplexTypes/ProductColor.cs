@@ -10,36 +10,36 @@ namespace ECommerce.Shared.ComplexTypes
     public enum ProductColor
     {
         [Display(Name = "Siyah")]
-        Black = 1,
+        Siyah = 1,
 
         [Display(Name = "Beyaz")]
-        White = 2,
+        Beyaz = 2,
 
         [Display(Name = "Kırmızı")]
-        Red = 3,
+        Kırmızı = 3,
 
         [Display(Name = "Mavi")]
-        Blue = 4,
+        Mavi = 4,
 
         [Display(Name = "Yeşil")]
-        Green = 5,
+        Yeşil = 5,
 
         [Display(Name = "Sarı")]
-        Yellow = 6,
+        Sarı = 6,
 
         [Display(Name = "Pembe")]
-        Pink = 7,
+        Pembe = 7,
 
         [Display(Name = "Turuncu")]
-        Orange = 8,
+        Turuncu = 8,
 
         [Display(Name = "Mor")]
-        Purple = 9,
+        Mor = 9,
 
         [Display(Name = "Gri")]
-        Gray = 10,
+        Gri = 10,
 
         [Display(Name = "Kahverengi")]
-        Brown = 11
+        Kahverengi = 11
     }
 }

@@ -161,7 +161,7 @@ namespace ECommerce.Data.Concrete.Context
              
               ImageUrl = "https://example.com/images/silk-blouse.jpg",
               AvailableSizes=new List<ProductSize>() { ProductSize.BirBeden, ProductSize.İkiBeden},
-              AvailableColors=new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown}
+              AvailableColors=new List<ProductColor>() { ProductColor.Pembe, ProductColor.Kahverengi}
           },
           new Product
           {
@@ -178,7 +178,7 @@ namespace ECommerce.Data.Concrete.Context
            
               ImageUrl = "https://example.com/images/mens-casual-shirt.jpg",
               AvailableSizes = new List<ProductSize>() { ProductSize.BirBeden, ProductSize.İkiBeden },
-              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
+              AvailableColors = new List<ProductColor>() { ProductColor.Mor, ProductColor.Siyah }
 
           },
           new Product
@@ -196,7 +196,7 @@ namespace ECommerce.Data.Concrete.Context
            
               ImageUrl = "https://example.com/images/baby-pajamas.jpg",
               AvailableSizes = new List<ProductSize>() { ProductSize.BirBeden, ProductSize.İkiBeden },
-              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
+              AvailableColors = new List<ProductColor>() { ProductColor.Mavi, ProductColor.Siyah }
           },
           new Product
           {
@@ -213,7 +213,7 @@ namespace ECommerce.Data.Concrete.Context
        
               ImageUrl = "https://example.com/images/baby-shoes.jpg",
               AvailableSizes = new List<ProductSize>() { ProductSize.BirBeden, ProductSize.İkiBeden },
-              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
+              AvailableColors = new List<ProductColor>() { ProductColor.Yeşil, ProductColor.Beyaz }
           },
           new Product
           {
@@ -230,7 +230,7 @@ namespace ECommerce.Data.Concrete.Context
 
               ImageUrl = "https://example.com/images/home-blanket.jpg",
                 AvailableSizes = new List<ProductSize>() { ProductSize.None},
-              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
+              AvailableColors = new List<ProductColor>() { ProductColor.Yeşil, ProductColor.Beyaz }
           },
           new Product
           {
@@ -247,7 +247,7 @@ namespace ECommerce.Data.Concrete.Context
    
               ImageUrl = "https://example.com/images/home1-blanket.jpg",
               AvailableSizes = new List<ProductSize>() { ProductSize.None },
-              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
+              AvailableColors = new List<ProductColor>() { ProductColor.Pembe, ProductColor.Mor }
           },
 
           new Product
@@ -265,7 +265,7 @@ namespace ECommerce.Data.Concrete.Context
    
               ImageUrl = "https://example.com/images/home-furniture-set.jpg",
               AvailableSizes = new List<ProductSize>() { ProductSize.None },
-              AvailableColors = new List<ProductColor>() { ProductColor.Pink, ProductColor.Brown }
+              AvailableColors = new List<ProductColor>() { ProductColor.Kahverengi, ProductColor.Kırmızı }
           }
       );
 

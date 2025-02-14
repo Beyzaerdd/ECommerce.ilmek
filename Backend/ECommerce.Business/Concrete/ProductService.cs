@@ -2,6 +2,7 @@
 using ECommerce.Business.Abstract;
 using ECommerce.Data.Abstract;
 using ECommerce.Entity.Concrete;
+using ECommerce.Shared.ComplexTypes;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using ECommerce.Shared.Extensions;
@@ -456,5 +457,16 @@ namespace ECommerce.Business.Concrete
             var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
             return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
         }
+
+        public List<ProductColor> GetAvailableColors()
+        {
+            // Enum.GetValues ile enum'un tüm değerlerini alıyoruz
+            return new List<ProductColor>((ProductColor[])Enum.GetValues(typeof(ProductColor)));
+        }
+        public List<ProductSize> GetAvailableSizes()
+        {
+            // Enum.GetValues ile enum'un tüm değerlerini alıyoruz
+            return new List<ProductSize>((ProductSize[])Enum.GetValues(typeof(ProductSize)));
+        } 
     }
 }

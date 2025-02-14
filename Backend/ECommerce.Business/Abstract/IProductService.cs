@@ -1,4 +1,5 @@
-﻿using ECommerce.Shared.DTOs.ProductDTOs;
+﻿using ECommerce.Shared.ComplexTypes;
+using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,9 @@ namespace ECommerce.Business.Abstract
         Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(int categoryId,List<int>? productSizes, List<int>? productColors, decimal? minPrice, decimal? maxPrice);
 
         Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId);
+
+        public List<ProductColor> GetAvailableColors();
+        public List<ProductSize> GetAvailableSizes();
 
 
     }
