@@ -1,6 +1,6 @@
 ﻿@using System.Security.Claims
 
-<!-- Font Awesome for icons -->
+
 
 <div class="container-fluid">
     <div class="row">
@@ -13,11 +13,12 @@
         </div>
         @await Component.InvokeAsync("CategoriesOnMenu")
 
-        <div class="col-lg-3">
-            <div class="header__right">
-                <div class="header__right__auth">
+                <div class="col-lg-3">
+    <div class="header__right">
+        <ul class="header__right__widget d-flex align-items-center gap-3">
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <!-- Kullanıcı Girişi Yapıldıysa -->
                         <div class="dropdown">
                             <button class="site-btn btn-outline-secondary rounded-circle p-2" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User Menu" title="Hesap">
                                 <i class="fa fa-user"></i>
@@ -36,29 +37,47 @@
                     }
                     else
                     {
-                        <a href="/Auth/LoginUser">Login</a>
-                         <a href="/Auth/RegisterUser">Register</a>
+                        <!-- Üye Girişi Butonu -->
+                        <div class="dropdown">
+                            <button class="site-btn btn-outline-secondary rounded-circle p-2" type="button" id="userLoginDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Üye Girişi">
+                                <i class="fa fa-user"></i>
+                                <span class="d-none">Üye Girişi</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userLoginDropdown">
+                                <li><a class="dropdown-item" href="/Auth/LoginUser"><i class="fa fa-sign-in-alt me-2"></i> Giriş Yap</a></li>
+                                <li><a class="dropdown-item" href="/Auth/RegisterUser"><i class="fa fa-user-plus me-2"></i> Kayıt Ol</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Mağaza Girişi Butonu -->
+                        <div class="dropdown">
+                            <button class="site-btn btn-outline-secondary rounded-circle p-2" type="button" id="storeLoginDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Mağaza Girişi">
+                                <i class="fa fa-home"></i>
+                                <span class="d-none">Mağaza Girişi</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="storeLoginDropdown">
+                                <li><a class="dropdown-item" href="/Auth/LoginSeller"><i class="fa fa-sign-in-alt me-2"></i> Mağaza Girişi</a></li>
+                                <li><a class="dropdown-item" href="/Auth/RegisterSeller"><i class="fa fa-user-plus me-2"></i> Mağaza Kayıt Ol</a></li>
+                            </ul>
+                        </div>
                     }
-                </div>
-                <ul class="header__right__widget">
-                  
-                    <li>
-                        <a href="#">
-                            <span class="icon_heart_alt"></span>
-                            <div class="tip">2</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="icon_bag_alt"></span>
-                            <div class="tip">2</div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+
+            <!-- Favoriler -->
+            <li>
+                <a href="/Favorites">
+                            <span class="icon_heart_alt" style="font-size: 1.45em; color: black;"></span>
+                    
+                </a>
+            </li>
+
+            <!-- Sepet -->
+            <li>
+                <a href="/Cart">
+                            <span class="icon_bag_alt" style=" font-size: 1.45em; color: black;"></span>
+                   
+                </a>
+            </li>
+        </ul>
     </div>
-    <div class="canvas__open">
-        <i class="fa fa-bars"></i>
-    </div>
+
 </div>

@@ -5,14 +5,12 @@
         <div class="col-xl-6 col-lg-7">
             <nav class="header__menu">
                 <ul>
-                    @foreach (var category in Model)
-                    {
-                        <li>
-                            <a asp-controller="Shop" asp-action="Index" asp-route-categoryId="@category.Id">
-                                @category.Name
-                            </a>
-                        </li>
-                    }
+            @foreach (var category in Model)
+            {
+                <li>
+                    <a href="/shop/index?categoryId=@category.Id">@category.Name</a>
+                </li>
+            }
                 </ul>
             </nav>
         </div>

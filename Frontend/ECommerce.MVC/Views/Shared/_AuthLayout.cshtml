@@ -14,7 +14,7 @@
         <meta name="description" content="A fully responsive premium admin dashboard template" />
         <meta name="author" content="Techzaa" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="~/Admin/larkon/admin/assets/images/favicon.ico">
 
@@ -26,10 +26,11 @@
 
         <!-- App css (Require in all Page) -->
         <link href="~/Admin/larkon/admin/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
         <!-- Toastr CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
         <!-- Theme Config js (Require in all Page) -->
-        <script src="~/Admin/larkon/admin/assets/js/config.js"></script>
+    
     </head>
 
 </head>
@@ -55,7 +56,7 @@
 
     <!-- App Javascript (Require in all Page) -->
     <script src="~/Admin/larkon/admin/assets/js/app.js"></script>
-
+    <script src="~/Admin/larkon/admin/assets/js/config.js"></script>
     @RenderSection("Scripts", required: false)
     <script>
         $(document).ready(function () {

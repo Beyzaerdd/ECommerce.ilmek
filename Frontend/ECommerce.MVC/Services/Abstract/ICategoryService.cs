@@ -10,7 +10,7 @@ namespace ECommerce.MVC.Services.Abstract
 
         Task<ResponseViewModel<CategoryModel>> GetCategoryByIdAsync(int id);
 
-        Task<ResponseViewModel<CategoryModel>> GetCategoriesByParentIdAsync(int? parentId);
+        Task<ResponseViewModel<List<CategoryModel>>> GetCategoriesByParentIdAsync(int? parentId);
         Task<ResponseViewModel<int>> GetCategoryCountAsync();
         Task<ResponseViewModel<IEnumerable<CategoryModel>>> GetCategoriesByParent();
 

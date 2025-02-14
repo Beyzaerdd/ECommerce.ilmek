@@ -7,15 +7,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\ForgotPasswordTemplate.liquid" />
     <None Remove="Templates\InvoiceMailTemplate.liquid" />
     <None Remove="Templates\OrderMailTemplate.liquid" />
+    <None Remove="Templates\OrderStatusUpdateMailTemplate.liquid" />
+    <None Remove="Templates\RegisterTemplate.liquid" />
+    <None Remove="Templates\SellerApprovalTemplate.liquid" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Templates\ForgotPasswordTemplate.liquid">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\InvoiceMailTemplate.liquid">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\OrderMailTemplate.liquid">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\OrderStatusUpdateMailTemplate.liquid">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\RegisterTemplate.liquid">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SellerApprovalTemplate.liquid">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

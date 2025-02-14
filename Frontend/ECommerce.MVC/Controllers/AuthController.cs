@@ -228,6 +228,8 @@ namespace ECommerce.MVC.Controllers
                         });
 
                     _toaster.AddSuccessToastMessage("Satıcı girişi başarıyla tamamlandı.");
+
+                    //TODO dashboardda yönlendirilecek
                     return RedirectToAction("Index", "Home");
                 }
 
