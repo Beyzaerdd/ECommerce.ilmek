@@ -27,7 +27,7 @@ using NToastNotify;
                 return View(new List<ProductModel>());
             }
 
-            // Renkler ve bedenler için veri al
+      
             var colorsResponse = await _productService.GetAvailableColorsAsync();
             var sizesResponse = await _productService.GetAvailableSizesAsync();
 
@@ -37,7 +37,7 @@ using NToastNotify;
                 return View(new List<ProductModel>());
             }
 
-            // Renkler ve bedenler verisini View'a ilet
+    
             ViewBag.Colors = colorsResponse.Data;
             ViewBag.Sizes = sizesResponse.Data;
 

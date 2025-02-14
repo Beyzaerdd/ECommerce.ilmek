@@ -460,12 +460,11 @@ namespace ECommerce.Business.Concrete
 
         public List<ProductColor> GetAvailableColors()
         {
-            // Enum.GetValues ile enum'un tüm değerlerini alıyoruz
             return new List<ProductColor>((ProductColor[])Enum.GetValues(typeof(ProductColor)));
         }
         public List<ProductSize> GetAvailableSizes()
         {
-            // Enum.GetValues ile enum'un tüm değerlerini alıyoruz
+       
             return new List<ProductSize>((ProductSize[])Enum.GetValues(typeof(ProductSize)));
         } 
     }

@@ -16,14 +16,14 @@ namespace ECommerce.MVC.Services.Concrete
 
         public async Task<ResponseViewModel<IEnumerable<ProductColor>>> GetAvailableColorsAsync()
         {
-            var client = GetHttpClient();  // HTTP Client'ı al
+            var client = GetHttpClient();  
 
             try
             {
-                // API'ye GET isteği gönder
+               
                 var response = await client.GetAsync("products/colors");
 
-                // Yanıtın başarılı olup olmadığını kontrol et
+               
                 if (!response.IsSuccessStatusCode)
                 {
                     return new ResponseViewModel<IEnumerable<ProductColor>>
@@ -36,10 +36,10 @@ namespace ECommerce.MVC.Services.Concrete
                     };
                 }
 
-                // API'den gelen yanıtı string olarak al
+          
                 var responseBody = await response.Content.ReadAsStringAsync();
 
-                // Gelen verinin boş olup olmadığını kontrol et
+           
                 if (string.IsNullOrEmpty(responseBody))
                 {
                     return new ResponseViewModel<IEnumerable<ProductColor>>
@@ -52,10 +52,10 @@ namespace ECommerce.MVC.Services.Concrete
                     };
                 }
 
-                // JSON verisini modelle eşle
+      
                 var colors = JsonSerializer.Deserialize<IEnumerable<ProductColor>>(responseBody);
 
-                // Eğer deserialization başarısız olursa, hata mesajı döndür
+       
                 if (colors == null)
                 {
                     return new ResponseViewModel<IEnumerable<ProductColor>>
@@ -68,7 +68,7 @@ namespace ECommerce.MVC.Services.Concrete
                     };
                 }
 
-                // Başarılı sonuç
+         
                 return new ResponseViewModel<IEnumerable<ProductColor>>
                 {
                     IsSucceeded = true,
@@ -77,7 +77,7 @@ namespace ECommerce.MVC.Services.Concrete
             }
             catch (Exception ex)
             {
-                // Beklenmedik bir hata durumunda
+               
                 return new ResponseViewModel<IEnumerable<ProductColor>>
                 {
                     IsSucceeded = false,
@@ -89,17 +89,17 @@ namespace ECommerce.MVC.Services.Concrete
             }
         }
 
-        // Bedenleri döndüren servis metodu
+      
         public async Task<ResponseViewModel<IEnumerable<ProductSize>>> GetAvailableSizesAsync()
         {
-            var client = GetHttpClient();  // HTTP Client'ı al
+            var client = GetHttpClient();  
 
             try
             {
-                // API'ye GET isteği gönder
+            
                 var response = await client.GetAsync("products/sizes");
 
-                // Yanıtın başarılı olup olmadığını kontrol et
+              
                 if (!response.IsSuccessStatusCode)
                 {
                     return new ResponseViewModel<IEnumerable<ProductSize>>
@@ -112,10 +112,10 @@ namespace ECommerce.MVC.Services.Concrete
                     };
                 }
 
-                // API'den gelen yanıtı string olarak al
+            
                 var responseBody = await response.Content.ReadAsStringAsync();
 
-                // Gelen verinin boş olup olmadığını kontrol et
+             
                 if (string.IsNullOrEmpty(responseBody))
                 {
                     return new ResponseViewModel<IEnumerable<ProductSize>>
@@ -128,10 +128,10 @@ namespace ECommerce.MVC.Services.Concrete
                     };
                 }
 
-                // JSON verisini modelle eşle
+       
                 var sizes = JsonSerializer.Deserialize<IEnumerable<ProductSize>>(responseBody);
 
-                // Eğer deserialization başarısız olursa, hata mesajı döndür
+             
                 if (sizes == null)
                 {
                     return new ResponseViewModel<IEnumerable<ProductSize>>
@@ -144,7 +144,7 @@ namespace ECommerce.MVC.Services.Concrete
                     };
                 }
 
-                // Başarılı sonuç
+            
                 return new ResponseViewModel<IEnumerable<ProductSize>>
                 {
                     IsSucceeded = true,
@@ -153,7 +153,7 @@ namespace ECommerce.MVC.Services.Concrete
             }
             catch (Exception ex)
             {
-                // Beklenmedik bir hata durumunda
+            
                 return new ResponseViewModel<IEnumerable<ProductSize>>
                 {
                     IsSucceeded = false,
@@ -290,7 +290,7 @@ namespace ECommerce.MVC.Services.Concrete
         {
             var client = GetHttpClient();
 
-            var url = $"products/filterProducts?categoryId={categoryId}"; // Başlangıç URL'i
+            var url = $"products/filterProducts?categoryId={categoryId}";
 
             if (selectedSizes != null && selectedSizes.Any())
             {
@@ -313,14 +313,14 @@ namespace ECommerce.MVC.Services.Concrete
                 url += $"&maxPrice={maxPrice.Value}";
             }
 
-            _logger.LogInformation($"API Request: {client.BaseAddress}{url}"); // Loglama (ÇOK ÖNEMLİ)
+            _logger.LogInformation($"API Request: {client.BaseAddress}{url}"); 
 
             var response = await client.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                _logger.LogError($"API Error: {response.StatusCode} - {errorContent}"); // Detaylı loglama
+                _logger.LogError($"API Error: {response.StatusCode} - {errorContent}"); 
 
                 return new ResponseViewModel<IEnumerable<ProductModel>>
                 {
@@ -330,12 +330,11 @@ namespace ECommerce.MVC.Services.Concrete
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<ResponseViewModel<IEnumerable<ProductModel>>>(responseBody, _jsonSerializerOptions); // _jsonSerializerOptions kullandığınızdan emin olun
+            var result = JsonSerializer.Deserialize<ResponseViewModel<IEnumerable<ProductModel>>>(responseBody, _jsonSerializerOptions); 
 
             if (result == null || !result.IsSucceeded)
             {
-                _logger.LogError($"Deserialization Error: {responseBody}"); // JSON'ı logla
-
+                _logger.LogError($"Deserialization Error: {responseBody}"); 
                 return new ResponseViewModel<IEnumerable<ProductModel>>
                 {
                     IsSucceeded = false,
