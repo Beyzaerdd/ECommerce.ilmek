@@ -19,8 +19,7 @@ namespace ECommerce.MVC.Services.Abstract
         Task<ResponseViewModel<int>> getCountByCategory(int? categoryId);
         Task<ResponseViewModel<IEnumerable<ProductModel>>> GetCategoriesByParent();
 
-        Task<ResponseViewModel<IEnumerable<EnumResponseModel>>> GetAvailableColorsAsync();
-        Task<ResponseViewModel<IEnumerable<EnumResponseModel>>> GetAvailableSizesAsync();
+       
         Task<ResponseViewModel<IEnumerable<ProductModel>>> FilterProducts(
         int categoryId,
         List<int>? selectedSizes,
