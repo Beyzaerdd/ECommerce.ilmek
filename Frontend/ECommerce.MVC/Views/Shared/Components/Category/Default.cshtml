@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ECommerce.MVC.Models.CategoryModels.CategoryModel>
+
+    <section class="categories">
+    <div class="container-fluid">
+        <div class="row">
+            @if (Model != null && Model.Any())
+            {
+                var firstCategory = Model.First();
+                var otherCategories = Model.Skip(1);
+
+           
+                <div class="col-lg-6 p-0">
+                    <div class="categories__item categories__large__item set-bg" data-setbg="ui/img/categories/category-1.jpg">
+                     @*    @firstCategory.ImageUrl *@
+                        <div class="categories__text">
+                            <h1>@firstCategory.Name</h1>
+                         @*    <p>@firstCategory.ProductCount items</p> *@
+                            <a asp-controller="Shop" asp-action="Index" asp-route-categoryId="@firstCategory.Id">Shop now</a>
+                        </div>
+                    </div>
+                </div>
+
+         
+
+                <div class="col-lg-6">
+                    <div class="row">
+                        @foreach (var category in otherCategories)
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                                <div class="categories__item set-bg" data-setbg="ui/img/categories/category-2.jpg">
+                           @*          @category.ImageUrl *@
+                                    <div class="categories__text">
+                                        <h4>@category.Name</h4>
+                                   @*      <p>@category.ProductCount items</p> *@
+                                        <a asp-controller="Shop" asp-action="Index" asp-route-categoryId="@category.Id">Shop now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-center">Kategori bulunamadı.</p>
+            }
+        </div>
+    </div>
+</section>
+

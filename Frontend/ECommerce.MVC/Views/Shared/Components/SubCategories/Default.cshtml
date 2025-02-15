@@ -1,0 +1,19 @@
+﻿@model List<ECommerce.MVC.Models.CategoryModels.CategoryModel>
+
+@if (Model != null && Model.Any())
+
+{
+    <ul>
+        @foreach (var category in Model)
+
+        {
+            <li><a href="/Shop/index?categoryId=@category.Id">@category.Name</a></li>
+        }
+    </ul>
+}
+
+else
+
+{
+   
+}

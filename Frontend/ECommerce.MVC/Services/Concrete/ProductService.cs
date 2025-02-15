@@ -1,7 +1,10 @@
-﻿using ECommerce.MVC.Models.ProductModels;
+﻿
+using ECommerce.MVC.Models.EnumResponseModels;
+using ECommerce.MVC.Models.ProductModels;
 using ECommerce.MVC.Services.Abstract;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
 using ECommerce.Shared.ComplexTypes;
+using System.Globalization;
 using System.Text.Json;
 
 namespace ECommerce.MVC.Services.Concrete
@@ -14,71 +17,55 @@ namespace ECommerce.MVC.Services.Concrete
         }
         private readonly ILogger<ProductService> _logger;
 
-        public async Task<ResponseViewModel<IEnumerable<ProductColor>>> GetAvailableColorsAsync()
+        private async Task<ResponseViewModel<IEnumerable<EnumResponseModel>>> GetEnumDataAsync(string endpoint)
         {
-            var client = GetHttpClient();  
+            var client = GetHttpClient();
 
             try
             {
-               
-                var response = await client.GetAsync("products/colors");
+                var response = await client.GetAsync(endpoint);
 
-               
                 if (!response.IsSuccessStatusCode)
                 {
-                    return new ResponseViewModel<IEnumerable<ProductColor>>
+                    return new ResponseViewModel<IEnumerable<EnumResponseModel>>
                     {
                         IsSucceeded = false,
                         Errors = new List<ErrorViewModel>
                     {
-                        new ErrorViewModel { Message = "Renkler getirilirken bir hata oluştu." }
+                        new ErrorViewModel { Message = $"Veri getirilirken bir hata oluştu: {response.ReasonPhrase}" }
                     }
                     };
                 }
 
-          
                 var responseBody = await response.Content.ReadAsStringAsync();
-
-           
                 if (string.IsNullOrEmpty(responseBody))
                 {
-                    return new ResponseViewModel<IEnumerable<ProductColor>>
+                    return new ResponseViewModel<IEnumerable<EnumResponseModel>>
                     {
                         IsSucceeded = false,
                         Errors = new List<ErrorViewModel>
                     {
-                        new ErrorViewModel { Message = "API'den geçerli renk verisi alınamadı." }
+                        new ErrorViewModel { Message = "API'den geçerli veri alınamadı." }
                     }
                     };
                 }
 
-      
-                var colors = JsonSerializer.Deserialize<IEnumerable<ProductColor>>(responseBody);
+                var data = JsonSerializer.Deserialize<IEnumerable<EnumResponseModel>>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-       
-                if (colors == null)
-                {
-                    return new ResponseViewModel<IEnumerable<ProductColor>>
+                return data != null
+                    ? new ResponseViewModel<IEnumerable<EnumResponseModel>> { IsSucceeded = true, Data = data }
+                    : new ResponseViewModel<IEnumerable<EnumResponseModel>>
                     {
                         IsSucceeded = false,
                         Errors = new List<ErrorViewModel>
-                    {
-                        new ErrorViewModel { Message = "Renk verileri işlenemedi." }
-                    }
+                        {
+                        new ErrorViewModel { Message = "Veri işlenemedi." }
+                        }
                     };
-                }
-
-         
-                return new ResponseViewModel<IEnumerable<ProductColor>>
-                {
-                    IsSucceeded = true,
-                    Data = colors
-                };
             }
             catch (Exception ex)
             {
-               
-                return new ResponseViewModel<IEnumerable<ProductColor>>
+                return new ResponseViewModel<IEnumerable<EnumResponseModel>>
                 {
                     IsSucceeded = false,
                     Errors = new List<ErrorViewModel>
@@ -89,80 +76,14 @@ namespace ECommerce.MVC.Services.Concrete
             }
         }
 
-      
-        public async Task<ResponseViewModel<IEnumerable<ProductSize>>> GetAvailableSizesAsync()
+        public async Task<ResponseViewModel<IEnumerable<EnumResponseModel>>> GetAvailableColorsAsync()
         {
-            var client = GetHttpClient();  
+            return await GetEnumDataAsync("products/colors");
+        }
 
-            try
-            {
-            
-                var response = await client.GetAsync("products/sizes");
-
-              
-                if (!response.IsSuccessStatusCode)
-                {
-                    return new ResponseViewModel<IEnumerable<ProductSize>>
-                    {
-                        IsSucceeded = false,
-                        Errors = new List<ErrorViewModel>
-                    {
-                        new ErrorViewModel { Message = "Bedenler getirilirken bir hata oluştu." }
-                    }
-                    };
-                }
-
-            
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-             
-                if (string.IsNullOrEmpty(responseBody))
-                {
-                    return new ResponseViewModel<IEnumerable<ProductSize>>
-                    {
-                        IsSucceeded = false,
-                        Errors = new List<ErrorViewModel>
-                    {
-                        new ErrorViewModel { Message = "API'den geçerli beden verisi alınamadı." }
-                    }
-                    };
-                }
-
-       
-                var sizes = JsonSerializer.Deserialize<IEnumerable<ProductSize>>(responseBody);
-
-             
-                if (sizes == null)
-                {
-                    return new ResponseViewModel<IEnumerable<ProductSize>>
-                    {
-                        IsSucceeded = false,
-                        Errors = new List<ErrorViewModel>
-                    {
-                        new ErrorViewModel { Message = "Beden verileri işlenemedi." }
-                    }
-                    };
-                }
-
-            
-                return new ResponseViewModel<IEnumerable<ProductSize>>
-                {
-                    IsSucceeded = true,
-                    Data = sizes
-                };
-            }
-            catch (Exception ex)
-            {
-            
-                return new ResponseViewModel<IEnumerable<ProductSize>>
-                {
-                    IsSucceeded = false,
-                    Errors = new List<ErrorViewModel>
-                {
-                    new ErrorViewModel { Message = $"Beklenmedik bir hata oluştu: {ex.Message}" }
-                }
-                };
-            }
+        public async Task<ResponseViewModel<IEnumerable<EnumResponseModel>>> GetAvailableSizesAsync()
+        {
+            return await GetEnumDataAsync("products/sizes");
         }
     
 
@@ -170,11 +91,10 @@ namespace ECommerce.MVC.Services.Concrete
 
 
 
-
-    public async Task<ResponseViewModel<IEnumerable<ProductModel>>> GetAllProductAsync()
+    public async Task<ResponseViewModel<IEnumerable<ProductModel>>> GetAllProductAsync(int count = 8)
         {
             var client = GetHttpClient();
-            var response = await client.GetAsync("products/GetAll");
+            var response = await client.GetAsync($"products/getAll?take={count}");
             var responseBody = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
@@ -234,7 +154,7 @@ namespace ECommerce.MVC.Services.Concrete
         public async Task<ResponseViewModel<ProductModel>> GetProductByIdAsync(int id)
         {
             var client = GetHttpClient();
-            var response = await client.GetAsync($"products/GetProductById?id={id}");
+            var response = await client.GetAsync($"products/GetProductBy/{id}");
             var responseBody = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
@@ -286,65 +206,74 @@ namespace ECommerce.MVC.Services.Concrete
         }
 
         public async Task<ResponseViewModel<IEnumerable<ProductModel>>> FilterProducts(
-          int categoryId, List<int>? selectedSizes, List<int>? selectedColors, decimal? minPrice, decimal? maxPrice)
+        int categoryId, List<int>? selectedSizes, List<int>? selectedColors, decimal? minPrice, decimal? maxPrice)
         {
             var client = GetHttpClient();
 
-            var url = $"products/filterProducts?categoryId={categoryId}";
+            // Query parametrelerini liste olarak tut
+            var queryParams = new List<string> { $"categoryId={categoryId}" };
 
             if (selectedSizes != null && selectedSizes.Any())
             {
-                url += string.Join("&", selectedSizes.Select(size => $"productSizes={size}"));
+                queryParams.AddRange(selectedSizes.Select(size => $"productSizes={size}"));
             }
 
             if (selectedColors != null && selectedColors.Any())
             {
-                url += string.Join("&", selectedColors.Select(color => $"productColors={color}"));
+                queryParams.AddRange(selectedColors.Select(color => $"productColors={color}"));
             }
-
 
             if (minPrice.HasValue)
             {
-                url += $"&minPrice={minPrice.Value}";
+                queryParams.Add($"minPrice={minPrice.Value.ToString(CultureInfo.InvariantCulture)}");
             }
 
             if (maxPrice.HasValue)
             {
-                url += $"&maxPrice={maxPrice.Value}";
+                queryParams.Add($"maxPrice={maxPrice.Value.ToString(CultureInfo.InvariantCulture)}");
             }
 
-            _logger.LogInformation($"API Request: {client.BaseAddress}{url}"); 
+            // Query string oluştur
+            var url = $"products/filterProducts?{string.Join("&", queryParams)}";
+
+            _logger.LogInformation($"API Request: {client.BaseAddress}{url}");
 
             var response = await client.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                _logger.LogError($"API Error: {response.StatusCode} - {errorContent}"); 
+                _logger.LogError($"API Error: {response.StatusCode} - {errorContent}");
 
                 return new ResponseViewModel<IEnumerable<ProductModel>>
                 {
                     IsSucceeded = false,
-                    Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = $"API Error: {response.StatusCode} - {errorContent}" } }
+                    Errors = new List<ErrorViewModel>
+            {
+                new ErrorViewModel { Message = $"API Error: {response.StatusCode} - {errorContent}" }
+            }
                 };
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<ResponseViewModel<IEnumerable<ProductModel>>>(responseBody, _jsonSerializerOptions); 
+            var result = JsonSerializer.Deserialize<ResponseViewModel<IEnumerable<ProductModel>>>(
+                responseBody, _jsonSerializerOptions);
 
             if (result == null || !result.IsSucceeded)
             {
-                _logger.LogError($"Deserialization Error: {responseBody}"); 
+                _logger.LogError($"Deserialization Error: {responseBody}");
                 return new ResponseViewModel<IEnumerable<ProductModel>>
                 {
                     IsSucceeded = false,
-                    Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "Deserialization error" } }
+                    Errors = new List<ErrorViewModel>
+            {
+                new ErrorViewModel { Message = "Deserialization error" }
+            }
                 };
             }
 
             return result;
         }
-
 
     }
 }

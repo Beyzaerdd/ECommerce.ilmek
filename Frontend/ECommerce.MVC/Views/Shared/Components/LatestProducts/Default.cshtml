@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ECommerce.MVC.Models.ProductModels.ProductModel>
+
+
+@* <section class="trend spad">
+    <div class="container">
+        <div class="row">
+            <div class="section-title">
+                <h4>Yeni Gelenler</h4>
+            </div>
+             @foreach (var product in Model)
+            {
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="trend__content">
+                   
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                                <img src="@($"http://localhost:1406{product.ImageUrl}")" alt="@product.Name">
+                        </div>
+                        <div class="trend__item__text">
+                                <h6>@product.Name</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                                <div class="product__price">$ @product.UnitPrice</div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            }
+
+        </div>
+    </div>
+</section>
+ *@
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>New Products</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row property__gallery">
+
+            @foreach (var product in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="@($"http://localhost:1406{product.ImageUrl}")">
+                            <ul class="product__hover">
+                                <li><a href="@($"http://localhost:1406{product.ImageUrl}")" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">@product.Name</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ @product.UnitPrice</div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>

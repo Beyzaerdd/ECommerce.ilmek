@@ -1,12 +1,13 @@
 ﻿using ECommerce.MVC.Models.CategoryModels;
 using ECommerce.MVC.Models.ProductModels;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.MVC.Models
 {
     public class HomeIndexModel
     {
-        
-            public IEnumerable<CategoryModel> Categories { get; set; }
+        [JsonPropertyName("categories")]
+        public IEnumerable<CategoryModel> Categories { get; set; }
            
         
     }

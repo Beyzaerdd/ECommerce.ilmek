@@ -1,0 +1,105 @@
+﻿@* @model ECommerce.Models.ProductModels.ProductFilterViewModel
+@{
+    var categoryId = ViewBag.SelectedCategoryId;
+}
+
+<div class="sidebar__filter">
+    <div class="section-title">
+        <h4>Shop by price</h4>
+    </div>
+    <div class="filter-range-wrap">
+        <div class="range-slider">
+            <input type="range" id="minPriceRange" min="0" max="500" value="@Model.MinPrice" step="10" class="price-range-slider">
+            <input type="range" id="maxPriceRange" min="0" max="500" value="@Model.MaxPrice" step="10" class="price-range-slider">
+        </div>
+        <div class="price-input">
+            <span>Price:</span>
+            <input type="number" id="minPrice" name="MinPrice" value="@Model.MinPrice" readonly>
+            <input type="number" id="maxPrice" name="MaxPrice" value="@Model.MaxPrice" readonly>
+        </div>
+    </div>
+</div>
+
+<!-- Beden ve Renk Seçimi -->
+<form id="filterForm">
+    <input type="hidden" name="CategoryId" value="@categoryId" />
+
+    <div class="sidebar__sizes">
+        <div class="section-title">
+            <h4>Shop by size</h4>
+        </div>
+        <div class="size__list">
+            @foreach (var size in Model.AvailableSizes)
+            {
+                <label>
+                    @size.Text
+                    <input type="checkbox" name="SelectedSizes" value="@size.Value">
+                    <span class="checkmark"></span>
+                </label>
+            }
+        </div>
+    </div>
+
+    <div class="sidebar__color">
+        <div class="section-title">
+            <h4>Shop by color</h4>
+        </div>
+        <div class="size__list color__list">
+            @foreach (var color in Model.AvailableColors)
+            {
+                <label>
+                    @color.Text
+                    <input type="checkbox" name="SelectedColors" value="@color.Value">
+                    <span class="checkmark"></span>
+                </label>
+            }
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<!-- Fiyat Slider'ı için Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let minSlider = document.getElementById("minPriceRange");
+        let maxSlider = document.getElementById("maxPriceRange");
+        let minPrice = document.getElementById("minPrice");
+        let maxPrice = document.getElementById("maxPrice");
+
+        function updatePriceInputs() {
+            minPrice.value = minSlider.value;
+            maxPrice.value = maxSlider.value;
+        }
+
+        minSlider.addEventListener("input", updatePriceInputs);
+        maxSlider.addEventListener("input", updatePriceInputs);
+
+        document.getElementById("filterForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+            formData.append("MinPrice", minPrice.value);
+            formData.append("MaxPrice", maxPrice.value);
+
+            // Seçili bedenleri ekle
+            document.querySelectorAll("input[name='SelectedSizes']:checked").forEach(function (input) {
+                formData.append("SelectedSizes", input.value);
+            });
+
+            // Seçili renkleri ekle
+            document.querySelectorAll("input[name='SelectedColors']:checked").forEach(function (input) {
+                formData.append("SelectedColors", input.value);
+            });
+
+            var queryString = new URLSearchParams(formData).toString();
+
+            fetch('/Shop/FilteredProducts?' + queryString) // ✅ URL düzeltilmiş
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("productList").innerHTML = html;
+                });
+        });
+    });
+</script>
+ *@
