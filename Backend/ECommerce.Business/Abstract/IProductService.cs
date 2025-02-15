@@ -1,4 +1,5 @@
 ﻿using ECommerce.Shared.ComplexTypes;
+using ECommerce.Shared.DTOs.EnumDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using System;
@@ -30,8 +31,8 @@ namespace ECommerce.Business.Abstract
 
         Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId);
 
-        public List<ProductColor> GetAvailableColors();
-        public List<ProductSize> GetAvailableSizes();
+        public List<EnumDTO> GetAvailableColors();
+        public List<EnumDTO> GetAvailableSizes();
 
 
     }

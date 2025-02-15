@@ -3,6 +3,7 @@ using ECommerce.Business.Abstract;
 using ECommerce.Data.Abstract;
 using ECommerce.Entity.Concrete;
 using ECommerce.Shared.ComplexTypes;
+using ECommerce.Shared.DTOs.EnumDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
 using ECommerce.Shared.Extensions;
@@ -104,7 +105,7 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<ProductDTO>> GetProductByIdAsync(int id)
         {
-            var product = await unitOfWork.GetRepository<Product>().GetByIdAsync(id);
+            var product = await unitOfWork.GetRepository<Product>().GetAsync(x => x.Id == id, includes: query => query.Include(y => y.Discounts));
             if (product == null)
             {
                 return ResponseDTO<ProductDTO>.Fail(new List<ErrorDetail>
@@ -458,14 +459,20 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
         }
 
-        public List<ProductColor> GetAvailableColors()
+        public List<EnumDTO> GetAvailableColors()
         {
-            return new List<ProductColor>((ProductColor[])Enum.GetValues(typeof(ProductColor)));
+            return Enum.GetValues(typeof(ProductColor))
+                       .Cast<ProductColor>()
+                       .Select(c => new EnumDTO { Id = (int)c, Name = c.ToString() })
+                       .ToList();
         }
-        public List<ProductSize> GetAvailableSizes()
+
+        public List<EnumDTO> GetAvailableSizes()
         {
-       
-            return new List<ProductSize>((ProductSize[])Enum.GetValues(typeof(ProductSize)));
-        } 
+            return Enum.GetValues(typeof(ProductSize))
+                       .Cast<ProductSize>()
+                       .Select(s => new EnumDTO { Id = (int)s, Name = s.ToString() })
+                       .ToList();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Shared.ComplexTypes;
+using ECommerce.Shared.DTOs.EnumDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -66,26 +67,23 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
         [HttpGet("colors")]
-        public ActionResult<List<ProductColor>> GetColors()
+        public ActionResult<List<EnumDTO>> GetColors()
         {
-            var colors = _productService.GetAvailableColors();
-            return Ok(colors);
+            return Ok(_productService.GetAvailableColors());
         }
 
- 
         [HttpGet("sizes")]
-        public ActionResult<List<ProductSize>> GetSizes()
+        public ActionResult<List<EnumDTO>> GetSizes()
         {
-            var sizes = _productService.GetAvailableSizes();
-            return Ok(sizes);
+            return Ok(_productService.GetAvailableSizes());
         }
 
 
         [HttpGet("getall")]
     
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery] int? take = null)
         {
-            var response = await _productService.GetAllProductsAsync();
+            var response = await _productService.GetAllProductsAsync(take);
             return CreateResponse(response);
         }
 

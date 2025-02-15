@@ -125,7 +125,7 @@ namespace ECommerce.Data.Concrete.Repositories
 
             if (take.HasValue)
             {
-                query = query.Skip(0).Take(take.Value);
+                query = query.Take(take.Value);
             }
 
           
