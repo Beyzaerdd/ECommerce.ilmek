@@ -1,24 +1,30 @@
-﻿using ECommerce.MVC.Models.ProductModels;
+﻿using ECommerce.MVC.Models.EnumResponseModels;
+using ECommerce.MVC.Models.ProductModels;
 using ECommerce.MVC.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
+using System.Linq;
 
 
-    namespace ECommerce.MVC.Controllers
+namespace ECommerce.MVC.Controllers
+{
+    public class ProductController : Controller
     {
-        public class ProductController : Controller
+        private readonly IProductService _productService;
+        private readonly IEnumService _enumService;
+        private readonly IToastNotification _toaster;
+        private readonly IUserAccountManagerService userAccountManagerService;
+
+        public ProductController(IProductService productService, IToastNotification toaster, IEnumService enumService, IUserAccountManagerService userAccountManagerService)
         {
-            private readonly IProductService _productService;
-            private readonly IToastNotification _toaster;
+            _productService = productService;
+            _toaster = toaster;
+            _enumService = enumService;
+            this.userAccountManagerService = userAccountManagerService;
+        }
 
-            public ProductController(IProductService productService, IToastNotification toaster)
-            {
-                _productService = productService;
-                _toaster = toaster;
-            }
-
-            public async Task<IActionResult> Index()
-            {
+        public async Task<IActionResult> Index()
+        {
             var response = await _productService.GetAllProductAsync();
 
             if (!response.IsSucceeded || response.Data == null)
@@ -27,9 +33,9 @@ using NToastNotify;
                 return View(new List<ProductModel>());
             }
 
-      
-            var colorsResponse = await _productService.GetAvailableColorsAsync();
-            var sizesResponse = await _productService.GetAvailableSizesAsync();
+
+            var colorsResponse = await _enumService.GetAvailableColorsAsync();
+            var sizesResponse = await _enumService.GetAvailableSizesAsync();
 
             if (!colorsResponse.IsSucceeded || !sizesResponse.IsSucceeded)
             {
@@ -37,39 +43,79 @@ using NToastNotify;
                 return View(new List<ProductModel>());
             }
 
-    
+
             ViewBag.Colors = colorsResponse.Data;
             ViewBag.Sizes = sizesResponse.Data;
 
             return View(response.Data);
         }
 
-            public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
+        {
+            var response = await _productService.GetProductByIdAsync(id);
+
+            if (!response.IsSucceeded || response.Data == null)
             {
-                var response = await _productService.GetProductByIdAsync(id);
+                _toaster.AddErrorToastMessage("Ürün bilgisi alınamadı.");
+                return RedirectToAction("Index");
+            }
+          
+            var colorsResponse = await _enumService.GetAvailableColorsAsync();
+            var sizesResponse = await _enumService.GetAvailableSizesAsync();
 
-                if (!response.IsSucceeded || response.Data == null)
-                {
-                    _toaster.AddErrorToastMessage("Ürün bilgisi alınamadı.");
-                    return RedirectToAction("Index");
-                }
-
+            if (!colorsResponse.IsSucceeded || !sizesResponse.IsSucceeded)
+            {
+                _toaster.AddErrorToastMessage("Beden veya renk bilgisi alınamadı.");
                 return View(response.Data);
             }
 
-            public async Task<IActionResult> Category(int categoryId)
+            var product = response.Data;
+
+ 
+            product.Sizes = sizesResponse.Data
+                .Where(s => product.AvailableSizeIds.Contains(s.Id))
+                .Select(s => new EnumResponseModel { Id = s.Id, Name = s.Name })
+                .ToList();
+
+            product.Colors = colorsResponse.Data
+                .Where(c => product.AvailableColorIds.Contains(c.Id))
+                .Select(c => new EnumResponseModel { Id = c.Id, Name = c.Name })
+                .ToList();
+
+     
+
+
+          
+            decimal discountAmount = 0;
+            if (product.Discounts != null && product.Discounts.Any())
             {
-                var response = await _productService.GetProductsByCategory(categoryId);
-
-                if (!response.IsSucceeded || response.Data == null)
-                {
-                    _toaster.AddErrorToastMessage("Kategoriye ait ürünler bulunamadı.");
-                    return RedirectToAction("Index");
-                }
-
-                return View(response.Data);
+                var maxDiscount = product.Discounts.Max(d => d.DiscountValue);
+                discountAmount = (product.UnitPrice * maxDiscount) / 100;
             }
+            ViewBag.DiscountedPrice = product.UnitPrice - discountAmount;
+            if (!string.IsNullOrEmpty(product.ApplicationUserId))
+            {
+                var sellerResponse = await userAccountManagerService.GetSellerByIdAsync(product.ApplicationUserId);
+
+                if (sellerResponse.IsSucceeded && sellerResponse.Data != null)
+                {
+                    ViewBag.StoreName = sellerResponse.Data.StoreName;
+                }
+                else
+                {
+                    ViewBag.StoreName = "Bilinmeyen Satıcı"; 
+                }
+            }
+            else
+            {
+                ViewBag.StoreName = "Bilinmeyen Satıcı"; 
+            }
+
+            return View(product);
         }
+
+        
+
     }
 
-
+}
