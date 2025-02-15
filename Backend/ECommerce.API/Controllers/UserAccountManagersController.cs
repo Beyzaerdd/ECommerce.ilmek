@@ -48,11 +48,17 @@ namespace ECommerce.API.Controllers
             var response = await _userManagerService.GetAllUsersAsync();
             return CreateResponse(response);
         }
-        [Authorize(Policy = "Admin")]
+
         [HttpGet("getUserById")]
         public async Task<IActionResult> GetUserById([FromQuery] string userId)
         {
             var response = await _userManagerService.GetUserByIdAsync(userId);
+            return CreateResponse(response);
+        }
+        [HttpGet("getSellerById")]
+        public async Task<IActionResult> GetSellerById([FromQuery] string sellerId)
+        {
+            var response = await _userManagerService.GetSellerByIdAsync(sellerId);
             return CreateResponse(response);
         }
 

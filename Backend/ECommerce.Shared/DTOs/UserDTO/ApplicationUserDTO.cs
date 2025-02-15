@@ -14,7 +14,7 @@ namespace ECommerce.Shared.DTOs.UsersDTO
         public string LastName { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-        public string? StoreName { get; set; }
+        public string StoreName { get; set; }
         public bool IsActive { get; set; }
         public bool IsApproved { get; set; }
         public int IdentityNumber { get; set; }

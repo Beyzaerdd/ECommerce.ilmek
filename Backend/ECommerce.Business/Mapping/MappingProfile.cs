@@ -23,6 +23,13 @@ namespace ECommerce.Business.Mapping
     {
         public MappingProfile()
         {
+    
+
+
+
+
+
+
             #region Category
             CreateMap<Category, CategoryDTO>()
                 .ForMember(src => src.ParentCategoryName, opt => opt.MapFrom(dest => dest.ParentCategory.Name))

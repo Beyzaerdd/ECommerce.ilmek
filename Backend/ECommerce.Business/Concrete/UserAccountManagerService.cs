@@ -10,6 +10,7 @@ using Fluid;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,7 +144,8 @@ namespace ECommerce.Business.Concrete
                     }, HttpStatusCode.NotFound);
             }
                 var sellerDTOs = mapper.Map<IEnumerable<ApplicationUserDTO>>(allSellers);
-                return ResponseDTO<IEnumerable<ApplicationUserDTO>>.Success(sellerDTOs, HttpStatusCode.OK);
+
+            return ResponseDTO<IEnumerable<ApplicationUserDTO>>.Success(sellerDTOs, HttpStatusCode.OK);
 
             }
 
@@ -322,6 +324,32 @@ namespace ECommerce.Business.Concrete
 
             var userDTO = mapper.Map<ApplicationUserDTO>(user);
             return ResponseDTO<ApplicationUserDTO>.Success(userDTO, HttpStatusCode.OK);
+        }
+
+        public async Task<ResponseDTO<ApplicationUserDTO>> GetSellerByIdAsync(string sellerId)
+        {
+            var seller = await unitOfWork.GetRepository<Seller>().GetAsync(u => u.Id == sellerId);
+         
+            if (seller == null)
+            {
+                return ResponseDTO<ApplicationUserDTO>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail
+                    {
+                        Message = "Seller not found.",
+                        Code = "UserNotFound",
+                        Target = nameof(Seller)
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+
+            var userDTO = new ApplicationUserDTO
+            {
+                Id = seller.Id,
+                StoreName = seller.StoreName  
+            };
+            return ResponseDTO<ApplicationUserDTO>.Success(userDTO, HttpStatusCode.OK);
+
         }
     }
 }

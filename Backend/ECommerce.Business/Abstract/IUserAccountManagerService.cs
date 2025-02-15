@@ -17,6 +17,7 @@ namespace ECommerce.Business.Abstract
         Task <ResponseDTO<IEnumerable<ApplicationUserDTO>>> GetAllSellersAsync();
         Task<ResponseDTO<IEnumerable<ApplicationUserDTO>>> GetAllUsersAsync();
         Task<ResponseDTO<ApplicationUserDTO>> GetUserByIdAsync(string userId);
+        Task<ResponseDTO<ApplicationUserDTO>> GetSellerByIdAsync(string sellerId);
 
         Task<ResponseDTO<ApplicationUserDTO>> GetUserAccountDetails();
         Task<ResponseDTO<Seller>> GetSellerAccountDetails();
