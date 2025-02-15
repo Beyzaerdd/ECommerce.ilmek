@@ -11,21 +11,23 @@ namespace ECommerce.MVC.Controllers
     public class ShopController : Controller
     {
         private readonly IProductService _productService;
+        private readonly IEnumService enumService;
         private readonly ICategoryService _categoryService;
         private readonly ILogger<ShopController> _logger;
         private readonly IConfiguration _configuration;
 
-      
 
-        public ShopController(IProductService productService, ICategoryService categoryService, ILogger<ShopController> logger, IConfiguration configuration)
+
+        public ShopController(IProductService productService, ICategoryService categoryService, ILogger<ShopController> logger, IConfiguration configuration, IEnumService enumService)
         {
             _productService = productService;
             _categoryService = categoryService;
             _logger = logger;
             _configuration = configuration;
+            this.enumService = enumService;
         }
 
-   
+
 
         [HttpGet]
         public async Task<IActionResult> Index(int? categoryId, List<int>? selectedSizes, List<int>? selectedColors, List<string>? selectedPriceRanges, int page = 1, int pageSize = 9)
@@ -53,8 +55,8 @@ namespace ECommerce.MVC.Controllers
                 ViewBag.SelectedCategoryName = "Kategori Bulunamadı";
             }
 
-            var colorsResponse = await _productService.GetAvailableColorsAsync();
-            var sizesResponse = await _productService.GetAvailableSizesAsync();
+            var colorsResponse = await enumService.GetAvailableColorsAsync();
+            var sizesResponse = await enumService.GetAvailableSizesAsync();
             decimal? minPrice = null;
             decimal? maxPrice = null;
 
@@ -81,7 +83,7 @@ namespace ECommerce.MVC.Controllers
                 ? productResponse.Data.ToList()
                 : new List<ProductModel>();
 
-            // 📌 Sayfalama için ürünleri bölüyoruz
+        
             var paginatedProducts = allProducts.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             var viewModel = new ProductFilterViewModel
@@ -100,7 +102,6 @@ namespace ECommerce.MVC.Controllers
                     ? colorsResponse.Data.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList()
                     : new List<SelectListItem>(),
 
-                // 📌 Sayfalama için güncellenmiş ürün listesi
                 Products = paginatedProducts,
                 TotalCount = allProducts.Count,
                 CurrentPage = page,

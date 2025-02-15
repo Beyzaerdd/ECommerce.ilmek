@@ -1,0 +1,182 @@
+﻿@using System.Globalization
+@model ECommerce.MVC.Models.ProductModels.ProductModel
+
+
+
+
+
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product__details__pic @(ViewBag.DiscountedPrice < Model.UnitPrice ? "sale" : "")">
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="product__big__img">
+                    @if (ViewBag.DiscountedPrice < Model.UnitPrice)
+                    {
+                        <div class="label sale">Sale</div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product__details__text">
+                    <h3>@Model.Name <span>Satıcı:<a href="/Seller/Profile/@ViewBag.SellerId" class="seller-link">@ViewBag.StoreName</a></span></h3>
+
+                    <div class="product__details__price">
+                        @if (ViewBag.DiscountedPrice < Model.UnitPrice)
+                        {
+                            <span class="discounted-price">
+                                @ViewBag.DiscountedPrice.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
+                            </span>
+                            <span class="original-price">
+                                @Model.UnitPrice.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="normal-price">
+                                @Model.UnitPrice.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
+                            </span>
+                        }
+                    </div>
+                 
+                    <div class="product__details__button">
+                        <div class="quantity">
+                            <span>Quantity:</span>
+                            <div class="pro-qty">
+                                <input type="text" value="1">
+                            </div>
+                        </div>
+                        @if (Model.IsActive)
+                        {
+                            <a href="#" class="cart-btn" onclick="checkLogin(event)">
+                                <span class="icon_bag_alt"></span> Sepete Ekle
+                            </a>
+                        }
+                        else
+                        {
+                            <button class="cart-btn disabled-btn" disabled>
+                                <span class="icon_bag_alt"></span> Ürün Aktif Değil
+                            </button>
+                        }
+                        <ul>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                    
+                        </ul>
+                    </div>
+                    <div class="product__details__widget">
+                        <ul>
+                            <li>
+                                @if (Model.IsActive)
+                                {
+                                    <span>Availability:</span>
+                                    <div class="stock__checkbox">
+                                        <label for="stockin">
+                                            In Stock
+                                            <input type="checkbox" id="stockin" checked disabled>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                }
+                            </li>
+                            <div class="product__details__widget">
+                                <span class="widget-title">Available Colors:</span>
+                                <div class="color__checkbox">
+                                    @foreach (var color in Model.Colors)
+                                    {
+                                        <label for="color-@color.Id" class="color-label">
+                                            <input type="radio" name="color" id="color-@color.Id">
+                                            <span class="color-circle"></span>
+                                            <span class="color-name">@color.Name</span>
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Beden Seçenekleri -->
+                            <div class="product__details__widget">
+                                <span class="widget-title">Available Sizes:</span>
+                                <div class="size__btn">
+                                    @foreach (var size in Model.Sizes)
+                                    {
+                                        <label for="size-@size.Id" class="size-label">
+                                            <input type="radio" name="size" id="size-@size.Id">
+                                            <span class="size-box">@size.Name</span>
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                            </li>
+                           
+                          
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Ürün Özellikleri</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                          
+                            <p>
+                              @Model.Description
+                            </p>
+                        
+                        </div>
+                      
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <h6>Reviews ( 2 )</h6>
+                            <p>
+                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
+                                quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
+                                Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
+                                voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
+                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
+                                consequat massa quis enim.
+                            </p>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+                                dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+                                nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
+                                quis, sem.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            function checkLogin(event) {
+                var isLoggedIn = @((User.Identity.IsAuthenticated) ? "true" : "false");
+
+                if (!isLoggedIn) {
+                    event.preventDefault(); // Butonun normal işlevini durdur
+
+                    Swal.fire({
+                        title: "Ürün Sepete Eklenemedi!",
+                        text: "Sepete ürün eklemek için giriş yapmalısınız.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Giriş Yap",
+                        cancelButtonText: "İptal"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "/Auth/Login"; // Login sayfasına yönlendir
+                        }
+                    });
+                }
+            }
+        </script>

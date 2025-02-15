@@ -2,6 +2,7 @@ using ECommerce.MVC.Services.Abstract;
 using ECommerce.MVC.Services.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
 using NToastNotify;
 using System.Globalization;
 
@@ -12,6 +13,7 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation()
                 .AddNToastNotifyToastr(new ToastrOptions
                 {
                     ProgressBar = true,
@@ -27,7 +29,10 @@ builder.Services.AddControllersWithViews()
 
                 });
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IEnumService, EnumService>();
+builder.Services.AddScoped<IUserAccountManagerService, UserAccountManagerService>();
 builder.Services.AddHttpClient("ECommerceAPI", client => client.BaseAddress = new Uri("http://localhost:1406/api/"));
 
 builder
@@ -52,8 +57,7 @@ builder.Services.AddDataProtection()
 
 builder.Services.AddDistributedMemoryCache();
 
-
-
+builder.Logging.AddConsole();
 #endregion
 
 var app = builder.Build();
@@ -66,7 +70,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
