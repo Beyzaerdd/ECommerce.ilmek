@@ -117,41 +117,57 @@
                 <div class="product__details__tab">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Ürün Özellikleri</a>
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                          
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <h6>Ürün Özellikleri</h6>
                             <p>
-                              @Model.Description
+                             @Model.Description
                             </p>
                         
                         </div>
-                      
+
+                        @{
+                            var reviews = (List<ECommerce.MVC.Models.ReviewModels.ReviewModel>)ViewBag.Reviews;
+                        }
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
-                            <h6>Reviews ( 2 )</h6>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.
-                            </p>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.
-                            </p>
+                            <h6>Yorumlar ( @(reviews != null ? reviews.Count : 0) )</h6>
+
+                            @if (reviews != null && reviews.Any())
+                            {
+                                foreach (var review in reviews)
+                                {
+                                    <div class="review">
+                                        <div class="rating">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= review.Rating)
+                                                {
+                                                    <i class="fa fa-star text-warning"></i> 
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-star text-secondary"></i> 
+                                                }
+                                            }
+                                        </div>
+                                        <p>@review.Content</p>
+                                        <hr />
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>Bu ürüne ait henüz yorum bulunmamaktadır.</p>
+                            }
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -163,7 +179,7 @@
                 var isLoggedIn = @((User.Identity.IsAuthenticated) ? "true" : "false");
 
                 if (!isLoggedIn) {
-                    event.preventDefault(); // Butonun normal işlevini durdur
+                    event.preventDefault(); 
 
                     Swal.fire({
                         title: "Ürün Sepete Eklenemedi!",
@@ -174,9 +190,12 @@
                         cancelButtonText: "İptal"
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = "/Auth/Login"; // Login sayfasına yönlendir
+                            window.location.href = "/Auth/Login"; 
                         }
                     });
                 }
             }
+
+
+
         </script>

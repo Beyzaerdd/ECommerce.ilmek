@@ -1,5 +1,6 @@
 ﻿using ECommerce.MVC.Models.EnumResponseModels;
 using ECommerce.MVC.Models.ProductModels;
+using ECommerce.MVC.Models.ReviewModels;
 using ECommerce.MVC.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
@@ -14,13 +15,15 @@ namespace ECommerce.MVC.Controllers
         private readonly IEnumService _enumService;
         private readonly IToastNotification _toaster;
         private readonly IUserAccountManagerService userAccountManagerService;
+        private readonly IReviewService reviewService;
 
-        public ProductController(IProductService productService, IToastNotification toaster, IEnumService enumService, IUserAccountManagerService userAccountManagerService)
+        public ProductController(IProductService productService, IToastNotification toaster, IEnumService enumService, IUserAccountManagerService userAccountManagerService, IReviewService reviewService)
         {
             _productService = productService;
             _toaster = toaster;
             _enumService = enumService;
             this.userAccountManagerService = userAccountManagerService;
+            this.reviewService = reviewService;
         }
 
         public async Task<IActionResult> Index()
@@ -59,7 +62,7 @@ namespace ECommerce.MVC.Controllers
                 _toaster.AddErrorToastMessage("Ürün bilgisi alınamadı.");
                 return RedirectToAction("Index");
             }
-          
+
             var colorsResponse = await _enumService.GetAvailableColorsAsync();
             var sizesResponse = await _enumService.GetAvailableSizesAsync();
 
@@ -71,7 +74,7 @@ namespace ECommerce.MVC.Controllers
 
             var product = response.Data;
 
- 
+
             product.Sizes = sizesResponse.Data
                 .Where(s => product.AvailableSizeIds.Contains(s.Id))
                 .Select(s => new EnumResponseModel { Id = s.Id, Name = s.Name })
@@ -82,10 +85,10 @@ namespace ECommerce.MVC.Controllers
                 .Select(c => new EnumResponseModel { Id = c.Id, Name = c.Name })
                 .ToList();
 
-     
 
 
-          
+
+
             decimal discountAmount = 0;
             if (product.Discounts != null && product.Discounts.Any())
             {
@@ -103,18 +106,31 @@ namespace ECommerce.MVC.Controllers
                 }
                 else
                 {
-                    ViewBag.StoreName = "Bilinmeyen Satıcı"; 
+                    ViewBag.StoreName = "Bilinmeyen Satıcı";
                 }
             }
             else
             {
-                ViewBag.StoreName = "Bilinmeyen Satıcı"; 
+                ViewBag.StoreName = "Bilinmeyen Satıcı";
+            }
+
+            var reviewResponse = await reviewService.GetReviewByProductIdAsync(id);
+
+            if (reviewResponse == null || reviewResponse.Data == null)
+            {
+                ViewBag.Reviews = new List<ReviewModel>();
+            }
+            else if (reviewResponse.IsSucceeded)
+            {
+                ViewBag.Reviews = reviewResponse.Data;
+            }
+            else
+            {
+                ViewBag.Reviews = new List<ReviewModel>();
             }
 
             return View(product);
         }
-
-        
 
     }
 

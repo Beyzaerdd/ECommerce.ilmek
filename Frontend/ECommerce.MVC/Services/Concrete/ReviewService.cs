@@ -35,7 +35,7 @@ namespace ECommerce.MVC.Services.Concrete
         public async Task<ResponseViewModel<NoContent>> DeleteReviewAsync(int reviewId)
         {
             var client = GetHttpClient();
-            var response = await client.DeleteAsync($"reviews/delete?reviewId={reviewId}");
+            var response = await client.DeleteAsync($"reviews/deleteReview/?reviewId={reviewId}");
             var responseBody = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
@@ -57,7 +57,7 @@ namespace ECommerce.MVC.Services.Concrete
         public async Task<ResponseViewModel<IEnumerable<ReviewModel>>> GetReviewByProductIdAsync(int productId)
         {
             var client = GetHttpClient();
-            var response = await client.GetAsync($"reviews/getByProductId?productId={productId}");
+            var response = await client.GetAsync($"Reviews/getReviewsByProductId?productId={productId}");
             var responseBody = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
@@ -79,7 +79,7 @@ namespace ECommerce.MVC.Services.Concrete
         public async Task<ResponseViewModel<NoContent>> UpdateReviewAsync(ReviewUpdateModel reviewUpdateModel)
         {
             var client = GetHttpClient();
-            var response = await client.PutAsJsonAsync("reviews/update", reviewUpdateModel);
+            var response = await client.PutAsJsonAsync("reviews/updateReview", reviewUpdateModel);
             var responseBody = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
