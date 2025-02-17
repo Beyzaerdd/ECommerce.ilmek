@@ -1,5 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
 using ECommerce.Business.Concrete;
+using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.ReviewDTOs;
 using ECommerce.Shared.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ using System.Net;
 
 namespace ECommerce.API.Controllers
 {
-    [Authorize(Policy = "User")]
+    //[Authorize(Policy = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewsController : CustomControllerBase
@@ -42,8 +43,8 @@ namespace ECommerce.API.Controllers
         }
 
      
-        [HttpGet("getReviewsByProductId/{productId}")]
-        public async Task<IActionResult> GetReviewByProductId(int productId)
+        [HttpGet("getReviewsByProductId")]
+        public async Task<IActionResult> GetReviewByProductId([FromQuery] int productId)
         {
             var response = await reviewService.GetReviewByProductIdAsync(productId);
             return Ok(response);

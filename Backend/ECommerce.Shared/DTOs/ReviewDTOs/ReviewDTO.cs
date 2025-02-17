@@ -12,8 +12,11 @@ namespace ECommerce.Shared.DTOs.ReviewDTOs
         public int OrderItemId { get; set; }
         public string Content { get; set; }
         public int? Rating { get; set; }
-     
-        public string OrderItemProductName { get; set; }
+        public int ProductId { get; set; } // Ürünün ID'si
+        public string ProductName { get; set; } // Ürünün adı
+
+
+
         public DateTime CreatedAt { get; set; }
     }
 }

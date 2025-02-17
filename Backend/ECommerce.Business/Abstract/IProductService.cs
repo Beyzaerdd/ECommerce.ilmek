@@ -18,6 +18,7 @@ namespace ECommerce.Business.Abstract
         Task<ResponseDTO<NoContent>> HardDeleteProductAsync(int id);
 
         Task<ResponseDTO<ProductDTO>> GetProductByIdAsync(int id);
+     
         Task<ResponseDTO<IEnumerable<ProductDTO>>> GetAllProductsAsync( int? take = null);
 
         Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsWithCategoriesAsync(int parentCategoryId);

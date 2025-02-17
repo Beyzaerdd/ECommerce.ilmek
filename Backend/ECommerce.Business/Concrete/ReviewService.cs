@@ -89,17 +89,28 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<NoContent>.Success(HttpStatusCode.NoContent);
         }
 
-       public async Task<ResponseDTO<IEnumerable<ReviewDTO>>> GetReviewByProductIdAsync(int productId)
+        public async Task<ResponseDTO<IEnumerable<ReviewDTO>>> GetReviewByProductIdAsync(int productId)
         {
-           
+            var reviews = await unitOfWork.GetRepository<Review>()
+                .GetAllAsync(
+                    r => r.OrderItem != null && r.OrderItem.ProductId == productId, 
+                    null,
+                    null,
+                    false,
+                    query => query.Include(r => r.OrderItem) 
+                                  .ThenInclude(oi => oi.Product) 
+                );
 
-            var reviews =await unitOfWork.GetRepository<Review>().GetAllAsync(r => r.OrderItem.ProductId == productId,null,null,false, query => query.Include(rw => rw.OrderItem));
+            if (reviews == null || !reviews.Any())
+            {
+                return ResponseDTO<IEnumerable<ReviewDTO>>.Fail("Bu ürüne ait yorum bulunamadı.", HttpStatusCode.NotFound);
+            }
 
-
-          var result=  mapper.Map<IEnumerable<ReviewDTO>>(reviews);
-             
-            return  ResponseDTO<IEnumerable<ReviewDTO>>.Success(result,HttpStatusCode.OK);
+            var result = mapper.Map<IEnumerable<ReviewDTO>>(reviews);
+            return ResponseDTO<IEnumerable<ReviewDTO>>.Success(result, HttpStatusCode.OK);
         }
+
+
 
         public async Task<ResponseDTO<NoContent>> UpdateReviewAsync(ReviewUptadeDTO reviewUptadeDTO)
         {

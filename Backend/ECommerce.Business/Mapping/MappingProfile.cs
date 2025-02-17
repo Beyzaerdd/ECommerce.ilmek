@@ -110,7 +110,11 @@ namespace ECommerce.Business.Mapping
 
             CreateMap<Review, ReviewCreateDTO>().ReverseMap();
             CreateMap<Review, ReviewUptadeDTO>().ReverseMap();
-            CreateMap<Review, ReviewDTO>().ReverseMap();
+          
+            CreateMap<Review, ReviewDTO>()
+    .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.OrderItem.Product.Id))
+    .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.OrderItem.Product.Name)).ReverseMap();
+
 
             #endregion
 
