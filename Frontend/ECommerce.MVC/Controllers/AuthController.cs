@@ -67,7 +67,7 @@ namespace ECommerce.MVC.Controllers
 
 
         [HttpPost("LoginUser")]
-        public async Task<IActionResult> LoginUser(LoginUserModel loginUserModel)
+        public async Task<IActionResult> LoginUser(LoginUserModel loginUserModel, string returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
@@ -110,16 +110,9 @@ namespace ECommerce.MVC.Controllers
 
                         _toaster.AddSuccessToastMessage("Hoşgeldiniz! Giriş işlemi başarıyla tamamlandı.");
 
-                        if (TempData["PendingProductId"] is int pendingProductId && TempData["PendingQuantity"] is int pendingQuantity)
+                        if (!string.IsNullOrEmpty(returnUrl))
                         {
-                            string returnController = TempData["ReturnController"] as string ?? "Home";
-                            string returnAction = TempData["ReturnAction"] as string ?? "Index";
-
-                            return RedirectToAction(returnAction, returnController, new
-                            {
-                                productId = pendingProductId,
-                                quantity = pendingQuantity
-                            });
+                            return Redirect(returnUrl);
                         }
 
                         return RedirectToAction("Index", "Home");

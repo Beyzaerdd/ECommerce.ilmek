@@ -72,5 +72,33 @@
 
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
+     
     }
+
+
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            console.log("Çerez kontrolü başlıyor...");
+            if (document.cookie.includes("SessionExpired=true")) {
+                console.log("Çerez bulundu!"); // Kontrol etmek için
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oturum Süresi Doldu!',
+                    text: 'Lütfen tekrar giriş yapın.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Tamam'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/Auth/LoginUser"; // Yönlendirme burada
+                    }
+                });
+
+                // Çerezi sil
+                document.cookie = "SessionExpired=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            }
+        }, 100); // 100ms gecikme ekle
+    });
+
+</script>
