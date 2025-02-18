@@ -41,7 +41,7 @@ namespace ECommerce.MVC.Controllers
                 return View(new List<UserFavModel>());
             }
 
-            // Favori ürünleri al
+       
             var response = await _userFavService.GetUserFavoritesAsync();
 
             if (!response.IsSucceeded || response.Data == null)

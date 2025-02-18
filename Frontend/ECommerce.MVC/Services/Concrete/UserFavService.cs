@@ -104,11 +104,10 @@ namespace ECommerce.MVC.Services.Concrete
             {
                 new ErrorViewModel { Message = "Favori ürünü silerken hata oluştu." }
             },
-                    Data = null // Burada Data'yı null döndürebilirsiniz
+                    Data = null 
                 };
             }
 
-            // Eğer başarılıysa, ResponseDTO'nun içeriğini dönüşüm yaparak ResponseViewModel'e çevirin.
             var apiResponse = JsonSerializer.Deserialize<ResponseDTO<NoContent>>(responseBody, _jsonSerializerOptions);
 
             if (apiResponse != null && apiResponse.IsSucceeded)
@@ -117,7 +116,7 @@ namespace ECommerce.MVC.Services.Concrete
                 {
                     IsSucceeded = true,
                     Errors = new List<ErrorViewModel>(),
-                    Data = new NoContentViewModel() // Veritabanındaki işlem başarılı ise NoContentViewModel döndürülür.
+                    Data = new NoContentViewModel() 
                 };
             }
 
