@@ -43,7 +43,7 @@ namespace ECommerce.Business.Concrete
             {
                 if (!favorite.IsDeleted)
                 {
-                    // Ürün zaten aktif olarak favorilerde mevcut
+                   
                     return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
             {
                 new ErrorDetail { Message = "Product is already in favorites.", Code = "FAVORITE_EXISTS", Target = "UserFavorite" }
@@ -51,18 +51,17 @@ namespace ECommerce.Business.Concrete
                 }
                 else
                 {
-                    // Ürün favorilerde bulunuyor ama IsDeleted true, yani daha önce kaldırılmış.
-                    // Tekrar aktif hale getir.
+
                     favorite.IsDeleted = false;
                     await unitOfWork.SaveChangesAsync();
                     return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
                 }
             }
 
-            // Favorilerde hiç kayıt bulunamadıysa yeni bir kayıt oluştur.
+          
             var userFavorite = mapper.Map<UserFavCreateDTO, UserFav>(userFavCreateDTO);
             userFavorite.ApplicationUserId = userId;
-            userFavorite.IsDeleted = false;  // Yeni eklenen kayıt aktif olarak oluşturulmalı.
+            userFavorite.IsDeleted = false;  
 
             await unitOfWork.GetRepository<UserFav>().AddAsync(userFavorite);
             await unitOfWork.SaveChangesAsync();
@@ -102,7 +101,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-            favorite.IsDeleted = true;  // IsDeleted alanını true yap
+            favorite.IsDeleted = true;  
             await unitOfWork.SaveChangesAsync();
        
 
