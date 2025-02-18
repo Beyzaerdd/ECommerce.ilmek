@@ -23,7 +23,7 @@ namespace ECommerce.Entity.Concrete
   
         public decimal UnitPrice { get; set; } 
      
-       
+         public int Stock { get; set; }
     
         public int PreparationTimeInDays { get; set; } 
         public bool IsActive { get; set; } 

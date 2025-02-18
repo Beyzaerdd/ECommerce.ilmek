@@ -17,7 +17,7 @@ namespace ECommerce.Shared.DTOs.ProductDTOs
         public List<ProductSize> AvailableSizes { get; set; }
         public List<ProductColor> AvailableColors { get; set; }
         public string ApplicationUserId { get; set; }
-
+        public int Stock { get; set; }
         public int PreparationTimeInDays { get; set; }
         public bool IsActive { get; set; }
         public string CategoryName { get; set; }

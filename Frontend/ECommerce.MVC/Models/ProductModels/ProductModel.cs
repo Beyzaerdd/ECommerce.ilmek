@@ -23,8 +23,8 @@ namespace ECommerce.MVC.Models.ProductModels
 
         [JsonPropertyName("unitPrice")]
         public decimal UnitPrice { get; set; }
-
-
+        [JsonPropertyName("stock")]
+        public int Stock { get; set; } 
         [JsonPropertyName("availableSizes")] 
         public List<int> AvailableSizeIds { get; set; } = new();
 
