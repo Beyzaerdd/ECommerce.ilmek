@@ -40,5 +40,12 @@ namespace ECommerce.API.Controllers
             var response = await _userFavService.GetUserFavoritesAsync();
             return Ok(response);
         }
+        [HttpDelete("Remove")]
+        [Authorize(Policy = "User")]
+        public async Task<IActionResult> RemoveFromFavorites(int favId)
+        {
+            var response = await _userFavService.RemoveFromFavoritesAsync(favId);
+            return Ok(response);
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace ECommerce.Business.Abstract
     {
         Task<ResponseDTO<NoContent>> AddToFavoritesAsync(UserFavCreateDTO userFavCreateDTO);
         Task<ResponseDTO<IEnumerable<UserFavDTO>>> GetUserFavoritesAsync(int? take = null);
-     
+        Task<ResponseDTO<NoContent>> RemoveFromFavoritesAsync(int favId);
         Task<ResponseDTO<int>> GetFavoriteCountAsync(string applicationUserId);
     }
 }
