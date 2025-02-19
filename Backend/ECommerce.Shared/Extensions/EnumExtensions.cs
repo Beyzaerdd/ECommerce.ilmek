@@ -16,8 +16,11 @@ namespace ECommerce.Shared.Extensions
         {
 
             var field = value.GetType().GetField(value.ToString());
-            var attribute = field.GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault();
-            return attribute?.Name ?? value.ToString(); 
+            var attribute = field?.GetCustomAttributes(typeof(DisplayAttribute), false)
+                .Cast<DisplayAttribute>()
+                .FirstOrDefault();
+
+            return attribute?.Name ?? value.ToString();
         }
     }
 
