@@ -463,7 +463,7 @@ namespace ECommerce.Business.Concrete
         {
             return Enum.GetValues(typeof(ProductColor))
                        .Cast<ProductColor>()
-                       .Select(c => new EnumDTO { Id = (int)c, Name = c.ToString() })
+                       .Select(c => new EnumDTO { Id = (int)c, Name = c.GetDisplayName() })
                        .ToList();
         }
 
@@ -471,7 +471,7 @@ namespace ECommerce.Business.Concrete
         {
             return Enum.GetValues(typeof(ProductSize))
                        .Cast<ProductSize>()
-                       .Select(s => new EnumDTO { Id = (int)s, Name = s.ToString() })
+                       .Select(s => new EnumDTO { Id = (int)s, Name = s.GetDisplayName() })
                        .ToList();
         }
     }
