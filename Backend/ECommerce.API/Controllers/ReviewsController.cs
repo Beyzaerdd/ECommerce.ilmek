@@ -10,7 +10,7 @@ using System.Net;
 
 namespace ECommerce.API.Controllers
 {
-    //[Authorize(Policy = "User")]
+    [Authorize(Policy = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewsController : CustomControllerBase
