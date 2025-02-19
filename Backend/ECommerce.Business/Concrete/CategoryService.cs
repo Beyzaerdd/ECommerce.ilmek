@@ -53,18 +53,7 @@ namespace ECommerce.Business.Concrete
                 }
             }
 
-            if (await unitOfWork.GetRepository<Category>().AnyAsync(x => x.Name == categoryCreateDTO.Name))
-            {
-                return ResponseDTO<CategoryDTO>.Fail(new List<ErrorDetail>
-        {
-            new ErrorDetail
-            {
-                Message = $"Category with name {categoryCreateDTO.Name} already exists",
-                Code = "CategoryAlreadyExists",
-                Target = nameof(categoryCreateDTO.Name)
-            }
-        }, HttpStatusCode.BadRequest);
-            }
+          
 
             var newCategory = mapper.Map<Category>(categoryCreateDTO);
             if (categoryCreateDTO.Image != null)
