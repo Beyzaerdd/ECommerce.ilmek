@@ -1,0 +1,72 @@
+﻿@model ECommerce.MVC.Models.ContactMessageModels.ContactMessageCreateModel
+
+<section class="contact spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="contact__content">
+                    <div class="contact__address">
+                        <h5>İletişim Bilgileri</h5>
+                        <ul>
+                            <li>
+                                <h6><i class="fa fa-map-marker"></i> Adres:</h6>
+                                <p>İstanbul/Türkiye</p>
+                            </li>
+                            <li>
+                                <h6><i class="fa fa-phone"></i> Destek Hattı</h6>
+                                <p><span>546-711-8112</span>
+                            </li>
+                            <li>
+                                <h6><i class="fa fa-headphones"></i> Destek</h6>
+                                <p>eticaret.ilmek@gmail.com</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="contact__form">
+                        <h5>MESAJ GÖNDER</h5>
+
+                        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+                        {
+                            <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+                        }
+
+                        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                        {
+                            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                        }
+
+                        <form asp-action="Create" asp-controller="Contact" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <input asp-for="FullName" class="form-control" placeholder="Ad Soyad">
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="Email" class="form-control" placeholder="E-posta">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="Subject" class="form-control" placeholder="Konu">
+                                <span asp-validation-for="Subject" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <textarea asp-for="Message" class="form-control" placeholder="Mesajınızı buraya yazın"></textarea>
+                                <span asp-validation-for="Message" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="site-btn">Gönder</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="contact__map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d385396.32103867835!2d28.682535026940897!3d41.005370219929716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa7040068086b%3A0xe1ccfe98bc01b0d0!2zxLBzdGFuYnVs!5e0!3m2!1str!2str!4v1739998349723!5m2!1str!2str"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+}
