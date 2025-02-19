@@ -11,18 +11,18 @@ namespace ECommerce.Business.Concrete
     public class ImageService : IImageService
     {
         private readonly string imageFolderPath;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ImageService()
+        public ImageService(IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             imageFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+
             if (!Directory.Exists(imageFolderPath))
             {
                 Directory.CreateDirectory(imageFolderPath);
             }
         }
-
-
-
 
         public async Task<string> UploadImageAsync(IFormFile image)
         {
@@ -39,8 +39,11 @@ namespace ECommerce.Business.Concrete
                 await image.CopyToAsync(stream);
             }
 
-            return $"/images/{fileName}";
-        
+            var request = _httpContextAccessor.HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}";
+
+            return $"{baseUrl}/images/{fileName}";
+        }
     }
-    }
+
 }
