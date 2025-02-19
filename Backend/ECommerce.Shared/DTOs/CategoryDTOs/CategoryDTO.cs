@@ -15,6 +15,8 @@ namespace ECommerce.Shared.DTOs.CategoryDTOs
         public int ProductCount { get; set; }
         public int ParentCategoryId { get; set; }
         public string ParentCategoryName { get; set; }
+
+        public string ImageUrl { get; set; }
         public List<CategoryDTO> SubCategories { get; set; } = new List<CategoryDTO>();
        
     }
