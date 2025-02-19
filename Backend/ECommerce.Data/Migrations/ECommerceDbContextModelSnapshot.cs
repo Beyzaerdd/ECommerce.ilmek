@@ -65,7 +65,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = "115c7796-cfac-44de-91b5-916eaae125b5",
-                            CreatedDate = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(396),
+                            CreatedDate = new DateTime(2025, 2, 18, 22, 42, 6, 350, DateTimeKind.Local).AddTicks(2515),
                             Description = "Administrator role",
                             IsActive = true,
                             Name = "Admin",
@@ -74,7 +74,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = "811f466c-9d06-43f8-a054-24aedbb4161b",
-                            CreatedDate = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(454),
+                            CreatedDate = new DateTime(2025, 2, 18, 22, 42, 6, 350, DateTimeKind.Local).AddTicks(2592),
                             Description = "Regular user role",
                             IsActive = true,
                             Name = "NormalUser",
@@ -83,7 +83,7 @@ namespace ECommerce.Data.Migrations
                         new
                         {
                             Id = "811f466c-9d06-43f8-a054-24aedbb4161c",
-                            CreatedDate = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(458),
+                            CreatedDate = new DateTime(2025, 2, 18, 22, 42, 6, 350, DateTimeKind.Local).AddTicks(2596),
                             Description = "Seller role",
                             IsActive = true,
                             Name = "Seller",
@@ -212,7 +212,7 @@ namespace ECommerce.Data.Migrations
                         {
                             Id = 1,
                             ApplicationUserId = "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac",
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(86),
+                            CreatedAt = new DateTime(2025, 2, 18, 22, 42, 6, 455, DateTimeKind.Local).AddTicks(5602),
                             IsActive = true,
                             IsDeleted = false
                         },
@@ -220,7 +220,7 @@ namespace ECommerce.Data.Migrations
                         {
                             Id = 2,
                             ApplicationUserId = "14a0183f-1e96-4930-a83d-6ef5f22d8c09",
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(97),
+                            CreatedAt = new DateTime(2025, 2, 18, 22, 42, 6, 455, DateTimeKind.Local).AddTicks(5613),
                             IsActive = true,
                             IsDeleted = false
                         },
@@ -228,7 +228,7 @@ namespace ECommerce.Data.Migrations
                         {
                             Id = 3,
                             ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(100),
+                            CreatedAt = new DateTime(2025, 2, 18, 22, 42, 6, 455, DateTimeKind.Local).AddTicks(5614),
                             IsActive = true,
                             IsDeleted = false
                         });
@@ -323,88 +323,6 @@ namespace ECommerce.Data.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(265),
-                            Description = "Woman",
-                            ImageUrl = "x",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Woman"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(279),
-                            Description = "Man",
-                            ImageUrl = "x",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Man"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(280),
-                            Description = "Baby",
-                            ImageUrl = "x",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Baby"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(281),
-                            Description = "Home",
-                            ImageUrl = "x",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Home"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(283),
-                            Description = "Top clothing",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Woman Top clothing",
-                            ParentCategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(284),
-                            Description = "Top clothing",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Man Top clothing",
-                            ParentCategoryId = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(285),
-                            Description = "Top clothing",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Baby Top clothing",
-                            ParentCategoryId = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(286),
-                            Description = "Blanket",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Home Blanket",
-                            ParentCategoryId = 4
-                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.ContactMessage", b =>
@@ -712,6 +630,9 @@ namespace ECommerce.Data.Migrations
                     b.Property<int>("PreparationTimeInDays")
                         .HasColumnType("int");
 
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -725,120 +646,6 @@ namespace ECommerce.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            AvailableColors = "[7,11]",
-                            AvailableSizes = "[1,2]",
-                            CategoryId = 5,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(159),
-                            Description = "Elegant silk blouse for women.",
-                            ImageUrl = "https://example.com/images/silk-blouse.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Silk Blouse",
-                            PreparationTimeInDays = 3,
-                            UnitPrice = 49.99m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            AvailableColors = "[9,1]",
-                            AvailableSizes = "[1,2]",
-                            CategoryId = 6,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(199),
-                            Description = "Comfortable and stylish casual shirt for men.",
-                            ImageUrl = "https://example.com/images/mens-casual-shirt.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Men's Casual Shirt",
-                            PreparationTimeInDays = 2,
-                            UnitPrice = 34.99m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            AvailableColors = "[4,1]",
-                            AvailableSizes = "[1,2]",
-                            CategoryId = 7,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(311),
-                            Description = "Soft pajamas for babies.",
-                            ImageUrl = "https://example.com/images/baby-pajamas.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Baby Pajamas",
-                            PreparationTimeInDays = 2,
-                            UnitPrice = 14.99m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            AvailableColors = "[5,2]",
-                            AvailableSizes = "[1,2]",
-                            CategoryId = 7,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(316),
-                            Description = "Comfortable shoes for babies.",
-                            ImageUrl = "https://example.com/images/baby-shoes.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Baby Shoes",
-                            PreparationTimeInDays = 4,
-                            UnitPrice = 25.99m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            AvailableColors = "[5,2]",
-                            AvailableSizes = "[0]",
-                            CategoryId = 8,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(322),
-                            Description = "Soft and warm blanket for home.",
-                            ImageUrl = "https://example.com/images/home-blanket.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Home Blanket",
-                            PreparationTimeInDays = 3,
-                            UnitPrice = 39.99m
-                        },
-                        new
-                        {
-                            Id = 7,
-                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            AvailableColors = "[7,9]",
-                            AvailableSizes = "[0]",
-                            CategoryId = 8,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(326),
-                            Description = "Soft and warm blanket for home.",
-                            ImageUrl = "https://example.com/images/home1-blanket.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Home pillow",
-                            PreparationTimeInDays = 3,
-                            UnitPrice = 40.99m
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ApplicationUserId = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
-                            AvailableColors = "[11,3]",
-                            AvailableSizes = "[0]",
-                            CategoryId = 8,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 57, 43, 820, DateTimeKind.Local).AddTicks(330),
-                            Description = "Comfortable furniture set for home.",
-                            ImageUrl = "https://example.com/images/home-furniture-set.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Home Furniture Set",
-                            PreparationTimeInDays = 7,
-                            UnitPrice = 499.99m
-                        });
                 });
 
             modelBuilder.Entity("ECommerce.Entity.Concrete.Review", b =>
@@ -1052,8 +859,8 @@ namespace ECommerce.Data.Migrations
                             Id = "c0b7fef7-df2b-4857-9b3d-bc8967ad19ac",
                             AccessFailedCount = 0,
                             Address = "",
-                            ConcurrencyStamp = "5b7b85b3-b96b-47f3-9158-b7842adc3bb2",
-                            DateOfBirth = new DateTime(2025, 2, 17, 14, 57, 43, 679, DateTimeKind.Local).AddTicks(499),
+                            ConcurrencyStamp = "d4b85264-2f09-4045-a22d-f6ade580d6eb",
+                            DateOfBirth = new DateTime(2025, 2, 18, 22, 42, 6, 350, DateTimeKind.Local).AddTicks(2707),
                             Email = "adminuser@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -1062,10 +869,10 @@ namespace ECommerce.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINUSER@GMAIL.COM",
                             NormalizedUserName = "ADMINUSER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKLgVRCI6hu5l32jqEhFJrh3MkzMS7HFIVRqKOMvV8DcBAlsnRszwFYHlyvfKddm2g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENkAxpGAp1DROk+J8M/Mz9wgWf4O3d5HrW4PYUNZzrzHXkaBHRX0PEA3SRswkhRixg==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3394d263-3df6-40c0-8ec0-e8315098f252",
+                            SecurityStamp = "74af98cc-1981-475d-b5b2-1e0ea90d9148",
                             TwoFactorEnabled = false,
                             UserName = "adminuser@gmail.com"
                         });
@@ -1083,8 +890,8 @@ namespace ECommerce.Data.Migrations
                             Id = "14a0183f-1e96-4930-a83d-6ef5f22d8c09",
                             AccessFailedCount = 0,
                             Address = "aa",
-                            ConcurrencyStamp = "32a7ba12-0bab-45c8-a9a7-5e2cc01cc1b7",
-                            DateOfBirth = new DateTime(2025, 2, 17, 14, 57, 43, 726, DateTimeKind.Local).AddTicks(8146),
+                            ConcurrencyStamp = "ddbdf133-4668-4716-9994-6b40f7d866f2",
+                            DateOfBirth = new DateTime(2025, 2, 18, 22, 42, 6, 385, DateTimeKind.Local).AddTicks(5459),
                             Email = "normaluser@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Normal",
@@ -1093,10 +900,10 @@ namespace ECommerce.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NORMALUSER@GMAIL.COM",
                             NormalizedUserName = "NORMALUSER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEERvulnmbr1WIsLQEYw2LcmiKLb8Y4+OqOvnNZcOgV05NJcqdwgALZ2+hMIwh/zurg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFkYdBwZR5auEl7wYbT2VNWttGM+mbYhC+yA9ZMamGQJ60GnHP8SsHTDD/zgs+4OWQ==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "32ffecb3-bd67-4b24-a644-c4424d65b2e8",
+                            SecurityStamp = "1df2a70d-e7c9-481f-a7ce-bb6070569e0b",
                             TwoFactorEnabled = false,
                             UserName = "normaluser@gmail.com"
                         });
@@ -1131,8 +938,8 @@ namespace ECommerce.Data.Migrations
                             Id = "cfc0c1b1-e663-4c5e-b747-255c6c40b4c6",
                             AccessFailedCount = 0,
                             Address = "",
-                            ConcurrencyStamp = "b83855c9-cdd2-4c1e-a194-b5caabde5c95",
-                            DateOfBirth = new DateTime(2025, 2, 17, 14, 57, 43, 774, DateTimeKind.Local).AddTicks(2650),
+                            ConcurrencyStamp = "55fad9bd-f8f6-4543-8f35-907efee72112",
+                            DateOfBirth = new DateTime(2025, 2, 18, 22, 42, 6, 420, DateTimeKind.Local).AddTicks(9124),
                             Email = "selleruser@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Seller",
@@ -1141,10 +948,10 @@ namespace ECommerce.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SELLERUSER@GMAIL.COM",
                             NormalizedUserName = "SELLERUSER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENva2XSH9RuVOgP2etMQ+M4WGvZx5zf6apBufWY1H1nE5mtff39UTgiZ4qxIF0Xq8g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP3xs4saMyyko7QBUV0iyToPLf9TPztsfZ3uFA4NO5bq7n9vmJNayjbW6M42YRyM4w==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f3559646-1d68-4ba1-847b-b5d2813f3329",
+                            SecurityStamp = "ed36bc89-0aad-4de1-a975-12572d870d31",
                             TwoFactorEnabled = false,
                             UserName = "selleruser@gmail.com",
                             IdentityNumber = "1",
