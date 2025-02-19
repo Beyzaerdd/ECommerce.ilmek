@@ -40,6 +40,22 @@ namespace ECommerce.Shared.ComplexTypes
         Gri = 10,
 
         [Display(Name = "Kahverengi")]
-        Kahverengi = 11
+        Kahverengi = 11,
+
+        [Display(Name = "Lacivert")]
+        Lacivert = 12,
+
+        [Display(Name = "Bordo")]
+        Bordo = 13,
+
+        [Display(Name = "Taş")]
+        Taş = 14,
+
+
+        [Display(Name = "Krem")]
+        Krem = 15,
+
+
+
     }
 }
