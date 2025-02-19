@@ -10,7 +10,7 @@
 
            
                 <div class="col-lg-6 p-0">
-                    <div class="categories__item categories__large__item set-bg" data-setbg="ui/img/categories/category-1.jpg">
+                    <div class="categories__item categories__large__item set-bg" data-setbg="@firstCategory.ImageUrl">
                      @*    @firstCategory.ImageUrl *@
                         <div class="categories__text">
                             <h1>@firstCategory.Name</h1>
@@ -27,7 +27,7 @@
                         @foreach (var category in otherCategories)
                         {
                             <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                                <div class="categories__item set-bg" data-setbg="ui/img/categories/category-2.jpg">
+                                <div class="categories__item set-bg" data-setbg="@category.ImageUrl">
                            @*          @category.ImageUrl *@
                                     <div class="categories__text">
                                         <h4>@category.Name</h4>

@@ -19,6 +19,8 @@ namespace ECommerce.MVC.Models.CategoryModels
 
         [JsonPropertyName("parentCategoryId")]
         public int? ParentCategoryId { get; set; }
+        [JsonPropertyName("imageUrl")]
+        public string ImageUrl { get; set; }
 
         [JsonPropertyName("parentCategoryName")]
         public string ParentCategoryName { get; set; }

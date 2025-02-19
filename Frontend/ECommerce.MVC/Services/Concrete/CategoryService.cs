@@ -139,7 +139,7 @@ namespace ECommerce.MVC.Services.Concrete
     return new ResponseViewModel<List<CategoryModel>>
     {
         IsSucceeded = true,
-        Data = result.Data ?? new List<CategoryModel>() // Eğer null dönerse boş liste ata
+        Data = result.Data ?? new List<CategoryModel>() 
     };
 }
 
