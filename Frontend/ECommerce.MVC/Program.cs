@@ -33,6 +33,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IEnumService, EnumService>();
 builder.Services.AddScoped<IUserAccountManagerService, UserAccountManagerService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IUserFavService, UserFavService>();
 builder.Services.AddHttpClient("ECommerceAPI", client => client.BaseAddress = new Uri("http://localhost:1406/api/"));
 
 builder
@@ -41,7 +43,7 @@ builder
     .AddCookie(options =>
     {
         options.Cookie.Name = "ECommerce.Auth";
-        options.LoginPath = "/Auth/Login";
+        options.LoginPath = "/Auth/LoginUser";
         options.AccessDeniedPath = "/Auth/AccessDenied";
         options.ExpireTimeSpan = TimeSpan.FromHours(1);
         options.Cookie.HttpOnly = true;
@@ -76,6 +78,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseMiddleware<ECommerce.MVC.Middlewares.TokenExpirationMiddleware>();
 
 app.MapAreaControllerRoute(
     name: "admin",
