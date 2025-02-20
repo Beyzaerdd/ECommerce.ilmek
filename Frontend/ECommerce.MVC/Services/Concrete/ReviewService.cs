@@ -10,7 +10,7 @@ namespace ECommerce.MVC.Services.Concrete
     {
         public ReviewService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor) { }
 
-        public async Task<ResponseViewModel<NoContent>> AddReviewAsync(ReviewCreateModel reviewCreateModel)
+        public async Task<ResponseViewModel<NoContentViewModel>> AddReviewAsync(ReviewCreateModel reviewCreateModel)
         {
             var client = GetHttpClient();
             var response = await client.PostAsJsonAsync("reviews/addReview", reviewCreateModel);
@@ -18,7 +18,7 @@ namespace ECommerce.MVC.Services.Concrete
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
             {
-                return new ResponseViewModel<NoContent>
+                return new ResponseViewModel<NoContentViewModel>
                 {
                     IsSucceeded = false,
                     Errors = new List<ErrorViewModel>
@@ -28,11 +28,11 @@ namespace ECommerce.MVC.Services.Concrete
                 };
             }
 
-            var result = JsonSerializer.Deserialize<ResponseViewModel<NoContent>>(responseBody, _jsonSerializerOptions);
-            return result ?? new ResponseViewModel<NoContent> { IsSucceeded = false, Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } } };
+            var result = JsonSerializer.Deserialize<ResponseViewModel<NoContentViewModel>>(responseBody, _jsonSerializerOptions);
+            return result ?? new ResponseViewModel<NoContentViewModel> { IsSucceeded = false, Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } } };
         }
 
-        public async Task<ResponseViewModel<NoContent>> DeleteReviewAsync(int reviewId)
+        public async Task<ResponseViewModel<NoContentViewModel>> DeleteReviewAsync(int reviewId)
         {
             var client = GetHttpClient();
             var response = await client.DeleteAsync($"reviews/deleteReview/?reviewId={reviewId}");
@@ -40,7 +40,7 @@ namespace ECommerce.MVC.Services.Concrete
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
             {
-                return new ResponseViewModel<NoContent>
+                return new ResponseViewModel<NoContentViewModel>
                 {
                     IsSucceeded = false,
                     Errors = new List<ErrorViewModel>
@@ -50,8 +50,8 @@ namespace ECommerce.MVC.Services.Concrete
                 };
             }
 
-            var result = JsonSerializer.Deserialize<ResponseViewModel<NoContent>>(responseBody, _jsonSerializerOptions);
-            return result ?? new ResponseViewModel<NoContent> { IsSucceeded = false, Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } } };
+            var result = JsonSerializer.Deserialize<ResponseViewModel<NoContentViewModel>>(responseBody, _jsonSerializerOptions);
+            return result ?? new ResponseViewModel<NoContentViewModel> { IsSucceeded = false, Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } } };
         }
 
         public async Task<ResponseViewModel<IEnumerable<ReviewModel>>> GetReviewByProductIdAsync(int productId)
@@ -76,7 +76,7 @@ namespace ECommerce.MVC.Services.Concrete
             return result ?? new ResponseViewModel<IEnumerable<ReviewModel>> { IsSucceeded = false, Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } } };
         }
 
-        public async Task<ResponseViewModel<NoContent>> UpdateReviewAsync(ReviewUpdateModel reviewUpdateModel)
+        public async Task<ResponseViewModel<NoContentViewModel>> UpdateReviewAsync(ReviewUpdateModel reviewUpdateModel)
         {
             var client = GetHttpClient();
             var response = await client.PutAsJsonAsync("reviews/updateReview", reviewUpdateModel);
@@ -84,7 +84,7 @@ namespace ECommerce.MVC.Services.Concrete
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
             {
-                return new ResponseViewModel<NoContent>
+                return new ResponseViewModel<NoContentViewModel>
                 {
                     IsSucceeded = false,
                     Errors = new List<ErrorViewModel>
@@ -94,8 +94,8 @@ namespace ECommerce.MVC.Services.Concrete
                 };
             }
 
-            var result = JsonSerializer.Deserialize<ResponseViewModel<NoContent>>(responseBody, _jsonSerializerOptions);
-            return result ?? new ResponseViewModel<NoContent> { IsSucceeded = false, Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } } };
+            var result = JsonSerializer.Deserialize<ResponseViewModel<NoContentViewModel>>(responseBody, _jsonSerializerOptions);
+            return result ?? new ResponseViewModel<NoContentViewModel> { IsSucceeded = false, Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } } };
         }
 
     }
