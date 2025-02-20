@@ -39,7 +39,7 @@ namespace ECommerce.Business.Concrete
 
         private readonly IDiscountService discountService;
 
-        public async Task<ResponseDTO<BasketDTO>> GetBasketAsync()
+        public async Task<ResponseDTO<BasketCreateModel>> GetBasketAsync()
         {
             var userId = contextAccessor.GetUserId();
             var basket = await _unitOfWork.GetRepository<Basket>().GetAsync(
@@ -52,7 +52,7 @@ namespace ECommerce.Business.Concrete
 
             if (basket == null)
             {
-                return ResponseDTO<BasketDTO>.Fail(new List<ErrorDetail>
+                return ResponseDTO<BasketCreateModel>.Fail(new List<ErrorDetail>
         {
             new ErrorDetail
             {
@@ -64,7 +64,7 @@ namespace ECommerce.Business.Concrete
             }
 
          
-            var basketDTO = new BasketDTO
+            var basketDTO = new BasketCreateModel
             {
                 BasketItems = basket.BasketItems.Select(item =>
                 {
@@ -115,20 +115,20 @@ namespace ECommerce.Business.Concrete
             };
         
 
-            return ResponseDTO<BasketDTO>.Success(basketDTO, HttpStatusCode.OK);
+            return ResponseDTO<BasketCreateModel>.Success(basketDTO, HttpStatusCode.OK);
         }
 
 
 
 
-        public async Task<ResponseDTO<BasketDTO>> CreateBasketAsync(BasketCreateDTO basketCreateDTO)
+        public async Task<ResponseDTO<BasketCreateModel>> CreateBasketAsync(BasketCreateDTO basketCreateDTO)
         {
             var user = await _unitOfWork.GetRepository<ApplicationUser>()
                 .GetAsync(u => u.Id == basketCreateDTO.ApplicationUserId);
 
             if (user == null)
             {
-                return ResponseDTO<BasketDTO>.Fail(new List<ErrorDetail>
+                return ResponseDTO<BasketCreateModel>.Fail(new List<ErrorDetail>
         {
             new ErrorDetail { Message = "User not found.", Code = "USER_NOT_FOUND", Target = "ApplicationUser" }
         }, HttpStatusCode.NotFound);
@@ -140,9 +140,9 @@ namespace ECommerce.Business.Concrete
             await _unitOfWork.GetRepository<Basket>().AddAsync(basket);
             await _unitOfWork.SaveChangesAsync();
 
-            var basketDTO = _mapper.Map<BasketDTO>(basket);
+            var basketDTO = _mapper.Map<BasketCreateModel>(basket);
 
-            return ResponseDTO<BasketDTO>.Success(basketDTO, HttpStatusCode.Created);
+            return ResponseDTO<BasketCreateModel>.Success(basketDTO, HttpStatusCode.Created);
         }
 
 
