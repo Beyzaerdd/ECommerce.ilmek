@@ -10,9 +10,9 @@ namespace ECommerce.Business.Abstract
 {
     public interface IBasketService
     {
-        Task<ResponseDTO<BasketCreateModel>> GetBasketAsync();
+        Task<ResponseDTO<BasketDTO>> GetBasketAsync();
      
-        Task<ResponseDTO<BasketCreateModel>> CreateBasketAsync(BasketCreateDTO basketCreateDTO);
+        Task<ResponseDTO<BasketCreateDTO>> CreateBasketAsync(BasketCreateDTO basketCreateDTO);
         Task<ResponseDTO<NoContent>> ClearBasketAsync();
         Task<ResponseDTO<BasketItemDTO>> AddProductToBasketAsync(BasketItemCreateDTO basketItemCreateDTO);
         Task<ResponseDTO<NoContent>> RemoveProductFromBasketAsync(int basketItemId);
