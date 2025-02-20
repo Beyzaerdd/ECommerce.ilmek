@@ -7,13 +7,13 @@ namespace ECommerce.MVC.Services.Abstract
 {
     public interface IReviewService
     {
-        Task<ResponseViewModel<NoContent>> AddReviewAsync(ReviewCreateModel reviewCreateModel);
+        Task<ResponseViewModel<NoContentViewModel>> AddReviewAsync(ReviewCreateModel reviewCreateModel);
 
 
         Task<ResponseViewModel<IEnumerable<ReviewModel>>> GetReviewByProductIdAsync(int productId);
 
-        Task<ResponseViewModel<NoContent>> DeleteReviewAsync(int reviewId);
+        Task<ResponseViewModel<NoContentViewModel>> DeleteReviewAsync(int reviewId);
 
-        Task<ResponseViewModel<NoContent>> UpdateReviewAsync(ReviewUpdateModel reviewUpdateModel);
+        Task<ResponseViewModel<NoContentViewModel>> UpdateReviewAsync(ReviewUpdateModel reviewUpdateModel);
     }
 }
