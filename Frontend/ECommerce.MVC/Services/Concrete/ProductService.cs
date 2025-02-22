@@ -142,7 +142,7 @@ namespace ECommerce.MVC.Services.Concrete
         {
             var client = GetHttpClient();
 
-            // Query parametrelerini liste olarak tut
+         
             var queryParams = new List<string> { $"categoryId={categoryId}" };
 
             if (selectedSizes != null && selectedSizes.Any())
@@ -165,7 +165,7 @@ namespace ECommerce.MVC.Services.Concrete
                 queryParams.Add($"maxPrice={maxPrice.Value.ToString(CultureInfo.InvariantCulture)}");
             }
 
-            // Query string oluştur
+   
             var url = $"products/filterProducts?{string.Join("&", queryParams)}";
 
             _logger.LogInformation($"API Request: {client.BaseAddress}{url}");
@@ -206,6 +206,31 @@ namespace ECommerce.MVC.Services.Concrete
 
             return result;
         }
+      public async  Task<ResponseViewModel<IEnumerable<ProductModel>>> GetRelatedProductsAsync(int productId)
+        {
+            var client = GetHttpClient();
+            var response = await client.GetAsync($"products/getrelatedproducts/{productId}");
+            var responseBody = await response.Content.ReadAsStringAsync();
 
+            if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
+            {
+                return new ResponseViewModel<IEnumerable<ProductModel>>
+                {
+                    IsSucceeded = false,
+                    Errors = new List<ErrorViewModel>
+                {
+                    new ErrorViewModel { Message = "İlgili ürünler getirilirken bir hata oluştu." }
+                }
+                };
+            }
+
+            var result = JsonSerializer.Deserialize<ResponseViewModel<IEnumerable<ProductModel>>>(responseBody, _jsonSerializerOptions);
+
+            return result ?? new ResponseViewModel<IEnumerable<ProductModel>>
+            {
+                IsSucceeded = false,
+                Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } }
+            };
+        }
     }
 }

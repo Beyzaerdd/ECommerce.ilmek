@@ -19,7 +19,7 @@ namespace ECommerce.MVC.Services.Abstract
         Task<ResponseViewModel<int>> getCountByCategory(int? categoryId);
         Task<ResponseViewModel<IEnumerable<ProductModel>>> GetCategoriesByParent();
 
-       
+        Task<ResponseViewModel<IEnumerable<ProductModel>>> GetRelatedProductsAsync(int productId);
         Task<ResponseViewModel<IEnumerable<ProductModel>>> FilterProducts(
         int categoryId,
         List<int>? selectedSizes,
