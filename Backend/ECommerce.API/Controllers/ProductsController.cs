@@ -130,6 +130,13 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
+        [HttpGet("getrelatedproducts/{productId}")]
+        public async Task<IActionResult> GetRelatedProducts([FromRoute] int productId)
+        {
+            var response = await _productService.GetRelatedProductsAsync(productId);
+            return CreateResponse(response);
+        }
+
 
     }
 }

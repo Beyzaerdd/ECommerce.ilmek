@@ -474,5 +474,42 @@ namespace ECommerce.Business.Concrete
                        .Select(s => new EnumDTO { Id = (int)s, Name = s.GetDisplayName() })
                        .ToList();
         }
+
+
+
+
+
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetRelatedProductsAsync(int productId)
+        {
+            var product = await unitOfWork.GetRepository<Product>().GetAsync(x => x.Id == productId , includes: query => query.Include(y => y.Category));
+            if (product == null)
+            {
+                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail {
+                        Message = "Product not found",
+                        Code = "ProductNotFound",
+                        Target = nameof(productId)
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+
+            var relatedProducts = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.CategoryId == product.CategoryId && x.Id != productId);
+            if (relatedProducts == null || !relatedProducts.Any())
+            {
+                return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
+                {
+                    new ErrorDetail {
+                        Message = "No related product found",
+                        Code = "RelatedProductNotFound",
+                        Target = nameof(relatedProducts)
+                    }
+                }, HttpStatusCode.NotFound);
+            }
+
+            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(relatedProducts);
+            productDTOs = productDTOs.Take(4);
+            return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
+        }
     }
 }

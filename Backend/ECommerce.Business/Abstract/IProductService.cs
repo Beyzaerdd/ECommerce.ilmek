@@ -35,6 +35,6 @@ namespace ECommerce.Business.Abstract
         public List<EnumDTO> GetAvailableColors();
         public List<EnumDTO> GetAvailableSizes();
 
-
+        Task<ResponseDTO<IEnumerable<ProductDTO>>> GetRelatedProductsAsync(int productId);
     }
 }
