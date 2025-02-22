@@ -1,9 +1,12 @@
 ﻿using ECommerce.MVC.Models.BasketModels;
 using ECommerce.MVC.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
+using System.Security.Claims;
 
 namespace ECommerce.MVC.Controllers
 {
+
     public class BasketController : Controller
     {
         private readonly IBasketService _basketService;
@@ -12,59 +15,124 @@ namespace ECommerce.MVC.Controllers
         {
             _basketService = basketService;
         }
-
         public async Task<IActionResult> Index()
         {
-            var response = await _basketService.GetBasketAsync();
-            if (!response.IsSucceeded)
+     
+            var result = await _basketService.GetBasketAsync();
+
+            if (!result.IsSucceeded)
             {
-                ModelState.AddModelError("", "Sepet yüklenirken bir hata oluştu.");
-                return View(new BasketModel());
+            
+                TempData["ErrorMessage"] = result.Errors[0].Message;
+                return RedirectToAction("Index", "Home");
+               
             }
-            return View(response.Data);
+
+     
+            var basketModel = result.Data;
+
+    
+            var totalAmountResult = await _basketService.CalculateTotalAmountAsync();
+
+            if (!totalAmountResult.IsSucceeded)
+            {
+                TempData["ErrorMessage"] = totalAmountResult.Errors[0].Message;
+            }
+            else
+            {
+         
+                ViewBag.TotalAmount = totalAmountResult.Data;
+            }
+
+            return View(basketModel);
         }
 
+
+
         [HttpPost]
-        public async Task<IActionResult> AddProduct(BasketItemModel model)
+        public async Task<IActionResult> AddProductToBasket(AddBasketItemModel addBasketItemModel)
         {
-            if (!ModelState.IsValid)
+            var result = await _basketService.AddProductToBasketAsync(addBasketItemModel);
+            if (!result.IsSucceeded)
             {
+          
+                TempData["ErrorMessage"] = result.Errors[0].Message;
                 return RedirectToAction("Index");
             }
 
-            var response = await _basketService.AddProductToBasketAsync(model);
-            if (!response.IsSucceeded)
-            {
-                ModelState.AddModelError("", "Ürün sepete eklenirken bir hata oluştu.");
-            }
-
+       
             return RedirectToAction("Index");
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> ChangeQuantity(BasketItemChangeQuantityModel model)
+        public async Task<IActionResult> ChangeProductQuantity(BasketItemChangeQuantityModel basketItemChangeQuantityModel)
         {
-            if (!ModelState.IsValid)
+            var result = await _basketService.ChangeProductQuantityAsync(basketItemChangeQuantityModel);
+            if (!result.IsSucceeded)
             {
+        
+                TempData["ErrorMessage"] = result.Errors[0].Message;
                 return RedirectToAction("Index");
             }
 
-            await _basketService.ChangeProductQuantityAsync(model);
+    
             return RedirectToAction("Index");
         }
 
+  
         [HttpPost]
-        public async Task<IActionResult> RemoveProduct(int basketItemId)
+        public async Task<IActionResult> RemoveProductFromBasket(int basketItemId)
         {
-            await _basketService.RemoveProductFromBasketAsync(basketItemId);
+            var result = await _basketService.RemoveProductFromBasketAsync(basketItemId);
+            if (!result.IsSucceeded)
+            {
+           
+                TempData["ErrorMessage"] = result.Errors[0].Message;
+                return RedirectToAction("Index");
+            }
+
+      
             return RedirectToAction("Index");
         }
 
+    
         [HttpPost]
         public async Task<IActionResult> ClearBasket()
         {
-            await _basketService.ClearBasketAsync();
+            var result = await _basketService.ClearBasketAsync();
+            if (!result.IsSucceeded)
+            {
+          
+                TempData["ErrorMessage"] = result.Errors[0].Message;
+                return RedirectToAction("Index");
+            }
+
+       
             return RedirectToAction("Index");
         }
-    }
+
+ 
+        public async Task<IActionResult> CalculateTotalAmount()
+        {
+            var response = await _basketService.CalculateTotalAmountAsync();
+
+            if (!response.IsSucceeded)
+            {
+                // Hata durumu, hatayı kullanıcıya iletmek
+                ViewBag.Error = response.Errors.FirstOrDefault()?.Message;
+                return View("Error");
+            }
+
+            // Hesaplanan toplam tutarı View'a göndermek
+            ViewBag.TotalAmount = response.Data;
+
+            return View();
+
+        }
+    } 
+
+
+
+
 }

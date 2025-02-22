@@ -65,6 +65,7 @@ namespace ECommerce.MVC.Controllers
 
             var colorsResponse = await _enumService.GetAvailableColorsAsync();
             var sizesResponse = await _enumService.GetAvailableSizesAsync();
+            var relatedProducts = await _productService.GetRelatedProductsAsync(id);
 
             if (!colorsResponse.IsSucceeded || !sizesResponse.IsSucceeded)
             {
@@ -128,6 +129,8 @@ namespace ECommerce.MVC.Controllers
             {
                 ViewBag.Reviews = new List<ReviewModel>();
             }
+
+            ViewBag.RelatedProducts = relatedProducts?.IsSucceeded == true ? relatedProducts.Data : new List<ProductModel>();
 
             return View(product);
         }
