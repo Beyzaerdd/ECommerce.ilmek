@@ -1,0 +1,106 @@
+﻿@model ECommerce.MVC.Models.BasketModels.BasketModel
+
+<section class="shop-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                @if (Model.BasketItems == null || !Model.BasketItems.Any())
+                {
+                    <div class="alert alert-danger text-center" role="alert">
+                        Sepette ürün bulunmamaktadır.
+                    </div>
+                }
+                else
+                {
+
+                <div class="shop__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ürün</th>
+                                <th>Renk</th>
+                                <th>Beden</th>
+                                <th>Fiyat</th>
+                                <th>Adet</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.BasketItems)
+                            {
+                                <tr>
+                                    <td class="cart__product__item">
+                                        <img src="@item.Product.ImageUrl" class="w-25" >
+                                        <div class="cart__product__item__title">
+                                            <h6>@item.Product.Name</h6>
+                                         
+                                        </div>
+                                    </td>
+                                    <td class="cart__quantity">
+
+                                        <div class="cart__quantity">
+                                            <h6>@item.Color.Name</h6>
+
+                                        </div>
+                                    </td>
+                                    <td class="cart__quantity">
+
+                                        <div class="cart__quantity">
+                                            <h6>@item.Size.Name</h6>
+
+                                        </div>
+                                    </td>
+                                  
+                                    <td class="cart__price">@($"{item.DiscountedPrice:C2}")</td>
+                                    <td class="cart__quantity">
+                                     
+                                        <form asp-action="ChangeProductQuantity" method="post" class="mx-3">
+                                            <input type="hidden" name="basketItemId" value="@item.Id" />
+                                            <input type="number" name="quantity" class="form-control" value="@item.Quantity" min="1" onchange="this.form.submit()" />
+                                        </form>
+                                    </td>
+
+                                    <td class="cart__total">@($"{item.DiscountedPrice * item.Quantity:C2}")</td>
+                                    <td class="cart__close">
+                                        <form asp-area="" asp-controller="Basket" asp-action="RemoveProductFromBasket" method="post" class="d-inline">
+                                            <input type="hidden" name="basketItemId" value="@item.Id" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                
+                            }
+                        </tbody>
+                    </table>
+                </div>
+           
+        
+                
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn">
+                    <a href="/Home/Index.cshtml">Alışverişe devam et</a>
+                </div>
+            </div>
+         
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+            
+            </div>
+            <div class="col-lg-4 offset-lg-2">
+                <div class="cart__total__procced">
+                    <h6>Toplam Ücret</h6>
+                    <ul>
+                        <li>Subtotal <span>@($"{Model.BasketItems.Sum(item => item.DiscountedPrice * item.Quantity):C2}")</span></li>
+                        <li>Total <span>@($"{ViewBag.TotalAmount:C2}")</span></li>
+                    </ul>
+                    <a href="#" class="primary-btn">Sipariş oluştur</a>
+                </div>
+            </div>
+        </div>
+                }
+    </div>
+</section>
+<!-- Shop Cart Section End -->
