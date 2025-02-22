@@ -1,16 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ECommerce.Shared.ComplexTypes;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace ECommerce.MVC.Models.BasketModels
 {
     public class BasketItemCreateModel
     {
-        [Required]
-        [JsonPropertyName("productid")]
+        [JsonPropertyName("productId")]
         public int ProductId { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Miktar en az 1 olmalıdır.")]
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
+
+        [JsonPropertyName("size")]
+        public int Size { get; set; }
+
+        [JsonPropertyName("color")]
+        public int Color { get; set; }
     }
 }

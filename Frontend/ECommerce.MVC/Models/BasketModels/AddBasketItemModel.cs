@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace ECommerce.MVC.Models.BasketModels
 {
-    public class BasketItemModel
+    public class AddBasketItemModel
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -33,9 +33,9 @@ namespace ECommerce.MVC.Models.BasketModels
         public decimal DiscountedPrice { get; set; }
 
         [JsonPropertyName("size")]
-        public EnumResponseModel Size { get; set; }
+        public ProductSize Size { get; set; }
 
         [JsonPropertyName("color")]
-        public EnumResponseModel Color { get; set; }
+        public ProductColor Color { get; set; }
     }
 }

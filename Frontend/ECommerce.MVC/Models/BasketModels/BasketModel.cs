@@ -23,5 +23,8 @@ namespace ECommerce.MVC.Models.BasketModels
         [StringLength(20, ErrorMessage = "Kupon kodu en fazla 20 karakter olabilir.")]
         [JsonPropertyName("couponCode")]
         public string? CouponCode { get; set; }
+
+
+
     }
 }
