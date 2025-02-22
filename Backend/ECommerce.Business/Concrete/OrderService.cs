@@ -125,8 +125,8 @@ namespace ECommerce.Business.Concrete
                             
                             
                             TotalPrice = itemTotalPrice,
-                            Size = basketItem.Size,
-                            Color = basketItem.Color,
+                            Size = (ProductSize)basketItem.Size.Id,
+                            Color = (ProductColor)basketItem.Color.Id,
                         };
 
                         orderTotalAmount += itemTotalPrice;

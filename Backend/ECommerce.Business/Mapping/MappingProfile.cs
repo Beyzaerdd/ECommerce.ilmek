@@ -75,7 +75,7 @@ namespace ECommerce.Business.Mapping
 
 
             #region Basket
-            CreateMap<Basket, BasketCreateModel>().ReverseMap();
+            CreateMap<Basket, BasketCreateDTO>().ReverseMap();
             CreateMap<Basket, BasketCreateDTO>().ReverseMap();
             CreateMap<Basket, BasketUpdateDTO>().ReverseMap();
             #endregion
