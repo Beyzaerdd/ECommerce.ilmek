@@ -9,14 +9,16 @@ namespace ECommerce.MVC.Services.Abstract
     {
         Task<ResponseViewModel<BasketModel>> GetBasketAsync();
 
-        Task<ResponseViewModel<bool>> CreateBasketAsync(BasketModel basketModel);
+        Task<ResponseViewModel<NoContentViewModel>> CreateBasketAsync(BasketModel basketModel);
         Task<ResponseViewModel<NoContentViewModel>> ClearBasketAsync();
-        Task<ResponseViewModel<BasketItemModel>> AddProductToBasketAsync(BasketItemModel basketItemModel);
+        Task<ResponseViewModel<BasketItemModel>> AddProductToBasketAsync(AddBasketItemModel addBasketItemModel);
         Task<ResponseViewModel<NoContentViewModel>> RemoveProductFromBasketAsync(int basketItemId);
         Task<ResponseViewModel<NoContentViewModel>> ChangeProductQuantityAsync(BasketItemChangeQuantityModel basketItemChangeQuantityModel);
 
 
         Task<ResponseViewModel<decimal>> CalculateTotalAmountAsync();
+
+
 
     }
 }
