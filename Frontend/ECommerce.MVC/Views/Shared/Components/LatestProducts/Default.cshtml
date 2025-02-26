@@ -57,20 +57,23 @@
                         <div class="product__item__pic set-bg" data-setbg="@product.ImageUrl">
                             <ul class="product__hover">
                                 <li><a href="@product.ImageUrl" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                <li>
+                                    <form id="favoriteForm-@product.Id" action="@Url.Action("AddToFavorites", "UserFav")" method="post" onsubmit="checkLogin(event)">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <button type="submit" class="heart-button1">
+                                            ❤️
+                                            
+                                        </button>
+                                    </form>
+                                </li>
+
                             </ul>
                         </div>
                         <div class="product__item__text">
                             <h6><a href="#">@product.Name</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ @product.UnitPrice</div>
+
+                            <div class="product__price">@product.UnitPrice.ToString("C")</div>
                         </div>
                     </div>
                 </div>

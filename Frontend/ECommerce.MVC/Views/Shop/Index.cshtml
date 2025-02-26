@@ -59,19 +59,18 @@
                             </div>
                         </div>
                         <div class="accordion accordion-flush" id="productFilters">
-                            <!-- Beden Seç -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSizes" aria-expanded="false" aria-controls="collapseSizes">
-                                        <span style="color: red; font-weight: 600;">Beden Seç</span>
+                                    <button class="accordion-button custom-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSizes" aria-expanded="false" aria-controls="collapseSizes">
+                                        <span>Beden Seç</span>
                                     </button>
                                 </h2>
                                 <div id="collapseSizes" class="accordion-collapse collapse" data-bs-parent="#productFilters">
                                     <div class="accordion-body">
-                                        <div class="d-flex flex-column gap-2">
+                                        <div class="size-filter">
                                             @foreach (var size in Model.AvailableSizes)
                                             {
-                                                <div class="form-check">
+                                                <div class="form-check custom-form-check">
                                                     <input class="form-check-input" type="checkbox" id="size_@size.Value" name="selectedSizes" value="@size.Value"
                                                     @(Model.SelectedSizes.Contains(int.Parse(size.Value)) ? "checked" : "")>
                                                     <label class="form-check-label" for="size_@size.Value">@size.Text</label>
@@ -81,20 +80,20 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Renk Seç -->
+                            <br />
+                        
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseColors" aria-expanded="false" aria-controls="collapseColors">
-                                        <span style="color: red; font-weight: 600;">Renk Seç</span>
+                                    <button class="accordion-button custom-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseColors" aria-expanded="false" aria-controls="collapseColors">
+                                        <span>Renk Seç</span>
                                     </button>
                                 </h2>
                                 <div id="collapseColors" class="accordion-collapse collapse" data-bs-parent="#productFilters">
                                     <div class="accordion-body">
-                                        <div class="d-flex flex-column gap-2">
+                                        <div class="color-filter">
                                             @foreach (var color in Model.AvailableColors)
                                             {
-                                                <div class="form-check">
+                                                <div class="form-check custom-form-check">
                                                     <input class="form-check-input" type="checkbox" id="color_@color.Value" name="selectedColors" value="@color.Value"
                                                     @(Model.SelectedSizes.Contains(int.Parse(color.Value)) ? "checked" : "")>
                                                     <label class="form-check-label" for="color_@color.Value">@color.Text</label>
@@ -104,12 +103,13 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
 
 
 
-                        
+                        <br /> <br />
 
                         <button type="submit" class="site-btn">Filtrele</button>
 
@@ -136,8 +136,8 @@
                                                 <form id="favoriteForm-@product.Id" action="@Url.Action("AddToFavorites", "UserFav")" method="post" onsubmit="checkLogin(event)">
                                                     @Html.AntiForgeryToken()
                                                     <input type="hidden" name="productId" value="@product.Id" />
-                                                    <button type="submit" class="btn-site">
-                                                        <span class="icon_heart_alt"></span>
+                                                    <button type="submit" class="heart-button1">
+                                                        ❤️
                                                     </button>
                                                 </form>
                                             </li>

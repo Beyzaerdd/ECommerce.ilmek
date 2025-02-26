@@ -1,74 +1,91 @@
-﻿
-@model List<ECommerce.MVC.Models.UserFavModels.UserFavModel>
+﻿@model List<ECommerce.MVC.Models.UserFavModels.UserFavModel>
 
 @{
     ViewBag.Title = "Favorilerim";
+
     var userFullName = ViewBag.UserName ?? "Bilinmeyen Kullanıcı";
+
     var favoriteCount = ViewBag.FavoriteCount ?? 0;
+
     var page = ViewBag.Page ?? 1;
+
     var pageSize = ViewBag.PageSize ?? 5;
+
     var totalPages = ViewBag.TotalPages ?? 1;
 }
 
 <div class="container">
-   
-    <div class="row">
-        @foreach (var fav in Model)
-        {
-            var product = fav.Product;  
-            <div class="col-lg-4 col-md-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="@(product?.ImageUrl)">
-                        <ul class="product__hover">
-                            <li>
+    <h2 class="text-center mt-4">Favori Ürünlerim</h2>
+
+    @if (Model == null || !Model.Any())
+
+    {
+        <div class="alert alert-danger text-center mt-4" role="alert" style="font-size: 18px; font-weight: bold;">
+            🚨 Favori ürün bulunmamaktadır! Favorilere eklemek için ürünleri keşfedin. 🚀
+        </div>
+    }
+
+    else
+
+    {
+        <div class="row">
+            @foreach (var fav in Model)
+
+            {
+
+                var product = fav.Product;
+                <div class="col-lg-4 col-md-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="@(product?.ImageUrl)">
+                            <ul class="product__hover">
+                                <li>
                                     <form method="post" action="@Url.Action("RemoveFromFavorites", "UserFav")">
-                                    @Html.AntiForgeryToken()
-        <input type="hidden" name="favId" value="@fav.Id" />
-                                    <button type="submit" class="btn-site">Favoriden Çıkar</button>
-    </form>
-                            </li>
-                            <li>
-                              
-                                <a href="#"><span class="icon_bag_alt"></span></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6>
-                            <a href="#">@(product?.Name ?? "Ürün Adı")</a>
-                        </h6>
-                       
-                        <div class="product__price">
-                            $ @(product?.UnitPrice.ToString("0.00") ?? "0.00")
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="favId" value="@fav.Id" />
+                                        <button type="submit" class="btn-remove-fav">
+                                            <i class="fa fa-trash"></i> Favoriden Çıkar
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>
+                                <a href="#">@(product?.Name ?? "Ürün Adı")</a>
+                            </h6>
+                            <div class="product__price">
+                                @product.UnitPrice.ToString("C")
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
-
-
-    <div class="col-lg-12 text-center">
-        <div class="pagination__option">
-            @if (page > 1)
-            {
-                <a href="@Url.Action("Index", new { page = page - 1, pageSize = pageSize })">
-                    <i class="fa fa-angle-left"></i> Önceki
-                </a>
-            }
-
-            @for (var i = 1; i <= totalPages; i++)
-            {
-                <a href="@Url.Action("Index", new { page = i, pageSize = pageSize })" class="@(page == i ? "active" : "")">@i</a>
-            }
-
-            @if (page < totalPages)
-            {
-                <a href="@Url.Action("Index", new { page = page + 1, pageSize = pageSize })">
-                    Sonraki <i class="fa fa-angle-right"></i>
-                </a>
             }
         </div>
-    </div>
 
+        <div class="col-lg-12 text-center">
+            <div class="pagination__option">
+                @if (page > 1)
+
+                {
+                    <a href="@Url.Action("Index", new { page = page - 1, pageSize = pageSize })">
+                        <i class="fa fa-angle-left"></i> Önceki
+                    </a>
+                }
+
+                @for (var i = 1; i <= totalPages; i++)
+
+                {
+                    <a href="@Url.Action("Index", new { page = i, pageSize = pageSize })" class="@(page == i ? "active" : "")">@i</a>
+                }
+
+                @if (page < totalPages)
+
+                {
+                    <a href="@Url.Action("Index", new { page = page + 1, pageSize = pageSize })">
+                        Sonraki <i class="fa fa-angle-right"></i>
+                    </a>
+                }
+            </div>
+        </div>
+    }
 </div>
