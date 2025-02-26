@@ -104,6 +104,7 @@ namespace ECommerce.MVC.Controllers
                 if (sellerResponse.IsSucceeded && sellerResponse.Data != null)
                 {
                     ViewBag.StoreName = sellerResponse.Data.StoreName;
+                    ViewBag.applicationUserId = product.ApplicationUserId;
                 }
                 else
                 {
