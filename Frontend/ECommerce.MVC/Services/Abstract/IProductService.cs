@@ -4,6 +4,8 @@ using ECommerce.MVC.Models.EnumResponseModels;
 using ECommerce.MVC.Models.ProductModels;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
 using ECommerce.Shared.ComplexTypes;
+using ECommerce.Shared.DTOs.ProductDTOs;
+using ECommerce.Shared.DTOs.ResponseDTOs;
 
 namespace ECommerce.MVC.Services.Abstract
 {
@@ -11,8 +13,8 @@ namespace ECommerce.MVC.Services.Abstract
     {
 
         Task<ResponseViewModel<IEnumerable<ProductModel>>> GetAllProductAsync(int count = 9);
-       
 
+        Task<ResponseViewModel<IEnumerable<ProductModel>>> GetProductBySellerAsync(string applicationUserId, int count = 8);
         Task<ResponseViewModel<ProductModel>> GetProductByIdAsync(int id);
 
         Task<ResponseViewModel<IEnumerable<ProductModel>>> GetProductsByCategory(int? categoryId);

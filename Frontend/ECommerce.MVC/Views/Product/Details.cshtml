@@ -20,7 +20,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <h3>@Model.Name <span>Satıcı:<a href="/Seller/Profile/@ViewBag.SellerId" class="seller-link">@ViewBag.StoreName</a></span></h3>
+                    <h3>@Model.Name <span>Satıcı:  <a href="/store/@ViewBag.ApplicationUserId" class="seller-link">@ViewBag.StoreName</a></span></h3>
 
                     <div class="product__details__price">
                         @if (ViewBag.DiscountedPrice < Model.UnitPrice)
@@ -39,20 +39,71 @@
                             </span>
                         }
                     </div>
-                 
-                    <div class="product__details__button">
-                        <div class="quantity">
-                            <span>Quantity:</span>
-                            <div class="pro-qty">
-                                <input type="text" value="1">
-                            </div>
-                        </div>
-                        @if (Model.IsActive)
+                      <p>Üründen @Model.Stock adet bulunmaktadır. Ürünün sipariş verdiğiniz tarihten itibaren hazırlanma süresi yaklaşık @Model.PreparationTimeInDays gündür.</p>
+                 <div class="product__details__button">
+    @if (Model.IsActive)
+    {
+        <div class="d-flex align-items-center gap-2">
+            <!-- Adet Seçim Kutusu -->
+            <input type="number" id="quantityInput" class="form-control quantity-input" value="1" min="1">
+
+            <!-- Sepete Ekle Formu -->
+            <form id="basketForm" asp-controller="Basket" asp-action="AddProductToBasket" method="post" onsubmit="onSubmit(event)">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="ProductId" value="@Model.Id" />
+                <input type="hidden" name="Quantity" id="quantityField" value="1" />
+                <input type="hidden" name="Color" id="selectedColor" />
+                <input type="hidden" name="Size" id="selectedSize" />
+                <button type="submit" class="cart-btn">Sepete Ekle</button>
+            </form>
+
+            <!-- Favori Butonu -->
+            <form id="favoriteForm-@Model.Id" action="@Url.Action("AddToFavorites", "UserFav")" method="post" onsubmit="checkLogin(event)">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <button type="submit" class="heart-button">
+                    <i class="fa fa-heart"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Hata Mesajı -->
+        <div id="error-message" class="alert alert-danger mt-3" style="display:none;">
+            Lütfen beden ve renk seçin!
+        </div>
+    }
+    else
+    {
+        <button class="cart-btn disabled-btn" disabled>
+            <span class="icon_bag_alt"></span> Ürün Aktif Değil
+        </button>
+    }
+</div>
+
+                 @*    <div class="product__details__button">
+
+                  @if (Model.IsActive)
                         {
-                            <a href="#" class="cart-btn" onclick="checkLogin(event)">
-                                <span class="icon_bag_alt"></span> Sepete Ekle
-                            </a>
+                            <div class="d-flex align-items-center">
+                                <input type="number" id="quantityInput" class="form-control quantity-input mr-2" value="1" min="1">
+                                <form id="basketForm" asp-controller="Basket" asp-action="AddProductToBasket" method="post" onsubmit="onSubmit(event)">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="ProductId" value="@Model.Id" />
+                                    <input type="hidden" name="Quantity" id="quantityField" value="1" />
+                                    <input type="hidden" name="Color" id="selectedColor" />
+                                    <input type="hidden" name="Size" id="selectedSize" />
+
+                                    <!-- Sepete Ekle Butonu -->
+                                    <button type="submit" class="btn btn-primary btn-block">Sepete Ekle</button>
+                                </form>
+                            </div>
+
+                            <!-- Hata mesajı -->
+                            <div id="error-message" class="alert alert-danger mt-3" style="display:none;">
+                                Lütfen beden ve renk seçin!
+                            </div>
                         }
+
                         else
                         {
                             <button class="cart-btn disabled-btn" disabled>
@@ -60,23 +111,43 @@
                             </button>
                         }
                         <ul>
-                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                             <li>
+                                                <form id="favoriteForm-@Model.Id" action="@Url.Action("AddToFavorites", "UserFav")" method="post" onsubmit="checkLogin(event)">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="productId" value="@Model.Id" />
+                                                    <button type="submit" class="heart-button">
+                                                        ❤️
+                                                    </button>
+                                                </form>
+                                            </li>
                     
                         </ul>
-                    </div>
+                    </div> *@
                     <div class="product__details__widget">
                         <ul>
                             <li>
-                                @if (Model.IsActive)
+                                @if (Model.Stock>0)
                                 {
                                     <span>Availability:</span>
                                     <div class="stock__checkbox">
                                         <label for="stockin">
-                                            In Stock
+                                            Stokta var
                                             <input type="checkbox" id="stockin" checked disabled>
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
+                                }
+                                else
+                                {
+                                     <span>Availability:</span>
+                                    <div class="stock__checkbox">
+                                        <label for="stockin">
+                                            Stokta yok
+                                           
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    
                                 }
                             </li>
                             <div class="product__details__widget">
@@ -132,7 +203,7 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <h6>Ürün Bilgileri</h6>
-                            <p>Üründen @Model.Stock adet bulunmaktadır. Ürünün sipariş verdiğiniz tarihten itibaren hazırlanma süresi yaklaşık @Model.PreparationTimeInDays gündür.</p>
+                          
 
                              <br />
                              <p>@Model.Description</p>
@@ -174,30 +245,107 @@
                 </div>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   @if (ViewBag.RelatedProducts != null && ViewBag.RelatedProducts.Count > 0)
+{
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <div class="related__title">
+                <h5>Benzer Ürünler </h5>
+            </div>
+        </div>
+        
+        @foreach (var item in ViewBag.RelatedProducts)
+        {
+             @if (item.IsActive)  
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="@item.ImageUrl">
+                              <ul class="product__hover">
+                                            <li><a href="@item.ImageUrl" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                            <li>
+                                                <form id="favoriteForm-@item.Id" action="@Url.Action("AddToFavorites", "UserFav")" method="post" onsubmit="checkLogin(event)">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="productId" value="@item.Id" />
+                                                    <button type="submit" class="btn-site">
+                                                        <span class="icon_heart_alt"></span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                          
+                                        </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="@Url.Action("Details", "Product", new { id = item.Id })">@item.Name</a></h6>
+                            <div class="product__price">@item.UnitPrice.ToString("C")</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
 
-        <script>
-            function checkLogin(event) {
-                var isLoggedIn = @((User.Identity.IsAuthenticated) ? "true" : "false");
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 Kütüphanesini Dahil Et -->
 
-                if (!isLoggedIn) {
-                    event.preventDefault(); 
+    <script>
+        // Renk seçimini dinle ve gizli input'u güncelle
+        document.querySelectorAll('input[name="color"]').forEach((colorInput) => {
+            colorInput.addEventListener('change', function () {
+                document.getElementById('selectedColor').value = colorInput.id.split('-')[1];  
+            });
+        });
 
-                    Swal.fire({
-                        title: "Ürün Sepete Eklenemedi!",
-                        text: "Sepete ürün eklemek için giriş yapmalısınız.",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Giriş Yap",
-                        cancelButtonText: "İptal"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "/Auth/LoginUser"; 
-                        }
-                    });
-                }
+        // Beden seçimini dinle ve gizli input'u güncelle
+        document.querySelectorAll('input[name="size"]').forEach((sizeInput) => {
+            sizeInput.addEventListener('change', function () {
+                document.getElementById('selectedSize').value = sizeInput.id.split('-')[1];  
+            });
+        });
+
+        // Sepete Ekle butonuna tıklanmadan önce formu validasyon
+        function onSubmit(event){
+            // Quantity alanını gizli input'a aktar
+            document.getElementById('quantityField').value = document.getElementById('quantityInput').value;
+
+            // Renk ve beden seçimi yapılmadıysa uyarı göster ve formu gönderme
+            if (!document.getElementById('selectedColor').value || !document.getElementById('selectedSize').value) {
+                event.preventDefault();  // Formu gönderme
+
+                // SweetAlert2 ile renk ve beden seçilmediğinde uyarı mesajı
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Uyarı!',
+                    text: 'Lütfen renk ve beden seçin.',
+                    confirmButtonText: 'Tamam'
+                });
+                
+                return false;  // Fonksiyonun devamını engelle
             }
 
+            // Eğer giriş yapılmadıysa uyarıyı göster
+            var isLoggedIn = @((User.Identity.IsAuthenticated) ? "true" : "false");
 
+            if (isLoggedIn === 'False') {  // Eğer false ise giriş yapılmamış demektir
+                event.preventDefault();  // Formu gönderme
 
-        </script>
+                // SweetAlert2 ile giriş yapılmadığında uyarı mesajı
+                Swal.fire({
+                    title: "Ürün Sepete Eklenemedi!",
+                    text: "Sepete ürün eklemek için giriş yapmalısınız.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Giriş Yap",
+                    cancelButtonText: "İptal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/Auth/LoginUser";  // Giriş sayfasına yönlendir
+                    }
+                });
+
+                return false;  // Giriş yapılmadığında formun gönderilmesini engelle
+            }
+        }
+    </script>
+}

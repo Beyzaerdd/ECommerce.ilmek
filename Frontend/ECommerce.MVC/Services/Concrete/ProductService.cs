@@ -17,13 +17,64 @@ namespace ECommerce.MVC.Services.Concrete
         }
         private readonly ILogger<ProductService> _logger;
 
-      
+
+
+        public async Task<ResponseViewModel<IEnumerable<ProductModel>>> GetProductBySellerAsync(string applicationUserId, int count = 8)
+        {
+            try
+            {
+                var client = GetHttpClient();
+                var response = await client.GetAsync($"products/getBySeller?applicationUserId={applicationUserId}&take={count}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ResponseViewModel<IEnumerable<ProductModel>>
+                    {
+                        IsSucceeded = false,
+                        Errors = new List<ErrorViewModel>
+                {
+                    new ErrorViewModel { Message = "Ürünler getirilirken bir hata oluştu. Hata kodu: " + response.StatusCode }
+                }
+                    };
+                }
+
+                var responseBody = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseBody))
+                {
+                    return new ResponseViewModel<IEnumerable<ProductModel>>
+                    {
+                        IsSucceeded = false,
+                        Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "API'den geçerli veri alınamadı." } }
+                    };
+                }
+
+                var result = JsonSerializer.Deserialize<ResponseViewModel<IEnumerable<ProductModel>>>(responseBody, _jsonSerializerOptions);
+
+                return result ?? new ResponseViewModel<IEnumerable<ProductModel>>
+                {
+                    IsSucceeded = false,
+                    Errors = new List<ErrorViewModel> { new ErrorViewModel { Message = "Veri deserialize edilemedi." } }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseViewModel<IEnumerable<ProductModel>>
+                {
+                    IsSucceeded = false,
+                    Errors = new List<ErrorViewModel>
+            {
+                new ErrorViewModel { Message = "Bir hata oluştu: " + ex.Message }
+            }
+                };
+            }
+        }
 
 
 
 
 
-    public async Task<ResponseViewModel<IEnumerable<ProductModel>>> GetAllProductAsync(int count = 8)
+
+        public async Task<ResponseViewModel<IEnumerable<ProductModel>>> GetAllProductAsync(int count = 8)
         {
             var client = GetHttpClient();
             var response = await client.GetAsync($"products/getAll?take={count}");
