@@ -440,10 +440,10 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
         }
 
-        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId)
+        public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId, int? take = null)
         {
 
-            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.ApplicationUserId == applicationUserId);
+            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.ApplicationUserId == applicationUserId, take:take);
             if (products == null || !products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>

@@ -30,7 +30,7 @@ namespace ECommerce.Business.Abstract
 
         Task<ResponseDTO<IEnumerable<ProductDTO>>> FilterProducts(int categoryId,List<int>? productSizes, List<int>? productColors, decimal? minPrice, decimal? maxPrice);
 
-        Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId);
+        Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId, int? take = null);
 
         public List<EnumDTO> GetAvailableColors();
         public List<EnumDTO> GetAvailableSizes();
