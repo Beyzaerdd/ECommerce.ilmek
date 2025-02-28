@@ -1,0 +1,72 @@
+﻿@model ECommerce.MVC.Models.OrderModels.OrderCreateModel
+
+
+<section class="checkout spad">
+    <div class="container">
+        <h4>Sipariş Özeti</h4>
+        <div class="row">
+            <div class="col-lg-7">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Renk</th>
+                            <th>Beden</th>
+                            <th>Adet</th>
+                            <th>Fiyat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BasketItems)
+                        {
+                            <tr>
+                                <td>@item.Product.Name</td>
+                                <td>@item.Color.Name</td>
+                                <td>@item.Size.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>@($"{item.DiscountedPrice * item.Quantity:C2}")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-5">
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-body p-4">
+                        <h5 class="card-title text-center mb-4 fw-bold">Ödeme Bilgileri</h5>
+                        <form asp-action="CompleteOrder" asp-controller="Order" method="post">
+                            <input type="hidden" name="TotalAmount" value="@ViewBag.TotalAmount" />
+
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="fw-semibold">Toplam Tutar</span>
+                                    <span class="fw-bold text-success">@($"{ViewBag.TotalAmount:C2}")</span>
+                                </li>
+                            </ul>
+
+                            <div class="mb-3">
+                                <label for="CardNumber" class="form-label fw-semibold">Kart Numarası</label>
+                                <input type="text" class="form-control" id="CardNumber" name="CardNumber" placeholder="**** **** **** ****" required>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="ExpiryDate" class="form-label fw-semibold">Son Kullanma Tarihi</label>
+                                    <input type="text" class="form-control" id="ExpiryDate" name="ExpiryDate" placeholder="AA/YY" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="Cvc" class="form-label fw-semibold">CVC</label>
+                                    <input type="text" class="form-control" id="Cvc" name="Cvc" placeholder="123" required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 py-2 fw-bold">Ödemeyi Tamamla</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+

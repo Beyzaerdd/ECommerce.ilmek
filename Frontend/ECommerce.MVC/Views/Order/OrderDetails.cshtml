@@ -1,0 +1,229 @@
+﻿@model ECommerce.MVC.Models.OrderModels.OrderModel
+
+<div class="container my-4">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-danger text-white text-center">
+            <h3 class="fw-bold"><i class="fas fa-receipt"></i> Sipariş Detayları</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="fw-bold">📌 Sipariş No: <span style="color: #ca1515;">@Model.OrderNumber</span></h5>
+                    <p><i class="fas fa-calendar-alt"></i> <strong>Tarih:</strong> @Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</p>
+                    <p><i class="fas fa-info-circle"></i> <strong>Durum:</strong> <span class="badge status-badge">@Model.Status?.Name</span></p>
+                </div>
+
+                <div class="col-md-6 text-md-end">
+                    <h4 class="fw-bold text-danger">💰 Toplam: @($"{Model.TotalPrice:C2}")</h4>
+                </div>
+            </div>
+
+            <hr />
+
+            <h5 class="fw-bold"><i class="fas fa-box"></i> Ürünler</h5>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Adet</th>
+                            <th>Beden</th>
+                            <th>Renk</th>
+                            <th>Birim Fiyat</th>
+                            <th>Toplam</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td class="d-flex align-items-center">
+                                    <img src="@item.Product?.ImageUrl" alt="@item.Product?.Name"
+                                         class="rounded-circle shadow-sm me-2" width="50" height="50" />
+                                    @item.Product?.Name
+                                </td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Size?.Name</td>
+                                <td>@item.Color?.Name</td>
+                                <td>@($"{item.Product?.UnitPrice:C2}")</td>
+                                <td class="fw-bold">@($"{(item.Quantity * item.Product?.UnitPrice):C2}")</td>
+                                <td>
+                                    <button class="btn btn-outline-danger btn-sm review-btn" data-order-item-id="@item.Id">
+                                        ⭐️ Yorum Yap
+                                    </button>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Orders", "Order")" class="btn btn-danger fw-bold btn-animate">
+                    ↩️ Geri Dön
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Yorum Formu (Modal) -->
+@foreach (var item in Model.OrderItems)
+{
+    <div class="modal fade" id="reviewModal_@item.Id" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="reviewModalLabel"><i class="fas fa-star"></i> Ürün Yorumu Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reviewForm_@item.Id">
+                        <input type="hidden" name="OrderItemId" value="@item.Id" />
+
+                        <div class="mb-3">
+                            <label for="reviewText_@item.Id" class="form-label">Yorumunuz</label>
+                            <textarea class="form-control" id="reviewText_@item.Id" name="Content" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rating_@item.Id" class="form-label">Puan</label>
+                            <select class="form-select" id="rating_@item.Id" name="Rating" required>
+                                <option value="5">⭐⭐⭐⭐⭐ - Mükemmel</option>
+                                <option value="4">⭐⭐⭐⭐ - İyi</option>
+                                <option value="3">⭐⭐⭐ - Orta</option>
+                                <option value="2">⭐⭐ - Kötü</option>
+                                <option value="1">⭐ - Çok Kötü</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-danger w-100">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+}
+<style>
+    /* Durum Etiketi */
+    .status-badge {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 20px;
+        background: #ca1515;
+        color: white;
+    }
+
+    /* Tablo Hover Efekti */
+    .table-hover tbody tr:hover {
+        background-color: #f8d7da;
+        transition: 0.3s ease-in-out;
+    }
+
+    /* Buton Animasyonu */
+    .btn-animate {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        background-color: #ca1515;
+        border-color: #ca1515;
+    }
+
+        .btn-animate:hover {
+            background-color: #a01010;
+            border-color: #a01010;
+            box-shadow: 0 5px 15px rgba(202, 21, 21, 0.4);
+        }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".review-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let orderItemId = this.getAttribute("data-order-item-id");
+                let modalId = "#reviewModal_" + orderItemId;
+
+                let reviewModal = new bootstrap.Modal(document.querySelector(modalId));
+                reviewModal.show();
+            });
+        });
+
+        document.querySelectorAll('form[id^="reviewForm_"]').forEach(form => {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                let submitButton = form.querySelector('button[type="submit"]');
+                submitButton.disabled = true; 
+
+                fetch("/Order/AddReview", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                    
+                        if (data.success) {
+                            showToast("Yorumunuz başarıyla eklendi!", "success");
+                            let modalId = "#reviewModal_" + formData.get('OrderItemId');
+                            let reviewModal = bootstrap.Modal.getInstance(document.querySelector(modalId));
+                            reviewModal.hide();
+                        } else {
+                            showToast(data.message || "Bir hata oluştu, lütfen tekrar deneyin.", "danger");
+                        }
+                        submitButton.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error("Hata:", error);
+                        showToast("Bir hata oluştu, lütfen tekrar deneyin.", "danger");
+                        submitButton.disabled = false; 
+                    });
+            });
+        });
+
+  
+        function showToast(message, type) {
+            let toastContainer = document.getElementById("toast-container");
+            if (!toastContainer) {
+                toastContainer = document.createElement("div");
+                toastContainer.id = "toast-container";
+                toastContainer.classList.add("position-fixed", "top-0", "end-0", "p-3");
+                document.body.appendChild(toastContainer);
+            }
+
+            let toast = document.createElement("div");
+            toast.classList.add("toast", `bg-${type}`, "text-white");
+            toast.role = "alert";
+            toast.ariaLive = "assertive";
+            toast.ariaAtomic = "true";
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <strong class="me-auto">${type === "success" ? "Başarılı!" : "Hata"}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            let bootstrapToast = new bootstrap.Toast(toast);
+            bootstrapToast.show();
+
+ 
+            toast.addEventListener('hidden.bs.toast', function () {
+                toast.remove();
+            });
+        }
+    });
+
+
+
+</script>

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<ECommerce.MVC.Models.OrderModels.OrderModel>
+
+<div class="container">
+    <h2 class="mb-4 text-center fw-bold" style="text-dark"> Siparişlerim</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            <i class="fas fa-exclamation-triangle"></i> @TempData["Error"]
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var order in Model.OrderByDescending(o => o.OrderDate)) 
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card shadow-lg border-0 rounded-4 order-card">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-dark">
+                                📦 Sipariş No:
+                                <span style="color: #ca1515;">@order.OrderNumber</span>
+                            </h5>
+                            <p class="text-muted"><i class="fas fa-calendar-alt"></i> @order.OrderDate.ToString("dd.MM.yyyy HH:mm")</p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge status-badge">@order.Status?.Name</span>
+                                <span class="fw-bold" style="color: #ca1515;">💰 @($"{order.TotalPrice:C2}")</span>
+                            </div>
+
+                            <div class="d-grid mt-3">
+                                <a href="@Url.Action("OrderDetails", "Order", new { id = order.Id })"
+                                   class="btn btn-danger fw-bold btn-animate">
+                                    🔍  Sipariş Detayı
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center p-4 rounded-3">
+            <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+            <h4>Henüz bir siparişiniz bulunmamaktadır.</h4>
+            <p>Hemen alışverişe başlayarak ilk siparişinizi oluşturabilirsiniz!</p>
+            <a href="/" class="btn btn-success mt-2"><i class="fas fa-store"></i> Alışverişe Başla</a>
+        </div>
+    }
+</div>
+
+<style>
+    /* Kart Tasarımı */
+    .order-card {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+        .order-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Sipariş Durumu Etiketleri */
+    .status-badge {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 20px;
+        background: #ca1515;
+        color: white;
+    }
+
+    /* Buton Efekti */
+    .btn-animate {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        background-color: #ca1515;
+        border-color: #ca1515;
+    }
+
+        .btn-animate:hover {
+            background-color: #a01010;
+            border-color: #a01010;
+            box-shadow: 0 5px 15px rgba(202, 21, 21, 0.4);
+        }
+</style>
