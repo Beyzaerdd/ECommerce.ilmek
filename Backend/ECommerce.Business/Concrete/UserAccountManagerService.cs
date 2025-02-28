@@ -247,9 +247,11 @@ namespace ECommerce.Business.Concrete
               
                 StoreName = seller.StoreName,
                 Email = seller.Email,
-             
+                IsActive = seller.IsActive,
                 
-               
+
+
+
             };
 
       
