@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,19 +10,19 @@ namespace ECommerce.Shared.ComplexTypes
 {
     public enum OrderStatus
     {
-        [Description("Waiting for Approval")]
+        [Display(Name = "Onay Bekliyor")]
         Pending = 1,
-        [Description("Processing Order")]
+        [Display(Name = "Hazırlanıyor")]
         Processing = 2,
-        [Description("Order Shipped")]
+        [Display(Name = "Kargoya verildi")]
         Shipped = 3,
-        [Description("Order Delivered")]
+        [Display(Name = "Sipariş Teslim Edildi")]
         Delivered = 4,
-        [Description("Order is Done")]
+        [Display(Name = "Sipariş Tamamlandı")]
         Completed =5,
-        [Description("Order Cancelled")]
+        [Display(Name = "İptal")]
         Cancelled = 6,
-        [Description("Order Returned")]
+      [Display(Name = "İade")]
         Returned = 7      
     }
 }

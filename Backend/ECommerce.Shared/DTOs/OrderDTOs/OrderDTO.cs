@@ -1,4 +1,5 @@
 ﻿using ECommerce.Shared.ComplexTypes;
+using ECommerce.Shared.DTOs.EnumDTOs;
 using ECommerce.Shared.DTOs.InvoiceDTOs;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ECommerce.Shared.DTOs.OrderDTOs
         public string Id { get; set; }
         public string ApplicationUserId { get; set; }
         public string ApplicationUserName { get; set; }
-        public OrderStatus Status { get; set; }
+        public EnumDTO Status { get; set; }
         public DateTime OrderDate { get; set; }
         public List<OrderItemDTO> OrderItems { get; set; } = new List<OrderItemDTO>();
       
