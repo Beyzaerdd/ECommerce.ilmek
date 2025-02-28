@@ -1,4 +1,6 @@
 ﻿using ECommerce.Business.Abstract;
+using ECommerce.Shared.DTOs.UserDTO;
+using ECommerce.Shared.DTOs.UsersDTO;
 using ECommerce.Shared.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -78,6 +80,31 @@ namespace ECommerce.API.Controllers
             return CreateResponse(response);
         }
 
+        [Authorize(Policy = "User")]
+        [HttpPost("updateUserProfile")]
+        public async Task<IActionResult> UpdateUserProfile([FromBody] UpdateUserProfileDTO model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Güncellenecek kullanıcı bilgisi bulunamadı.");
+            }
+
+            var response = await _userManagerService.UpdateUserProfile(model);
+            return CreateResponse(response);
+        }
+
+        [Authorize(Policy = "Seller")]
+        [HttpPost("updateSellerProfile")]
+        public async Task<IActionResult> UpdateSellerProfile([FromBody] ApplicationUserDTO model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Güncellenecek satıcı bilgisi bulunamadı.");
+            }
+
+            var response = await _userManagerService.UpdateSellerProfile(model);
+            return CreateResponse(response);
+        }
 
 
 

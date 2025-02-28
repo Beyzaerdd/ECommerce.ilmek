@@ -4,6 +4,7 @@ using ECommerce.Data.Abstract;
 using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.CategoryDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
+using ECommerce.Shared.DTOs.UserDTO;
 using ECommerce.Shared.DTOs.UsersDTO;
 using ECommerce.Shared.Extensions;
 using Fluid;
@@ -22,7 +23,7 @@ namespace ECommerce.Business.Concrete
 {
     public class UserAccountManagerService : IUserAccountManagerService
     {
-   
+
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -42,7 +43,7 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<ApplicationUserDTO>> ApproveSellerAsync(string sellerId)
         {
-            
+
             var seller = await unitOfWork.GetRepository<Seller>().GetAsync(s => s.Id == sellerId);
 
             if (seller == null)
@@ -58,7 +59,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-          
+
             if (seller.IsApproved)
             {
                 return ResponseDTO<ApplicationUserDTO>.Fail(new List<ErrorDetail>
@@ -74,9 +75,9 @@ namespace ECommerce.Business.Concrete
 
             seller.IsApproved = true;
             seller.IsActive = true;
-      
 
-      
+
+
             unitOfWork.GetRepository<Seller>().UpdateAsync(seller);
             await unitOfWork.SaveChangesAsync();
             await SendSellerApprovalMail(seller);
@@ -143,18 +144,18 @@ namespace ECommerce.Business.Concrete
                      }
                     }, HttpStatusCode.NotFound);
             }
-                var sellerDTOs = mapper.Map<IEnumerable<ApplicationUserDTO>>(allSellers);
+            var sellerDTOs = mapper.Map<IEnumerable<ApplicationUserDTO>>(allSellers);
 
             return ResponseDTO<IEnumerable<ApplicationUserDTO>>.Success(sellerDTOs, HttpStatusCode.OK);
 
-            }
+        }
 
 
-        
 
-        public async  Task<ResponseDTO<IEnumerable<ApplicationUserDTO>>> GetAllUsersAsync()
+
+        public async Task<ResponseDTO<IEnumerable<ApplicationUserDTO>>> GetAllUsersAsync()
         {
-           var allUsers = await unitOfWork.GetRepository<ApplicationUser>().GetAllAsync();
+            var allUsers = await unitOfWork.GetRepository<ApplicationUser>().GetAllAsync();
             if (allUsers == null || !allUsers.Any())
             {
                 return ResponseDTO<IEnumerable<ApplicationUserDTO>>.Fail(new List<ErrorDetail>
@@ -167,13 +168,13 @@ namespace ECommerce.Business.Concrete
                      }
                     }, HttpStatusCode.NotFound);
             }
-                var userDTOs = mapper.Map<IEnumerable<ApplicationUserDTO>>(allUsers);
-                return ResponseDTO<IEnumerable<ApplicationUserDTO>>.Success(userDTOs, HttpStatusCode.OK);
-            }
+            var userDTOs = mapper.Map<IEnumerable<ApplicationUserDTO>>(allUsers);
+            return ResponseDTO<IEnumerable<ApplicationUserDTO>>.Success(userDTOs, HttpStatusCode.OK);
+        }
 
         public async Task<ResponseDTO<IEnumerable<ApplicationUserDTO>>> GetPendingSellersAsync()
         {
-           
+
             var pendingSellers = await unitOfWork.GetRepository<Seller>()
                 .GetAllAsync(s => !s.IsApproved);
 
@@ -190,14 +191,14 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-      
+
             var pendingSellersDTO = mapper.Map<IEnumerable<ApplicationUserDTO>>(pendingSellers);
             return ResponseDTO<IEnumerable<ApplicationUserDTO>>.Success(pendingSellersDTO, HttpStatusCode.OK);
         }
 
         public async Task<ResponseDTO<Seller>> GetSellerAccountDetails()
         {
-           
+
             var userId = httpContextAccessor.GetUserId();
             if (string.IsNullOrEmpty(userId))
             {
@@ -212,7 +213,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.Unauthorized);
             }
 
-       
+
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -227,7 +228,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-           
+
             if (user is not Seller seller)
             {
                 return ResponseDTO<Seller>.Fail(new List<ErrorDetail>
@@ -241,27 +242,27 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.BadRequest);
             }
 
-        
+
             var sellerDTO = new Seller
             {
-              
+
                 StoreName = seller.StoreName,
                 Email = seller.Email,
                 IsActive = seller.IsActive,
-                
+
 
 
 
             };
 
-      
+
             return ResponseDTO<Seller>.Success(sellerDTO, HttpStatusCode.OK);
         }
 
 
         public async Task<ResponseDTO<ApplicationUserDTO>> GetUserAccountDetails()
         {
-    
+
             var userId = httpContextAccessor.GetUserId();
             if (string.IsNullOrEmpty(userId))
             {
@@ -276,7 +277,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.Unauthorized);
             }
 
-         
+
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -291,16 +292,14 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-      
+
             var userDTO = new ApplicationUserDTO
             {
-             
+                Id=user.Id,
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Address = user.Address,
-           
-                DateOfBirth = user.DateOfBirth,
                 PhoneNumber = user.PhoneNumber,
             };
 
@@ -308,9 +307,9 @@ namespace ECommerce.Business.Concrete
         }
 
 
-        public async  Task<ResponseDTO<ApplicationUserDTO>> GetUserByIdAsync(string userId)
+        public async Task<ResponseDTO<ApplicationUserDTO>> GetUserByIdAsync(string userId)
         {
-            var user =await  unitOfWork.GetRepository<ApplicationUser>().GetAsync(u => u.Id == userId);
+            var user = await unitOfWork.GetRepository<ApplicationUser>().GetAsync(u => u.Id == userId);
             if (user == null)
             {
                 return ResponseDTO<ApplicationUserDTO>.Fail(new List<ErrorDetail>
@@ -331,7 +330,7 @@ namespace ECommerce.Business.Concrete
         public async Task<ResponseDTO<ApplicationUserDTO>> GetSellerByIdAsync(string sellerId)
         {
             var seller = await unitOfWork.GetRepository<Seller>().GetAsync(u => u.Id == sellerId);
-         
+
             if (seller == null)
             {
                 return ResponseDTO<ApplicationUserDTO>.Fail(new List<ErrorDetail>
@@ -348,10 +347,109 @@ namespace ECommerce.Business.Concrete
             var userDTO = new ApplicationUserDTO
             {
                 Id = seller.Id,
-                StoreName = seller.StoreName  
+                StoreName = seller.StoreName
             };
             return ResponseDTO<ApplicationUserDTO>.Success(userDTO, HttpStatusCode.OK);
 
         }
+
+        public async Task<ResponseDTO<UpdateUserProfileDTO>> UpdateUserProfile(UpdateUserProfileDTO model)
+        {
+           
+            var userId = httpContextAccessor.GetUserId();
+            if (string.IsNullOrEmpty(userId))
+            {
+                return ResponseDTO<UpdateUserProfileDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "User ID not found in context.",
+                Code = "UserIdNotFound",
+                Target = "User"
+            }
+        }, HttpStatusCode.Unauthorized);
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return ResponseDTO<UpdateUserProfileDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "User not found.",
+                Code = "UserNotFound",
+                Target = nameof(user)
+            }
+        }, HttpStatusCode.NotFound);
+            }
+
+
+            user.FirstName = model.FirstName ?? user.FirstName;
+            user.LastName = model.LastName ?? user.LastName;
+            user.Address = model.Address ?? user.Address;
+            user.PhoneNumber = model.PhoneNumber ?? user.PhoneNumber;
+
+
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return ResponseDTO<UpdateUserProfileDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "User update failed.",
+                Code = "UserUpdateFailed",
+                Target = nameof(user)
+            }
+        }, HttpStatusCode.BadRequest);
+            }
+
+            return ResponseDTO<UpdateUserProfileDTO>.Success(model, HttpStatusCode.OK);
+        }
+        public async Task<ResponseDTO<ApplicationUserDTO>> UpdateSellerProfile(ApplicationUserDTO model)
+        {
+        
+            var userId = httpContextAccessor.GetUserId();
+            if (string.IsNullOrEmpty(userId))
+            {
+                return ResponseDTO<ApplicationUserDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "User ID not found in context.",
+                Code = "UserIdNotFound",
+                Target = "Seller"
+            }
+        }, HttpStatusCode.Unauthorized);
+            }
+
+            var seller = await unitOfWork.GetRepository<Seller>().GetAsync(s => s.Id == userId);
+            if (seller == null)
+            {
+                return ResponseDTO<ApplicationUserDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
+            {
+                Message = "Seller not found.",
+                Code = "SellerNotFound",
+                Target = nameof(seller)
+            }
+        }, HttpStatusCode.NotFound);
+            }
+
+            seller.StoreName = model.StoreName;
+            seller.Email = model.Email;
+            seller.PhoneNumber = model.PhoneNumber;
+            seller.Address = model.Address;
+            seller.UserName = model.UserName;
+
+            unitOfWork.GetRepository<Seller>().UpdateAsync(seller);
+            await unitOfWork.SaveChangesAsync();
+
+            return ResponseDTO<ApplicationUserDTO>.Success(model, HttpStatusCode.OK);
+        }
+
     }
 }

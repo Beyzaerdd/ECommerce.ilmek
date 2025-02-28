@@ -1,5 +1,6 @@
 ﻿using ECommerce.Entity.Concrete;
 using ECommerce.Shared.DTOs.ResponseDTOs;
+using ECommerce.Shared.DTOs.UserDTO;
 using ECommerce.Shared.DTOs.UsersDTO;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -21,5 +22,10 @@ namespace ECommerce.Business.Abstract
 
         Task<ResponseDTO<ApplicationUserDTO>> GetUserAccountDetails();
         Task<ResponseDTO<Seller>> GetSellerAccountDetails();
+
+        Task<ResponseDTO<UpdateUserProfileDTO>> UpdateUserProfile(UpdateUserProfileDTO model);
+        Task<ResponseDTO<ApplicationUserDTO>> UpdateSellerProfile(ApplicationUserDTO model);
+
+
     }
 }

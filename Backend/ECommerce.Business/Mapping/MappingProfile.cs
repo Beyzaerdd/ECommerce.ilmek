@@ -11,6 +11,7 @@ using ECommerce.Shared.DTOs.InvoiceDTOs;
 using ECommerce.Shared.DTOs.OrderDTOs;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ReviewDTOs;
+using ECommerce.Shared.DTOs.UserDTO;
 using ECommerce.Shared.DTOs.UserFavDTOs;
 using ECommerce.Shared.DTOs.UsersDTO;
 using ECommerce.Shared.Extensions;
@@ -26,15 +27,19 @@ namespace ECommerce.Business.Mapping
     {
         public MappingProfile()
         {
+            CreateMap<UpdateUserProfileDTO, ApplicationUser>()
+           .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
+
 
             CreateMap<OrderStatus, EnumDTO>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (int)src))  // Enum'ı int'e dönüştür
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ToString()));  // Enum açıklamasını al
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (int)src)) 
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ToString()));
 
             CreateMap<Order, OrderDTO>()
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));  // Order'ın Status'ını EnumDTO'ya dönüştür
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
 
-
+       
 
             CreateMap<ProductSize, EnumDTO>()
     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (int)src))
