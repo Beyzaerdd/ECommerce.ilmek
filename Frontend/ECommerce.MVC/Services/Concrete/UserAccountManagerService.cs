@@ -1,6 +1,7 @@
 ﻿using ECommerce.MVC.Models.UserModels;
 using ECommerce.MVC.Services.Abstract;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace ECommerce.MVC.Services.Concrete
@@ -20,6 +21,9 @@ namespace ECommerce.MVC.Services.Concrete
         {
             var client = GetHttpClient();
             var response = await client.GetAsync("UserAccountManagers/getUserAccountDetails");
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"API Yanıtı: {responseBody}");
+
             return await HandleResponse<ApplicationUserModel>(response);
         }
 
@@ -66,6 +70,55 @@ namespace ECommerce.MVC.Services.Concrete
             }
 
             return JsonSerializer.Deserialize<ResponseViewModel<T>>(responseBody, _jsonSerializerOptions);
+        }
+
+      public async   Task<ResponseViewModel<UpdateUserProfileModel>> UpdateUserProfile(UpdateUserProfileModel model)
+        {
+
+            var client = GetHttpClient();
+        
+            var response = await client.PostAsJsonAsync("UserAccountManagers/updateUserProfile",model);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
+            {
+                return new ResponseViewModel<UpdateUserProfileModel>
+                {
+                    IsSucceeded = false,
+                    Errors = new List<ErrorViewModel>
+            {
+                new ErrorViewModel { Message = "Bilgiler getirilirken bir hata oluştu." }
+            }
+                };
+            }
+
+            return JsonSerializer.Deserialize<ResponseViewModel<UpdateUserProfileModel>>(responseBody, _jsonSerializerOptions);
+
+        }
+      public async  Task<ResponseViewModel<ApplicationUserModel>> UpdateSellerProfile(ApplicationUserModel model)
+        {
+
+            var client = GetHttpClient();
+
+            var response = await client.PostAsJsonAsync("UserAccountManagers/updateSellerProfile", model);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
+            {
+                return new ResponseViewModel<ApplicationUserModel>
+                {
+                    IsSucceeded = false,
+                    Errors = new List<ErrorViewModel>
+            {
+                new ErrorViewModel { Message = "Bilgiler getirilirken bir hata oluştu." }
+            }
+                };
+            }
+
+            return JsonSerializer.Deserialize<ResponseViewModel<ApplicationUserModel>>(responseBody, _jsonSerializerOptions);
+
+
+
         }
     }
 }

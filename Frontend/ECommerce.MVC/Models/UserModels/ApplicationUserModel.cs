@@ -24,7 +24,7 @@ namespace ECommerce.MVC.Models.UserModels
 
         [MaxLength(100, ErrorMessage = "Şehir adı 100 karakteri geçemez.")]
         [JsonPropertyName("city")]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [JsonPropertyName("storeName")]
         public string? StoreName { get; set; }

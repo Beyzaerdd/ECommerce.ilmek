@@ -1,0 +1,70 @@
+﻿@model ECommerce.MVC.Models.UserModels.ApplicationUserModel
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4 fw-bold text-danger"> Kullanıcı Profilim 🎉</h2>
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Başarılı! </strong>@TempData["SuccessMessage"] <i class="bi bi-check-circle"></i>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (ViewData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Hata! </strong>@ViewData["ErrorMessage"] <i class="bi bi-x-circle"></i>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-controller="User" asp-action="UpdateProfile" method="post">
+                        <input asp-for="Id" type="hidden" />
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label fw-semibold">🧑‍💼 Ad</label>
+                                <input asp-for="FirstName" class="form-control" placeholder="Adınızı girin" />
+                                <span asp-validation-for="FirstName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label fw-semibold">👩‍💼 Soyad</label>
+                                <input asp-for="LastName" class="form-control" placeholder="Soyadınızı girin" />
+                                <span asp-validation-for="LastName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label asp-for="Email" class="form-label fw-semibold">📧 E-posta</label>
+                                <input asp-for="Email" class="form-control bg-light" readonly />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PhoneNumber" class="form-label fw-semibold">📱 Telefon</label>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Telefon numaranız" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Address" class="form-label fw-semibold">🏡 Adres</label>
+                                <textarea asp-for="Address" class="form-control" rows="2" placeholder="Adresinizi girin"></textarea>
+                                <span asp-validation-for="Address" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-danger btn-lg px-4">
+                                <i class="bi bi-save"></i> Profili Güncelle
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
