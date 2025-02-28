@@ -119,12 +119,12 @@ namespace ECommerce.MVC.Controllers
 
             if (!response.IsSucceeded)
             {
-                // Hata durumu, hatayı kullanıcıya iletmek
+                
                 ViewBag.Error = response.Errors.FirstOrDefault()?.Message;
                 return View("Error");
             }
 
-            // Hesaplanan toplam tutarı View'a göndermek
+           
             ViewBag.TotalAmount = response.Data;
 
             return View();
