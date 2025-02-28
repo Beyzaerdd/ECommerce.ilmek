@@ -16,5 +16,8 @@ namespace ECommerce.MVC.Models.ReviewModels
         [Range(1, 5, ErrorMessage = "Puan 1 ile 5 arasında olmalıdır.")]
         [JsonPropertyName("rating")]
         public int? Rating { get; set; }
+       
+        [JsonPropertyName("orderItemId")]
+        public int OrderItemId { get; set; }
     }
 }
