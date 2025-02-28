@@ -1,5 +1,5 @@
 ﻿@model ECommerce.MVC.Models.HomeIndexModel;
-   <!-- Categories Section Begin -->
+
 @await Component.InvokeAsync("Category")
 
 
@@ -42,4 +42,17 @@
         </div>
     </div>
 </section>
- 
+@if (TempData["Success"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                title: "Siparişiniz Oluşturuldu!",
+                text: "Fatura ve sipariş bilgileri e-posta adresinize iletilecektir.",
+                icon: "success",
+                confirmButtonText: "Tamam",
+                allowOutsideClick: false
+            })
+        });
+    </script>
+}
