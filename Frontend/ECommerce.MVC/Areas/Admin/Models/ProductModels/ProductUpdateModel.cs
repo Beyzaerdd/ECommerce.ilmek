@@ -43,8 +43,9 @@ namespace ECommerce.MVC.Areas.Admin.Models.ProductModels
         [JsonPropertyName("categoryId")]
         public int CategoryId { get; set; }
 
-        [JsonPropertyName("subCategoryId")]
-        public int? SubcategoryId { get; set; }
+    
+        [JsonPropertyName("stock")]
+        public int Stock { get; set; }
 
         [JsonPropertyName("image")]
         public IFormFile Image { get; set; }
