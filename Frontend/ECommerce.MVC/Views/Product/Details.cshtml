@@ -80,49 +80,7 @@
     }
 </div>
 
-                 @*    <div class="product__details__button">
-
-                  @if (Model.IsActive)
-                        {
-                            <div class="d-flex align-items-center">
-                                <input type="number" id="quantityInput" class="form-control quantity-input mr-2" value="1" min="1">
-                                <form id="basketForm" asp-controller="Basket" asp-action="AddProductToBasket" method="post" onsubmit="onSubmit(event)">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="ProductId" value="@Model.Id" />
-                                    <input type="hidden" name="Quantity" id="quantityField" value="1" />
-                                    <input type="hidden" name="Color" id="selectedColor" />
-                                    <input type="hidden" name="Size" id="selectedSize" />
-
-                                    <!-- Sepete Ekle Butonu -->
-                                    <button type="submit" class="btn btn-primary btn-block">Sepete Ekle</button>
-                                </form>
-                            </div>
-
-                            <!-- Hata mesajı -->
-                            <div id="error-message" class="alert alert-danger mt-3" style="display:none;">
-                                Lütfen beden ve renk seçin!
-                            </div>
-                        }
-
-                        else
-                        {
-                            <button class="cart-btn disabled-btn" disabled>
-                                <span class="icon_bag_alt"></span> Ürün Aktif Değil
-                            </button>
-                        }
-                        <ul>
-                             <li>
-                                                <form id="favoriteForm-@Model.Id" action="@Url.Action("AddToFavorites", "UserFav")" method="post" onsubmit="checkLogin(event)">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="productId" value="@Model.Id" />
-                                                    <button type="submit" class="heart-button">
-                                                        ❤️
-                                                    </button>
-                                                </form>
-                                            </li>
-                    
-                        </ul>
-                    </div> *@
+                
                     <div class="product__details__widget">
                         <ul>
                             <li>
@@ -287,33 +245,33 @@
 }
 
 @section scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 Kütüphanesini Dahil Et -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 
     <script>
-        // Renk seçimini dinle ve gizli input'u güncelle
+      
         document.querySelectorAll('input[name="color"]').forEach((colorInput) => {
             colorInput.addEventListener('change', function () {
                 document.getElementById('selectedColor').value = colorInput.id.split('-')[1];  
             });
         });
 
-        // Beden seçimini dinle ve gizli input'u güncelle
+
         document.querySelectorAll('input[name="size"]').forEach((sizeInput) => {
             sizeInput.addEventListener('change', function () {
                 document.getElementById('selectedSize').value = sizeInput.id.split('-')[1];  
             });
         });
 
-        // Sepete Ekle butonuna tıklanmadan önce formu validasyon
+      
         function onSubmit(event){
-            // Quantity alanını gizli input'a aktar
+         
             document.getElementById('quantityField').value = document.getElementById('quantityInput').value;
 
-            // Renk ve beden seçimi yapılmadıysa uyarı göster ve formu gönderme
+  
             if (!document.getElementById('selectedColor').value || !document.getElementById('selectedSize').value) {
-                event.preventDefault();  // Formu gönderme
+                event.preventDefault(); 
 
-                // SweetAlert2 ile renk ve beden seçilmediğinde uyarı mesajı
+          
                 Swal.fire({
                     icon: 'warning',
                     title: 'Uyarı!',
@@ -321,16 +279,16 @@
                     confirmButtonText: 'Tamam'
                 });
                 
-                return false;  // Fonksiyonun devamını engelle
+                return false;  
             }
 
-            // Eğer giriş yapılmadıysa uyarıyı göster
+        
             var isLoggedIn = @((User.Identity.IsAuthenticated) ? "true" : "false");
 
-            if (isLoggedIn === 'False') {  // Eğer false ise giriş yapılmamış demektir
-                event.preventDefault();  // Formu gönderme
+            if (isLoggedIn === 'False') {  
+                event.preventDefault();  
 
-                // SweetAlert2 ile giriş yapılmadığında uyarı mesajı
+            
                 Swal.fire({
                     title: "Ürün Sepete Eklenemedi!",
                     text: "Sepete ürün eklemek için giriş yapmalısınız.",
@@ -340,11 +298,11 @@
                     cancelButtonText: "İptal"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "/Auth/LoginUser";  // Giriş sayfasına yönlendir
+                        window.location.href = "/Auth/LoginUser";  
                     }
                 });
 
-                return false;  // Giriş yapılmadığında formun gönderilmesini engelle
+                return false;  
             }
         }
     </script>
