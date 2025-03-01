@@ -31,7 +31,7 @@ namespace ECommerce.Shared.DTOs.ProductDTOs
 
         [Required(ErrorMessage = "Category ID is required.")]
         public int CategoryId { get; set; }
-        public int? SubcategoryId { get; set; }
+    
 
         public IFormFile Image { get; set; }
     }
