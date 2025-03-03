@@ -258,7 +258,7 @@ namespace ECommerce.Business.Concrete
                 throw;
             }
         }
-      
+
         private async Task SendInvoiceMail(InvoiceDTO invoice)
         {
             string subject = "Faturanız Oluşturulmuştur!";
@@ -595,6 +595,8 @@ namespace ECommerce.Business.Concrete
             }
         }
     }
+
+
 }
 
 

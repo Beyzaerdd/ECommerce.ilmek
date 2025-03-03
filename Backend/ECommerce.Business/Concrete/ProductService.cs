@@ -170,14 +170,14 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductsByCategoryIdAsync(int categoryId)
         {
-          
 
-            var category = await unitOfWork.GetRepository<Category>().GetAsync(x=>x.Id==categoryId, includes: query=>query.Include(y=>y.Products).Include(y=>y.SubCategories).ThenInclude(y=>y.Products));
+
+            var category = await unitOfWork.GetRepository<Category>().GetAsync(x => x.Id == categoryId, includes: query => query.Include(y => y.Products).Include(y => y.SubCategories).ThenInclude(y => y.Products));
             var products = category.Products.ToList();
             products.AddRange(category.SubCategories.SelectMany(category => category.Products));
-          
-            
-            if (products == null ||  !products.Any())
+
+
+            if (products == null || !products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
                 {
@@ -190,8 +190,8 @@ namespace ECommerce.Business.Concrete
 
             }
 
-          
-            var productDTOs=mapper.Map<IEnumerable<ProductDTO>>(products);
+
+            var productDTOs = mapper.Map<IEnumerable<ProductDTO>>(products);
             return ResponseDTO<IEnumerable<ProductDTO>>.Success(productDTOs, HttpStatusCode.OK);
         }
 
@@ -397,11 +397,11 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.NotFound);
             }
 
-           
+
             var products = category.Products.ToList();
             products.AddRange(category.SubCategories.SelectMany(sub => sub.Products));
 
-           
+
             if (minPrice.HasValue)
             {
                 products = products.Where(p => p.UnitPrice >= minPrice.Value).ToList();
@@ -412,13 +412,13 @@ namespace ECommerce.Business.Concrete
                 products = products.Where(p => p.UnitPrice <= maxPrice.Value).ToList();
             }
 
-           
+
             if (productSizes != null && productSizes.Any())
             {
                 products = products.Where(p => p.AvailableSizes.Any(size => productSizes.Contains((int)size))).ToList();
             }
 
-          
+
             if (productColors != null && productColors.Any())
             {
                 products = products.Where(p => p.AvailableColors.Any(color => productColors.Contains((int)color))).ToList();
@@ -432,7 +432,7 @@ namespace ECommerce.Business.Concrete
                 Message = "No products found with the specified filters",
                 Code = "ProductNotFound",
                 Target = "Filters"
-            }  
+            }
         }, HttpStatusCode.NotFound);
             }
 
@@ -443,7 +443,13 @@ namespace ECommerce.Business.Concrete
         public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetProductBySellerAsync(string applicationUserId, int? take = null)
         {
 
-            var products = await unitOfWork.GetRepository<Product>().GetAllAsync(x => x.ApplicationUserId == applicationUserId, take:take);
+            var products = await unitOfWork.GetRepository<Product>()
+    .GetAllAsync(
+        x => x.ApplicationUserId == applicationUserId,
+        take: take,
+        includes: query => query.Include(y => y.Category)
+    );
+
             if (products == null || !products.Any())
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
@@ -481,7 +487,7 @@ namespace ECommerce.Business.Concrete
 
         public async Task<ResponseDTO<IEnumerable<ProductDTO>>> GetRelatedProductsAsync(int productId)
         {
-            var product = await unitOfWork.GetRepository<Product>().GetAsync(x => x.Id == productId , includes: query => query.Include(y => y.Category));
+            var product = await unitOfWork.GetRepository<Product>().GetAsync(x => x.Id == productId, includes: query => query.Include(y => y.Category));
             if (product == null)
             {
                 return ResponseDTO<IEnumerable<ProductDTO>>.Fail(new List<ErrorDetail>
