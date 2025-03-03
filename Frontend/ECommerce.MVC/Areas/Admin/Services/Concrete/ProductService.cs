@@ -9,7 +9,11 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
     public class ProductService:MVC.Services.Abstract.BaseService, IProductService
 
     {
-        public ProductService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor) { }
+        private readonly MVC.Services.Abstract.IEnumService enumService;
+        public ProductService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, MVC.Services.Abstract.IEnumService enumService) : base(httpClientFactory, httpContextAccessor)
+        {
+            this.enumService = enumService;
+        }
 
         public async Task<ResponseViewModel<ProductModel>> AddProductAsync(ProductCreateModel productCreateModel)
         {
@@ -122,7 +126,8 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
             try
             {
                 var client = GetHttpClient();
-                var response = await client.GetAsync($"products/getBySeller?applicationUserId={applicationUserId}&take=null");
+                var response = await client.GetAsync($"products/getBySeller?applicationUserId={applicationUserId}");
+
 
                 if (!response.IsSuccessStatusCode)
                 {

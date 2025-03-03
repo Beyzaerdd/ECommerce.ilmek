@@ -3,6 +3,7 @@ using ECommerce.MVC.Models.ProductModels;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
 using ECommerce.Shared.DTOs.ProductDTOs;
 using ECommerce.Shared.DTOs.ResponseDTOs;
+using System.Globalization;
 
 namespace ECommerce.MVC.Areas.Admin.Services.Abstract
 {
@@ -17,7 +18,6 @@ namespace ECommerce.MVC.Areas.Admin.Services.Abstract
 
         Task<ResponseViewModel<ProductModel>> GetProductByIdAsync(int id);
         Task<ResponseViewModel<int>> GetProductCountAsync(bool? isActive);
-
         Task<ResponseViewModel<IEnumerable<ProductModel>>> GetProductBySellerAsync(string applicationUserId, int? take = null);
 
     }
