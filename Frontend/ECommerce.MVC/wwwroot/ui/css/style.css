@@ -34,7 +34,7 @@
 html,
 body {
 	height: 100%;
-	font-family: "Montserrat", sans-serif;
+	font-family: 'Poppins', Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -47,7 +47,7 @@ h6 {
 	margin: 0;
 	color: #111111;
 	font-weight: 400;
-	font-family: "Montserrat", sans-serif;
+	font-family: 'Poppins', Arial, sans-serif;
 }
 
 h1 {
@@ -76,7 +76,7 @@ h6 {
 
 p {
 	font-size: 14px;
-	font-family: "Montserrat", sans-serif;
+	font-family: 'Poppins', Arial, sans-serif;
 	color: #666666;
 	font-weight: 400;
 	line-height: 24px;
@@ -102,13 +102,241 @@ a:focus {
 
 ul,
 ol {
-	padding: 0;
-	margin: 0;
+/*	padding: 0;*/
+/*	margin: 0;*/
 }
 
 /*---------------------
   Helper CSS
 -----------------------*/
+/* Başlıkların tasarımını iyileştirme */
+.custom-accordion {
+	background-color: #f8f9fa;
+	color: #d32f2f;
+	font-weight: bold;
+	text-align: left;
+	border-radius: 5px;
+	padding: 10px 15px;
+}
+
+/* Checkbox hizalama */
+.custom-form-check {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 5px 0;
+}
+
+	/* Checkbox stilleri */
+	.custom-form-check input {
+		width: 18px;
+		height: 18px;
+		accent-color: #d32f2f;
+	}
+
+	/* Yazıların görünümü */
+	.custom-form-check label {
+		font-size: 16px;
+		font-weight: 500;
+		color: #333;
+		cursor: pointer;
+	}
+
+	/* Hover efekti */
+	.custom-form-check:hover label {
+		color: #d32f2f;
+		font-weight: bold;
+	}
+
+/* Filtreleri sola yaslama */
+.size-filter, .color-filter {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start; /* SOLA YASLANDI */
+}
+
+.btn-remove-fav {
+	background-color: #dc3545; /* Kırmızı */
+	color: white;
+	border: none;
+	padding: 8px 12px;
+	font-size: 14px;
+	font-weight: bold;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+	.btn-remove-fav:hover {
+		background-color: #c82333; /* Daha koyu kırmızı */
+	}
+
+	.btn-remove-fav i {
+		font-size: 16px;
+	}
+
+.shop-banner {
+	padding: 100px 0;
+	color: white;
+}
+
+.banner-text h2 {
+	font-size: 3rem;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+.banner-text p {
+	font-size: 1.25rem;
+	max-width: 700px;
+	margin: 0 auto;
+}
+
+.shop-banner .container {
+	position: relative;
+}
+
+.shop-banner .banner-text {
+	text-align: center;
+}
+
+/* Görselin stilini ayarlıyoruz */
+.shop-banner img {
+	width: 100%;
+	height: auto;
+	max-width: 1200px; /* Görselin genişliğini sınırlıyoruz */
+	margin-top: 20px;
+}
+
+
+/* Genel Düzenleme */
+.size-filter-container {
+	display: flex;
+	flex-direction: column;
+	gap: 5px; /* Checkbox'lar arasındaki boşluğu artır */
+}
+
+/* Accordion Butonu Düzenleme */
+.custom-accordion-button {
+	background-color: white;
+	color: red;
+	font-weight: 600;
+	border: 1px solid #ddd;
+	padding: 12px;
+	font-size: 16px;
+	text-align: left; /* Sol hizayı düzelt */
+	justify-content: space-between; /* Ok ikonunu sağa al */
+	width: 100%;
+}
+
+/* Checkbox ve Label Hizalama */
+.custom-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 5px 10px;
+}
+
+/* Checkbox Genişliği */
+.form-check-input {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+/* Checkbox Label'ı */
+.form-check-label {
+	font-size: 14px;
+	cursor: pointer;
+	flex-grow: 1; /* Label'ı checkbox'a uygun hizala */
+}
+
+.heart-button1 {
+	width: 40px; /* Boyut ayarlanabilir */
+	height: 40px;
+	background-color: white; /* İç rengi kırmızı */
+	border-radius: 50%; /* Yuvarlak yapar */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none; /* Kenarlık kaldırılır */
+	cursor: pointer;
+}
+
+	.heart-button1 i {
+		color: white; /* İkon rengini beyaz yap */
+		font-size: 20px; /* İkon boyutunu ayarla */
+	}
+.product__details__button {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.d-flex {
+	display: flex;
+	align-items: center;
+	gap: 30px;
+}
+
+.quantity-input {
+	width: 120px;
+	height: 50px;
+	text-align: center;
+	border-radius: 50px;
+}
+
+.heart-button {
+	width: 40px;
+	height: 40px;
+	background-color: red;
+	border-radius: 50%;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+	.heart-button i {
+		color: white;
+		font-size: 18px;
+	}
+
+.seller-link {
+	color: #007bff;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+	.seller-link:hover {
+		text-decoration: underline;
+		color: #0056b3;
+	}
+
+.price-filter {
+	display: flex;
+	flex-direction: column; /* 🔥 Checkboxları dikey hizala */
+	gap: 6px; /* 🔥 Her checkbox arasında boşluk bırak */
+}
+
+	.price-filter label {
+		display: flex;
+		align-items: center;
+		gap: 8px; /* 🔥 Checkbox ile yazı arasına boşluk bırak */
+		font-size: 15px; /* Yazıyı okunabilir boyuta getir */
+		cursor: pointer;
+		width: 100%; /* 🔥 Tüm genişliği kullan */
+	}
+
+	.price-filter input[type="checkbox"] {
+		width: 18px;
+		height: 18px;
+		accent-color: #ff4c3b; /* 🔥 Checkbox rengi kırmızı yap (isteğe bağlı) */
+	}
 
 .section-title {
 	margin-bottom: 45px;
@@ -168,17 +396,70 @@ ol {
 	background: #ca1515;
 }
 
+/* site-btn, başlangıçta kırmızı arka plan ve beyaz kenar rengiyle */
 .site-btn {
 	font-size: 14px;
-	color: #ffffff;
-	background: #ca1515;
+	color: #ffffff !important; /* Metin rengini beyaz yapar */
+	background-color: #ca1515 !important; /* Başlangıçta kırmızı arka plan */
+	border: 2px solid #ffffff !important; /* Kenar rengini beyaz yapar */
 	font-weight: 600;
-	border: none;
 	text-transform: uppercase;
 	display: inline-block;
 	padding: 12px 30px;
 	border-radius: 50px;
+	transition: background-color 0.3s, border-color 0.3s; /* Geçiş efektleri */
 }
+
+	/* Hover durumunda arka plan turuncu olur ve kenar beyaz kalır */
+	.site-btn:hover {
+		background-color: #ff7f24 !important; /* Hover ile turuncu arka plan */
+		color: #ffffff !important; /* Metin beyaz olur */
+		border-color: #ffffff !important; /* Kenar rengi beyaz olur */
+	}
+
+	/* Butona tıklanmış durumda da turuncu olur, kenar beyaz kalır */
+	.site-btn.active-btn {
+    background-color: #ff7f24 !important; /* Arka plan turuncu */
+    color: #ffffff !important;
+    border-color: #ff7f24 !important; /* Kenar rengi turuncu */
+}
+/* Açılan menüyü stilize etme */
+.dropdown-menu {
+	background-color: #ffffff !important; /* Arka planı beyaz yapar */
+	color: #ffffff; /* Metin rengini beyaz yapar */
+	border-radius: 8px; /* Köşeleri yuvarlar */
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3); /* Gölgeleme efekti */
+	padding: 10px 0;
+	transition: all 0.3s ease; /* Geçiş efekti */
+}
+
+	/* Hover durumunda menü öğelerinin arka plan rengini değiştirir */
+	.dropdown-menu .dropdown-item:hover {
+		background-color: #ff7f24 !important; /* Hover ile turuncu arka plan */
+		color: #ffffff; /* Metin rengini beyaz yapar */
+	}
+
+	/* Menü öğeleri daha büyük ve dikkat çekici olsun */
+	.dropdown-menu .dropdown-item {
+		font-size: 16px; /* Yazı boyutunu büyütür */
+		padding: 12px 20px; /* Daha fazla iç boşluk */
+		font-weight: 500; /* Yazı kalınlığı */
+		text-transform: none; /* Küçük harf kullanımı */
+	}
+
+	/* Menüyü açarken daha belirgin bir geçiş efekti */
+	.dropdown-menu.show {
+		opacity: 1;
+		transform: translateY(10px);
+		transition: opacity 0.3s ease, transform 0.3s ease;
+	}
+.user-login-text {
+	display: none;
+	font-size: 1.2em;
+	color: #ca1515;
+	font-weight: bold;
+}
+
 
 /* Preloder */
 
@@ -315,7 +596,6 @@ ol {
 /*---------------------
   Header
 -----------------------*/
-
 .header {
 	background: #ffffff;
 	-webkit-box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
@@ -464,7 +744,7 @@ ol {
 	display: inline-block;
 	font-size: 18px;
 	color: #111111;
-	margin-right: 20px;
+	/*margin-right: 20px;*/
 	cursor: pointer;
 }
 
@@ -1097,6 +1377,32 @@ ol {
 	background: #ca1515;
 	content: "";
 }
+.sidebar__categories .categories__accordion ul {
+	list-style: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+	.sidebar__categories .categories__accordion ul li {
+		font-size: 16px !important;
+		padding: 8px 10px !important;
+		position: relative !important;
+		transition: all 0.3s ease !important;
+		cursor: pointer !important;
+		display: flex !important;
+		align-items: center !important;
+		gap: 8px !important;
+	}
+
+		.sidebar__categories .categories__accordion ul li::before {
+			content: "❤️" !important;
+			font-size: 14px !important;
+			position: absolute !important;
+			left: -20px !important; /* İkonları sola kaydırdık */
+			top: 50% !important;
+			transform: translateY(-50%) !important;
+		}
+
 
 /*---------------------
   Product
@@ -1719,20 +2025,42 @@ ol {
 	margin-bottom: 28px;
 }
 
-.product__details__price {
+/*.product__details__price {
 	font-size: 30px;
 	font-weight: 600;
 	color: #ca1515;
 	margin-bottom: 30px;
-}
+}*/
 
-.product__details__price span {
+/*.product__details__price span {
 	font-size: 18px;
 	color: #b1b0b0;
 	text-decoration: line-through;
 	margin-left: 10px;
-	display: inline-block;
+	display: inline-block;*/
 }
+/* Eski fiyatın üzerini çiz */
+.original-price {
+	text-decoration: line-through;
+	color: gray;
+	font-size: 25px;
+}
+
+/* İndirimli fiyat kırmızı ve belirgin olsun */
+.discounted-price {
+	color: red;
+	font-weight: bold;
+	font-size: 30px;
+}
+
+/* Normal fiyatlarda çizgi olmasın */
+.normal-price {
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 25px;
+}
+
+
 
 .quantity {
 	float: left;
@@ -1789,13 +2117,13 @@ ol {
 	font-size: 14px;
 	color: #ffffff;
 	background: #ca1515;
-	font-weight: 600;
+
 	text-transform: uppercase;
 	padding: 14px 30px 15px;
 	border-radius: 50px;
 	float: left;
 	margin-right: 10px;
-	margin-bottom: 10px;
+	
 }
 
 .product__details__button ul {
@@ -1938,6 +2266,82 @@ ol {
 	background: #e31e2f;
 	border-radius: 50%;
 	content: "";
+}
+.widget-title {
+	font-weight: bold;
+	font-size: 16px;
+	margin-bottom: 8px;
+	display: block;
+}
+
+/* 🎨 Renk Stilleri */
+.color-label {
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.color-circle {
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	display: inline-block;
+	/*background-color: #ca1515;*/ /* İçini kırmızı yaptık */
+	border: 2px solid #ca1515;
+	transition: 0.3s ease-in-out;
+	position: relative;
+}
+
+.color-label input {
+	display: none; /* Radio butonu gizle */
+}
+
+	.color-label input:checked + .color-circle {
+		background-color: orange; /* Seçilince turuncu olacak */
+		border-color: orange;
+		transform: scale(1.1);
+	}
+
+.color-label:hover .color-circle {
+	background-color: darkred; /* Üzerine gelince koyu kırmızı olacak */
+}
+
+/* 🎨 Beden Stilleri */
+.size-label {
+	display: inline-block;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.size-box {
+	display: inline-block;
+	padding: 10px 16px;
+	border: 2px solid #ca1515;
+	background-color: #ca1515; /* Default kırmızı */
+	color: white;
+	font-size: 14px;
+	border-radius: 5px;
+	transition: 0.3s ease-in-out;
+}
+
+.size-label input {
+	display: none; /* Radio butonu gizle */
+}
+
+	.size-label input:checked + .size-box {
+		background-color: orange; /* Seçilince turuncu olacak */
+		border-color: orange;
+	}
+
+.size-label:hover .size-box {
+	background-color: darkred; /* Hover efekti */
+	border-color: darkred;
+}
+.disabled-btn {
+	background-color: #ccc !important; /* Gri renk */
+	cursor: not-allowed !important;
+	opacity: 0.7;
 }
 
 .product__details__widget ul li .color__checkbox label .checkmark.black-bg {

@@ -170,26 +170,26 @@ Created: Colorib
         $(this).html(event.strftime("<div class='countdown__item'><span>%D</span> <p>Day</p> </div>" + "<div class='countdown__item'><span>%H</span> <p>Hour</p> </div>" + "<div class='countdown__item'><span>%M</span> <p>Min</p> </div>" + "<div class='countdown__item'><span>%S</span> <p>Sec</p> </div>"));
     });
 
-    /*-------------------
-		Range Slider
-	--------------------- */
-	var rangeSlider = $(".price-range"),
-    minamount = $("#minamount"),
-    maxamount = $("#maxamount"),
-    minPrice = rangeSlider.data('min'),
-    maxPrice = rangeSlider.data('max');
-    rangeSlider.slider({
-    range: true,
-    min: minPrice,
-    max: maxPrice,
-    values: [minPrice, maxPrice],
-    slide: function (event, ui) {
-        minamount.val('$' + ui.values[0]);
-        maxamount.val('$' + ui.values[1]);
-        }
-    });
-    minamount.val('$' + rangeSlider.slider("values", 0));
-    maxamount.val('$' + rangeSlider.slider("values", 1));
+ //   /*-------------------
+	//	Range Slider
+	//--------------------- */
+	//var rangeSlider = $(".price-range"),
+ //   minamount = $("#minamount"),
+ //   maxamount = $("#maxamount"),
+ //   minPrice = rangeSlider.data('min'),
+ //   maxPrice = rangeSlider.data('max');
+ //   rangeSlider.slider({
+ //   range: true,
+ //   min: minPrice,
+ //   max: maxPrice,
+ //   values: [minPrice, maxPrice],
+ //   slide: function (event, ui) {
+ //       minamount.val('$' + ui.values[0]);
+ //       maxamount.val('$' + ui.values[1]);
+ //       }
+ //   });
+ //   minamount.val('$' + rangeSlider.slider("values", 0));
+ //   maxamount.val('$' + rangeSlider.slider("values", 1));
 
     /*------------------
 		Single Product
