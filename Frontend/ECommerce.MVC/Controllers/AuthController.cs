@@ -222,8 +222,8 @@ namespace ECommerce.MVC.Controllers
 
                     _toaster.AddSuccessToastMessage("Satıcı girişi başarıyla tamamlandı.");
 
-                    //TODO dashboardda yönlendirilecek
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+
                 }
 
                 _toaster.AddErrorToastMessage("Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.");

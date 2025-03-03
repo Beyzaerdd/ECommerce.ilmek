@@ -57,6 +57,9 @@
     <!-- App Javascript (Require in all Page) -->
     <script src="~/Admin/larkon/admin/assets/js/app.js"></script>
     <script src="~/Admin/larkon/admin/assets/js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     @RenderSection("Scripts", required: false)
     <script>
         $(document).ready(function () {
@@ -65,6 +68,9 @@
                 toastr.error(errorMessage);
             }
         });
+   
+           
     </script>
+
 </body>
 </html>
