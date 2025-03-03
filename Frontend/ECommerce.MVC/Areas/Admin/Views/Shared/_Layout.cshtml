@@ -1,46 +1,48 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
+
+<!-- Mirrored from techzaa.in/larkon/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 03 Feb 2025 19:31:49 GMT -->
 <head>
+    <!-- Title Meta -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ECommerce.MVC</title>
+    <title>Dashboard | Larkon - Responsive Admin Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A fully responsive premium admin dashboard template" />
+    <meta name="author" content="Techzaa" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <!-- Title Meta -->
-        <meta charset="utf-8" />
-        <title>Sign In | ECommerceİlmek - Responsive Admin Dashboard Template</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A fully responsive premium admin dashboard template" />
-        <meta name="author" content="Techzaa" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <!-- App favicon -->
-        <link rel="shortcut icon" href="~/Admin/larkon/admin/assets/images/favicon.ico">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Admin/larkon/admin/assets/images/favicon.ico">
 
-        <!-- Vendor css (Require in all Page) -->
-        <link href="~/Admin/larkon/admin/assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
+    <!-- Vendor css (Require in all Page) -->
+    <link href="~/Admin/larkon/admin/assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
 
-        <!-- Icons css (Require in all Page) -->
-        <link href="~/Admin/larkon/admin/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons css (Require in all Page) -->
+    <link href="~/Admin/larkon/admin/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
-        <!-- App css (Require in all Page) -->
-        <link href="~/Admin/larkon/admin/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- App css (Require in all Page) -->
+    <link href="~/Admin/larkon/admin/assets/css/app.min.css" rel="stylesheet" type="text/css" />
 
-        <!-- Toastr CSS -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
-        <!-- Theme Config js (Require in all Page) -->
-    
-    </head>
-
+    <!-- Theme Config js (Require in all Page) -->
+    <script src="~/Admin/larkon/admin/assets/js/config.js"></script>
 </head>
 <body>
- 
-
-    <main>
-        @RenderBody()
+    <div class="wrapper">
+    <header class="topbar">
+        <partial name="_topbar" />
+        </header>
+  
+    <div class="main-nav">
         <partial name="_Navbar" />
-    </main>
+        </div>
+
+        <div class="page-content">
+
+        @RenderBody()
+      </div>
+        </div>
+  
 
 
     <!-- Toastr JS -->
