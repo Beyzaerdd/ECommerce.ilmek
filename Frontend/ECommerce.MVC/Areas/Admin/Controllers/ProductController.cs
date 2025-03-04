@@ -13,11 +13,13 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
     {
         private readonly IProductService _productService;
         private readonly MVC.Services.Abstract.IEnumService enumService;
+        private readonly MVC.Services.Abstract.ICategoryService categoryService;
 
-        public ProductController(IProductService productService, MVC.Services.Abstract.IEnumService enumService)
+        public ProductController(IProductService productService, MVC.Services.Abstract.IEnumService enumService, MVC.Services.Abstract.ICategoryService categoryService)
         {
             _productService = productService;
             this.enumService = enumService;
+            this.categoryService = categoryService;
         }
 
         public async Task<IActionResult> GetAllProducts()
@@ -111,7 +113,7 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
             }
             return RedirectToAction("GetAllProducts");
         }
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(ProductUpdateModel model)
         {
             if (!ModelState.IsValid)
@@ -126,5 +128,33 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+    
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id); // Assuming this method exists
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Categories =(await categoryService.GetAllCategoriesAsync()).Data.ToList();
+
+            var model = new ProductUpdateModel
+            {
+                Id = product.Data.Id,
+                Name = product.Data.Name,
+                Description = product.Data.Description,
+                UnitPrice = product.Data.UnitPrice,
+                Stock = product.Data.Stock,
+                PreparationTimeInDays = product.Data.PreparationTimeInDays,
+               CategoryId=product.Data.CategoryId,
+                AvailableSizes = product.Data.Sizes,
+                AvailableColors = product.Data.Colors,
+  
+            };
+
+            return View(model);
+        }
+
     }
 }

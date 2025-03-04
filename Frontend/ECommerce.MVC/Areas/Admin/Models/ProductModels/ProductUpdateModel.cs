@@ -1,4 +1,5 @@
-﻿using ECommerce.Shared.ComplexTypes;
+﻿using ECommerce.MVC.Models.EnumResponseModels;
+using ECommerce.Shared.ComplexTypes;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -26,10 +27,10 @@ namespace ECommerce.MVC.Areas.Admin.Models.ProductModels
         public decimal UnitPrice { get; set; }
 
         [JsonPropertyName("availableSizes")]
-        public List<ProductSize> AvailableSizes { get; set; } = new();
+        public List<EnumResponseModel> AvailableSizes { get; set; } = new();
 
         [JsonPropertyName("availableColors")]
-        public List<ProductColor> AvailableColors { get; set; } = new();
+        public List<EnumResponseModel> AvailableColors { get; set; } = new();
 
         [Required(ErrorMessage = "Hazırlık süresi zorunludur.")]
         [Range(0, int.MaxValue, ErrorMessage = "Hazırlık süresi negatif olamaz.")]

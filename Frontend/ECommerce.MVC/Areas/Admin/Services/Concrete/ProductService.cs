@@ -2,6 +2,7 @@
 using ECommerce.MVC.Areas.Admin.Services.Abstract;
 using ECommerce.MVC.Models.ProductModels;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
+using System.Text;
 using System.Text.Json;
 
 namespace ECommerce.MVC.Areas.Admin.Services.Concrete
@@ -261,16 +262,21 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
 
             using var content = new MultipartFormDataContent();
 
-            content.Add(new StringContent(productUpdateModel.Id.ToString()),productUpdateModel.Id.ToString());
-            content.Add(new StringContent(productUpdateModel.Name), productUpdateModel.Name);
-            content.Add(new StringContent(productUpdateModel.UnitPrice.ToString()), productUpdateModel.UnitPrice.ToString());
-            content.Add(new StringContent(productUpdateModel.Description), productUpdateModel.Description.ToString());
-            content.Add(new StringContent(productUpdateModel.PreparationTimeInDays.ToString()), productUpdateModel.PreparationTimeInDays.ToString());
-            content.Add(new StringContent(productUpdateModel.IsActive.ToString()), productUpdateModel.IsActive.ToString());
-            content.Add(new StringContent(productUpdateModel.CategoryId.ToString()), productUpdateModel.CategoryId.ToString());
-            content.Add(new StringContent(productUpdateModel.AvailableColors.ToString()), productUpdateModel.AvailableColors.ToString());
-            content.Add(new StringContent(productUpdateModel.AvailableSizes.ToString()), productUpdateModel.AvailableSizes.ToString());
-            content.Add(new StringContent(productUpdateModel.Stock.ToString()), productUpdateModel.Stock.ToString());
+            content.Add(new StringContent(productUpdateModel.Id.ToString()), nameof(productUpdateModel.Id));
+            content.Add(new StringContent(productUpdateModel.Name), nameof(productUpdateModel.Name));
+            content.Add(new StringContent(productUpdateModel.UnitPrice.ToString()), nameof(productUpdateModel.UnitPrice));
+            content.Add(new StringContent(productUpdateModel.Description), nameof(productUpdateModel.Description));
+            content.Add(new StringContent(productUpdateModel.PreparationTimeInDays.ToString()), nameof(productUpdateModel.PreparationTimeInDays));
+            content.Add(new StringContent(productUpdateModel.IsActive.ToString()), nameof(productUpdateModel.IsActive));
+            content.Add(new StringContent(productUpdateModel.CategoryId.ToString()), nameof(productUpdateModel.CategoryId));
+            content.Add(new StringContent(productUpdateModel.Stock.ToString()), nameof(productUpdateModel.Stock));
+
+            // AvailableSizes ve AvailableColors JSON formatına çevrildi
+            var sizesJson = JsonSerializer.Serialize(productUpdateModel.AvailableSizes);
+            var colorsJson = JsonSerializer.Serialize(productUpdateModel.AvailableColors);
+
+            content.Add(new StringContent(string.Empty, Encoding.UTF8, "application/json"), nameof(productUpdateModel.AvailableSizes));
+            content.Add(new StringContent(string.Empty, Encoding.UTF8, "application/json"), nameof(productUpdateModel.AvailableColors));
 
 
             if (productUpdateModel.Image != null)
@@ -280,7 +286,7 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
                 content.Add(fileContent, "Image", productUpdateModel.Image.FileName);
             }
 
-            var response = await client.PutAsync($"api/products/update/{productUpdateModel.Id}", content);
+            var response = await client.PutAsync($"products", content);
             var responseBody = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
