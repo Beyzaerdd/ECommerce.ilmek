@@ -38,6 +38,16 @@ builder.Services.AddScoped<IUserFavService, UserFavService>();
 builder.Services.AddScoped<IContactMessageService, ContactMessageService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ECommerce.MVC.Areas.Admin.Services.Abstract.IProductService,
+                           ECommerce.MVC.Areas.Admin.Services.Concrete.ProductService>();
+
+builder.Services.AddScoped<ECommerce.MVC.Areas.Admin.Services.Abstract.IOrderService,
+                           ECommerce.MVC.Areas.Admin.Services.Concrete.OrderService>();
+
+
+builder.Services.AddScoped<ECommerce.MVC.Areas.Admin.Services.Abstract.IDiscountService,
+                           ECommerce.MVC.Areas.Admin.Services.Concrete.DiscountService>();
+
 builder.Services.AddHttpClient("ECommerceAPI", client => client.BaseAddress = new Uri("http://localhost:1406/api/"));
 
 builder
@@ -82,20 +92,19 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseMiddleware<ECommerce.MVC.Middlewares.TokenExpirationMiddleware>();
 
-// Admin alaný için route tanýmlamasý
+
 app.MapAreaControllerRoute(
     name: "admin",
     areaName: "Admin",
     pattern: "Admin/{controller=Home}/{action=Index}/{id?}",
     defaults: new { area = "Admin" });
 
-// Maðaza sayfasý için route tanýmlamasý (Burasý ÖNEMLÝ)
 app.MapControllerRoute(
     name: "store",
     pattern: "store/{applicationUserId}",
     defaults: new { controller = "Store", action = "Index" });
 
-// Varsayýlan route (Ana sayfa ve diðer genel sayfalar)
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
