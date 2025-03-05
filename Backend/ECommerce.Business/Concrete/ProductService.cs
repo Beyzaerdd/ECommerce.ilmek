@@ -332,18 +332,7 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.Forbidden);
             }
 
-            if (!product.IsActive)
-            {
-                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
-        {
-            new ErrorDetail
-            {
-                Message = "The product is not active. Cannot update.",
-                Code = "ProductNotActive",
-                Target = nameof(productUpdateDTO.Id)
-            }
-        }, HttpStatusCode.BadRequest);
-            }
+       
 
 
             if (product.IsDeleted)

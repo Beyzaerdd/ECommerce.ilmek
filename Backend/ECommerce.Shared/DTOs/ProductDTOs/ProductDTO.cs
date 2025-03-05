@@ -21,7 +21,7 @@ namespace ECommerce.Shared.DTOs.ProductDTOs
         public int PreparationTimeInDays { get; set; }
         public bool IsActive { get; set; }
         public string CategoryName { get; set; }
-       
+        public int CategoryId { get; set; }
         public string ImageUrl { get; set; }
         public IEnumerable<DiscountDTO> Discounts { get; set; }
     }
