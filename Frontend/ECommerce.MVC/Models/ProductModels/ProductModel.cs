@@ -49,6 +49,9 @@ namespace ECommerce.MVC.Models.ProductModels
         [JsonPropertyName("categoryName")]
         public string CategoryName { get; set; }
 
+        [JsonPropertyName("categoryId")]
+        public int CategoryId { get; set; }
+
         [JsonPropertyName("subCategoryName")]
         public string SubcategoryName { get; set; }
 

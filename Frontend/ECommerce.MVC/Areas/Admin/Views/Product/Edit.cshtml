@@ -1,0 +1,211 @@
+﻿@using ECommerce.MVC.Models.CategoryModels
+@using ECommerce.MVC.Models.EnumResponseModels
+@model ECommerce.MVC.Areas.Admin.Models.ProductModels.ProductUpdateModel
+@{
+    Layout = "_Layout";
+}
+
+<div class="container-xxl">
+    <form asp-action="Edit" asp-controller="Product" method="post" enctype="multipart/form-data">
+        <div class="row">
+ 
+            <div class="col-xl-3 col-lg-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                 
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" alt="Product Image" class="img-fluid rounded bg-light">
+                        }
+                        else
+                        {
+                            <p>No image uploaded yet.</p>
+                        }
+
+                        <div class="mt-3">
+                            <label class="form-label">Yeni Resim Yükle</label>
+                
+                            @Html.TextBoxFor(m => m.Image, new { type = "file", @class = "form-control" })
+                            <span class="text-danger" asp-validation-for="Image"></span>
+                        </div>
+
+                        <input type="hidden" name="ImageUrl" value="@Model.ImageUrl" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-9 col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Ürün Bilgileri</h4>
+                    </div>
+                    <div class="card-body">
+                        @Html.HiddenFor(m => m.Id)
+
+                        <div class="mb-3">
+                            <label class="form-label">Ürün ismi</label>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                            <span class="text-danger" asp-validation-for="Name"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Açıklama</label>
+                            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                            <span class="text-danger" asp-validation-for="Description"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select name="CategoryId" class="form-control">
+                                @foreach (var category in ViewBag.Categories as List<CategoryModel>)
+                                {
+                                    <option value="@category.Id" @(Model.CategoryId == category.Id ? "selected" : "")>@category.Name</option>
+                                }
+                            </select>
+                        </div>
+
+
+                   
+
+                        <div class="mb-3">
+                            <label class="form-label">Stok</label>
+                            @Html.TextBoxFor(m => m.Stock, new { type = "number", @class = "form-control" })
+                            <span class="text-danger" asp-validation-for="Stock"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Hazırlanma Süresi</label>
+                            @Html.TextBoxFor(m => m.PreparationTimeInDays, new { type = "number", @class = "form-control" })
+                            <span class="text-danger" asp-validation-for="PreparationTimeInDays"></span>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input class="form-check-input" type="checkbox" name="IsActive" value="true" @(Model.IsActive ? "checked" : "") />
+                            <label class="form-check-label">Active</label>
+                        </div>
+
+              
+                        <div class="mb-3">
+                            <label class="form-label">Renk</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var color in ViewBag.Colors as List<EnumResponseModel>)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="AvailableColorIds" value="@color.Id"
+                                        @(Model.AvailableColorIds.Contains(color.Id) ? "checked" : "") />
+                                        <label class="form-check-label">@color.Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Beden</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var size in ViewBag.Sizes as List<EnumResponseModel>)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="AvailableSizeIds" value="@size.Id"
+                                        @(Model.AvailableSizeIds.Contains(size.Id) ? "checked" : "") />
+                                        <label class="form-check-label">@size.Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Pricing Details</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Fiyat Alanı -->
+                                    <div class="col-lg-4">
+                                        <label for="product-price" class="form-label">Price</label>
+                                        <div class="input-group mb-3">
+                                            @Html.TextBoxFor(m => m.UnitPrice, new { type = "number", @class = "form-control" })
+                                            <span class="text-danger" asp-validation-for="UnitPrice"></span>
+                                        </div>
+                                    </div>
+
+                                  @*   <!-- İndirim Alanı -->
+                                    <div class="col-lg-4">
+                                        <label for="product-discount" class="form-label">Discount</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text fs-20"><i class='bx bxs-discount'></i></span>
+                                            @Html.TextBoxFor(m => m.Discount.DiscountValue, new { type = "number", @class = "form-control", id = "product-discount" })
+                                            <span class="text-danger" asp-validation-for="Discount.DiscountValue"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Kupon Kodu -->
+                                    <div class="col-lg-4">
+                                        <label for="coupon-code" class="form-label">Coupon Code</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class='bx bxs-credit-card'></i></span>
+                                            @Html.TextBoxFor(m => m.Discount.CouponCode, new { @class = "form-control", id = "coupon-code" })
+                                            <span class="text-danger" asp-validation-for="Discount.CouponCode"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Başlangıç Tarihi -->
+                                    <div class="col-lg-4">
+                                        <label for="start-date" class="form-label">Start Date</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class='bx bx-calendar'></i></span>
+                                            @Html.TextBoxFor(m => m.Discount.StartDate, new { type = "date", @class = "form-control", id = "start-date" })
+                                            <span class="text-danger" asp-validation-for="Discount.StartDate"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Başlangıç Tarihi -->
+                                    <div class="col-lg-4">
+                                        <label for="start-date" class="form-label">Start Date</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class='bx bx-calendar'></i></span>
+                                            @Html.TextBoxFor(m => m.Discount.StartDate, new
+                                                {
+                                                    type = "date",
+                                                    @class = "form-control",
+                                                    id = "start-date",
+                                                    value = Model.Discount.StartDate.ToString("yyyy-MM-dd")
+                                                })
+                                            <span class="text-danger" asp-validation-for="Discount.StartDate"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Bitiş Tarihi -->
+                                    <div class="col-lg-4">
+                                        <label for="end-date" class="form-label">End Date</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class='bx bx-calendar'></i></span>
+                                            @Html.TextBoxFor(m => m.Discount.EndDate, new
+                                                {
+                                                    type = "date",
+                                                    @class = "form-control",
+                                                    id = "end-date",
+                                                    value = Model.Discount.EndDate.ToString("yyyy-MM-dd")
+                                                })
+                                            <span class="text-danger" asp-validation-for="Discount.EndDate"></span>
+                                        </div>
+                                    </div>
+ *@
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="d-flex justify-content-end gap-2">
+                          
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -270,13 +270,17 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
             content.Add(new StringContent(productUpdateModel.IsActive.ToString()), nameof(productUpdateModel.IsActive));
             content.Add(new StringContent(productUpdateModel.CategoryId.ToString()), nameof(productUpdateModel.CategoryId));
             content.Add(new StringContent(productUpdateModel.Stock.ToString()), nameof(productUpdateModel.Stock));
+         
 
-            // AvailableSizes ve AvailableColors JSON formatına çevrildi
-            var sizesJson = JsonSerializer.Serialize(productUpdateModel.AvailableSizes);
-            var colorsJson = JsonSerializer.Serialize(productUpdateModel.AvailableColors);
+            foreach (var size in productUpdateModel.AvailableSizeIds)
+            {
+                content.Add(new StringContent(size.ToString()), nameof(productUpdateModel.AvailableSizes));
+            }
 
-            content.Add(new StringContent(string.Empty, Encoding.UTF8, "application/json"), nameof(productUpdateModel.AvailableSizes));
-            content.Add(new StringContent(string.Empty, Encoding.UTF8, "application/json"), nameof(productUpdateModel.AvailableColors));
+            foreach (var color in productUpdateModel.AvailableColorIds)
+            {
+                content.Add(new StringContent(color.ToString()), nameof(productUpdateModel.AvailableColors));
+            }
 
 
             if (productUpdateModel.Image != null)
@@ -284,10 +288,24 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
                 var fileStream = productUpdateModel.Image.OpenReadStream();
                 var fileContent = new StreamContent(fileStream);
                 content.Add(fileContent, "Image", productUpdateModel.Image.FileName);
-            }
 
-            var response = await client.PutAsync($"products", content);
+           
+                content.Add(new StringContent(""), nameof(productUpdateModel.ImageUrl));
+            }
+            else if (!string.IsNullOrEmpty(productUpdateModel.ImageUrl))
+            {
+     
+                content.Add(new StringContent(productUpdateModel.ImageUrl), nameof(productUpdateModel.ImageUrl));
+            }
+            else
+            {
+        
+                content.Add(new StringContent(""), nameof(productUpdateModel.ImageUrl));
+            }
+            var response = await client.PutAsync("products", content);
             var responseBody = await response.Content.ReadAsStringAsync();
+
+         
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
             {

@@ -14,12 +14,14 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly MVC.Services.Abstract.IEnumService enumService;
         private readonly MVC.Services.Abstract.ICategoryService categoryService;
+        private readonly IDiscountService _discountService;
 
-        public ProductController(IProductService productService, MVC.Services.Abstract.IEnumService enumService, MVC.Services.Abstract.ICategoryService categoryService)
+        public ProductController(IProductService productService, MVC.Services.Abstract.IEnumService enumService, MVC.Services.Abstract.ICategoryService categoryService, IDiscountService discountService)
         {
             _productService = productService;
             this.enumService = enumService;
             this.categoryService = categoryService;
+            _discountService = discountService;
         }
 
         public async Task<IActionResult> GetAllProducts()
@@ -111,33 +113,90 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
             {
                 TempData["Error"] = "Ürün silinirken hata oluştu.";
             }
-            return RedirectToAction("GetAllProducts");
+            return RedirectToAction("GetProductsBySeller");
         }
         [HttpPost]
         public async Task<IActionResult> Edit(ProductUpdateModel model)
         {
             if (!ModelState.IsValid)
+            {
+                
+                var colorsResponse = await enumService.GetAvailableColorsAsync();
+                var sizesResponse = await enumService.GetAvailableSizesAsync();
+                var categoryResponse = await categoryService.GetAllCategoriesAsync();
+
+                ViewBag.Categories = categoryResponse.Data.ToList();
+                ViewBag.Colors = colorsResponse.Data.ToList();
+                ViewBag.Sizes = sizesResponse.Data.ToList();
+
                 return View(model);
+            }
+
+
+            model.AvailableSizes = model.AvailableSizeIds
+                .Select(id => new EnumResponseModel { Id = id })
+                .ToList();
+
+            model.AvailableColors = model.AvailableColorIds
+                .Select(id => new EnumResponseModel { Id = id })
+                .ToList();
+            if (model.Image == null)
+            {
+     
+                if (!string.IsNullOrEmpty(model.ImageUrl))
+                {
+                    model.ImageUrl = model.ImageUrl; 
+                }
+                else
+                {
+          
+                    model.ImageUrl = string.Empty; 
+                }
+            }
 
             var response = await _productService.UpdateProductAsync(model);
             if (!response.IsSucceeded)
             {
                 ModelState.AddModelError("", response.Errors[0].Message);
+
+    
+                var colorsResponse = await enumService.GetAvailableColorsAsync();
+                var sizesResponse = await enumService.GetAvailableSizesAsync();
+                var categoryResponse = await categoryService.GetAllCategoriesAsync();
+
+                ViewBag.Categories = categoryResponse.Data.ToList();
+                ViewBag.Colors = colorsResponse.Data.ToList();
+                ViewBag.Sizes = sizesResponse.Data.ToList();
+
                 return View(model);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("GetProductsBySeller");
         }
-    
+
+
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id); // Assuming this method exists
+            var product = await _productService.GetProductByIdAsync(id); 
+            Console.WriteLine($"Product ImageUrl: {product.Data?.ImageUrl}");
             if (product == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Categories =(await categoryService.GetAllCategoriesAsync()).Data.ToList();
+
+            var discountResponse = await _discountService.GetDiscountByProductIdAsync(id);
+            var discount = discountResponse.Data?.FirstOrDefault();
+            var colorsResponse = await enumService.GetAvailableColorsAsync();
+            var sizesResponse = await enumService.GetAvailableSizesAsync();
+            var categoryResponse = await categoryService.GetAllCategoriesAsync();
+            ViewBag.Categories = categoryResponse.Data
+                 .Where(c => c.ParentCategoryId != null)
+                 .ToList();
+           
+            ViewBag.Colors = colorsResponse.Data.ToList();
+            ViewBag.Sizes = sizesResponse.Data.ToList();
+
 
             var model = new ProductUpdateModel
             {
@@ -148,9 +207,13 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
                 Stock = product.Data.Stock,
                 PreparationTimeInDays = product.Data.PreparationTimeInDays,
                CategoryId=product.Data.CategoryId,
+               IsActive=product.Data.IsActive,
+               ImageUrl=product.Data.ImageUrl,
                 AvailableSizes = product.Data.Sizes,
                 AvailableColors = product.Data.Colors,
-  
+                AvailableColorIds = product.Data.AvailableColorIds.ToList(),
+                AvailableSizeIds = product.Data.AvailableSizeIds.ToList()
+
             };
 
             return View(model);
