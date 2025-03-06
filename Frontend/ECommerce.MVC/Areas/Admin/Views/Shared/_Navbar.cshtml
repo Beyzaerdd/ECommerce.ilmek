@@ -56,9 +56,7 @@
                         <li class="sub-nav-item">
                             <a class="sub-nav-link" asp-controller="Product" asp-action="GetProductsBySeller">Ürünler</a>
                         </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Product" asp-action="Edit">Düzenle</a>
-                        </li>
+                    
                         <li class="sub-nav-item">
                             <a class="sub-nav-link" asp-controller="Product" asp-action="AddProduct">Oluştur</a>
                         </li>
@@ -103,7 +101,7 @@
                 <div class="collapse" id="sidebarOrders">
                     <ul class="nav sub-navbar-nav">
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Orders" asp-action="List">Siaprişler</a>
+                            <a class="sub-nav-link" asp-controller="Order" asp-action="List">Siaprişler</a>
                         </li>
                         <li class="sub-nav-item">
                             <a class="sub-nav-link" asp-controller="Orders" asp-action="Detail">Detaylar</a>
@@ -124,10 +122,10 @@
                 <div class="collapse" id="sidebarOrders">
                     <ul class="nav sub-navbar-nav">
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Orders" asp-action="List">Siaprişler</a>
+                            <a class="sub-nav-link" asp-controller="Order" asp-action="GetOrdersBySeller">Siaprişler</a>
                         </li>
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Orders" asp-action="Detail">Detaylar</a>
+                            <a class="sub-nav-link" asp-controller="Order" asp-action="Detail">Detaylar</a>
                         </li>
                     </ul>
                 </div>

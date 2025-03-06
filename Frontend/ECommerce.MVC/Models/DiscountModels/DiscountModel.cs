@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using ECommerce.Shared.ComplexTypes;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.MVC.Models.DiscountModels
 {
@@ -10,11 +11,23 @@ namespace ECommerce.MVC.Models.DiscountModels
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("discountValue")] // JSON'daki gerçek alan adını kontrol et
+        [JsonPropertyName("discountValue")] 
         public decimal DiscountValue { get; set; }
 
         [JsonPropertyName("isActive")]
         public bool IsActive { get; set; }
-    }
+
+
+        [JsonPropertyName("type")]
+        public DiscountType Type { get; set; }
+        [JsonPropertyName("couponCode")]
+        public string CouponCode { get; set; }
+        [JsonPropertyName("startDate")]
+        public DateTime StartDate { get; set; }
+        [JsonPropertyName("endDate")]
+        public DateTime EndDate { get; set; }
+
+
+    } 
 
 }
