@@ -1,0 +1,154 @@
+﻿@model ECommerce.MVC.Models.ProductModels.ProductModel
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Sol taraf: Ürün Görseli ve Bilgileri -->
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="position-relative">
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="card-img-top rounded-top-3"
+                         onerror="this.src='/images/default-product.png'"
+                         style="object-fit: cover; height: 300px;">
+                    <span class="position-absolute top-0 end-0 m-2 px-3 py-1 text-white rounded-pill bg-@((Model.IsActive) ? "success" : "danger")">
+                        @((Model.IsActive) ? "Aktif" : "Aktif Değil")
+                    </span>
+                </div>
+                <div class="card-body text-center">
+                    <h4 class="card-title fw-bold">@Model.Name</h4>
+                    <p class="card-text text-muted small">@Model.Description</p>
+
+                    <hr class="my-3">
+
+                    <h5 class="text-primary fw-bold">
+                        @Model.UnitPrice.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
+                    </h5>
+                    <p class="text-muted">Stok: <strong>@Model.Stock ürün</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ taraf: Ürün Seçenekleri ve Kategorisi -->
+        <div class="col-md-7">
+            <div class="row">
+                <!-- Ürün Seçenekleri -->
+                <div class="col-md-12">
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Ürün Seçenekleri</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Beden Seçenekleri -->
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold">Beden Seçenekleri:</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach (var size in Model.Sizes)
+                                        {
+                                            <span class="badge bg-secondary p-2">@size.Name</span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- Renk Seçenekleri -->
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold">Renk Seçenekleri:</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach (var color in Model.Colors)
+                                        {
+                                            <span class="badge bg-secondary p-2">@color.Name</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ürün Kategorisi -->
+                <div class="col-md-12">
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Ürün Kategorisi</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><strong>Kategori:</strong> @Model.CategoryName</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ürün İndirimleri -->
+                @if (Model.Discounts != null && Model.Discounts.Any())
+                {
+                    <div class="col-md-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Ürün İndirimleri</h5>
+                            </div>
+                            <div class="card-body">
+                                @foreach (var discount in Model.Discounts)
+                                {
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <label class="form-label">İndirim Oranı</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class='bx bxs-discount'></i></span>
+                                                <input type="text" class="form-control" value="@discount.DiscountValue%" readonly />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label class="form-label">Kupon Kodu</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class='bx bxs-credit-card'></i></span>
+                                                <input type="text" class="form-control" value="@discount.CouponCode" readonly />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label class="form-label">Durum</label>
+                                            <div>
+                                                <span class="badge bg-@((discount.IsActive) ? "success" : "danger")">
+                                                    @((discount.IsActive) ? "Aktif" : "Aktif Değil")
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label class="form-label">Başlangıç Tarihi</label>
+                                            <input type="text" class="form-control" value="@discount.StartDate.ToShortDateString()" readonly />
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <label class="form-label">Bitiş Tarihi</label>
+                                            <input type="text" class="form-control" value="@discount.EndDate.ToShortDateString()" readonly />
+                                        </div>
+                                    </div>
+
+                                    <hr class="my-3">
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="alert alert-warning">Bu ürüne ait indirim mevcut değil.</div>
+                    </div>
+                }
+
+                <!-- Butonlar -->
+                <div class="col-md-12 text-end mt-3">
+                    <a href="@Url.Action("GetAllProducts", "Product", new { area = "Admin" })" class="btn btn-secondary">Geri Dön</a>
+                    <a href="@Url.Action("Edit", "Product", new { area = "Admin", id = Model.Id })" class="btn btn-primary">Ürünü Düzenle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

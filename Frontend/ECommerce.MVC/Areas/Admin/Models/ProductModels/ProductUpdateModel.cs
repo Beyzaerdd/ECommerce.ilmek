@@ -1,4 +1,5 @@
-﻿using ECommerce.MVC.Models.EnumResponseModels;
+﻿using ECommerce.MVC.Areas.Admin.Models.DiscountModels;
+using ECommerce.MVC.Models.EnumResponseModels;
 using ECommerce.Shared.ComplexTypes;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -21,16 +22,15 @@ namespace ECommerce.MVC.Areas.Admin.Models.ProductModels
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Fiyat zorunludur.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Fiyat 0'dan büyük olmalıdır.")]
+       
         [JsonPropertyName("unitPrice")]
         public decimal UnitPrice { get; set; }
 
         [JsonPropertyName("availableSizes")]
-        public List<EnumResponseModel> AvailableSizes { get; set; } = new();
+        public List<EnumResponseModel>? AvailableSizes { get; set; } = new();
 
         [JsonPropertyName("availableColors")]
-        public List<EnumResponseModel> AvailableColors { get; set; } = new();
+        public List<EnumResponseModel>? AvailableColors { get; set; } = new();
 
         [Required(ErrorMessage = "Hazırlık süresi zorunludur.")]
         [Range(0, int.MaxValue, ErrorMessage = "Hazırlık süresi negatif olamaz.")]
@@ -49,6 +49,18 @@ namespace ECommerce.MVC.Areas.Admin.Models.ProductModels
         public int Stock { get; set; }
 
         [JsonPropertyName("image")]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
+
+        [JsonPropertyName("availableSizeIds")]
+        public List<int> AvailableSizeIds { get; set; } = new();
+
+        [JsonPropertyName("availableColorIds")]
+        public List<int> AvailableColorIds { get; set; } = new();
+
+
+        [JsonPropertyName("imageUrl")] // API'den gelen ImageUrl'yi karşılamak için
+        public string? ImageUrl { get; set; }
+        public DiscountUpdateModel? Discount { get; set; }
+
     }
 }

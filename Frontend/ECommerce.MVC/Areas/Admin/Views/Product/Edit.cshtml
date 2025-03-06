@@ -4,8 +4,22 @@
 @{
     Layout = "_Layout";
 }
-
+<meta charset="utf-8" />
 <div class="container-xxl">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
     <form asp-action="Edit" asp-controller="Product" method="post" enctype="multipart/form-data">
         <div class="row">
  
@@ -120,77 +134,17 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <!-- Fiyat Alanı -->
                                     <div class="col-lg-4">
                                         <label for="product-price" class="form-label">Price</label>
                                         <div class="input-group mb-3">
-                                            @Html.TextBoxFor(m => m.UnitPrice, new { type = "number", @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.UnitPrice, new { type = "text", @class = "form-control", @id = "product-price" })
                                             <span class="text-danger" asp-validation-for="UnitPrice"></span>
                                         </div>
                                     </div>
 
-                                  @*   <!-- İndirim Alanı -->
-                                    <div class="col-lg-4">
-                                        <label for="product-discount" class="form-label">Discount</label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text fs-20"><i class='bx bxs-discount'></i></span>
-                                            @Html.TextBoxFor(m => m.Discount.DiscountValue, new { type = "number", @class = "form-control", id = "product-discount" })
-                                            <span class="text-danger" asp-validation-for="Discount.DiscountValue"></span>
-                                        </div>
-                                    </div>
 
-                                    <!-- Kupon Kodu -->
-                                    <div class="col-lg-4">
-                                        <label for="coupon-code" class="form-label">Coupon Code</label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text"><i class='bx bxs-credit-card'></i></span>
-                                            @Html.TextBoxFor(m => m.Discount.CouponCode, new { @class = "form-control", id = "coupon-code" })
-                                            <span class="text-danger" asp-validation-for="Discount.CouponCode"></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Başlangıç Tarihi -->
-                                    <div class="col-lg-4">
-                                        <label for="start-date" class="form-label">Start Date</label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text"><i class='bx bx-calendar'></i></span>
-                                            @Html.TextBoxFor(m => m.Discount.StartDate, new { type = "date", @class = "form-control", id = "start-date" })
-                                            <span class="text-danger" asp-validation-for="Discount.StartDate"></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Başlangıç Tarihi -->
-                                    <div class="col-lg-4">
-                                        <label for="start-date" class="form-label">Start Date</label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text"><i class='bx bx-calendar'></i></span>
-                                            @Html.TextBoxFor(m => m.Discount.StartDate, new
-                                                {
-                                                    type = "date",
-                                                    @class = "form-control",
-                                                    id = "start-date",
-                                                    value = Model.Discount.StartDate.ToString("yyyy-MM-dd")
-                                                })
-                                            <span class="text-danger" asp-validation-for="Discount.StartDate"></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Bitiş Tarihi -->
-                                    <div class="col-lg-4">
-                                        <label for="end-date" class="form-label">End Date</label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text"><i class='bx bx-calendar'></i></span>
-                                            @Html.TextBoxFor(m => m.Discount.EndDate, new
-                                                {
-                                                    type = "date",
-                                                    @class = "form-control",
-                                                    id = "end-date",
-                                                    value = Model.Discount.EndDate.ToString("yyyy-MM-dd")
-                                                })
-                                            <span class="text-danger" asp-validation-for="Discount.EndDate"></span>
-                                        </div>
-                                    </div>
- *@
+                            
+ 
 
                                 </div>
                             </div>
@@ -201,6 +155,9 @@
                         <div class="d-flex justify-content-end gap-2">
                           
                             <button type="submit" class="btn btn-primary">Kaydet</button>
+                            <button type="button" class="btn btn-warning soft-delete-btn" data-id="@Model.Id">Geçici Sil</button>
+                            
+
                         </div>
 
                     </div>
@@ -209,3 +166,91 @@
         </div>
     </form>
 </div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            console.log("JavaScript yüklendi!");
+
+            $(document).on("click", ".soft-delete-btn", function () {
+                var productId = $(this).data("id");
+                console.log("Soft Delete Clicked, ID:", productId);
+
+                if (!productId || productId === 0) {
+                    Swal.fire("Hata", "Geçerli bir ürün ID'si bulunamadı.", "error");
+                    return;
+                }
+
+                Swal.fire({
+                    title: "Emin misiniz?",
+                    text: "Bu ürün geçici olarak silinecek, aktifliği kaldırılacaktır.!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Evet, sil!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Admin/Product/SoftDeleteProduct",
+                            data: { id: productId },
+                            success: function (response) {
+                                Swal.fire("Başarılı", response.message, "success").then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function () {
+                                Swal.fire("Hata", "Ürün silinirken hata oluştu.", "error");
+                            }
+                        });
+                    }
+                });
+            });
+
+
+        });
+        $(document).ready(function () {
+            $('#product-price').on('input', function () {
+                var value = $(this).val();
+                // Eğer 'M' varsa, çıkar
+                value = value.replace('M', '');
+
+                // Sayıyı düzgün şekilde göster, fakat 2 ondalık basamağa yuvarlama
+                if (value && !isNaN(value)) {
+                    // Sayıyı olduğu gibi bırak, sadece virgülden sonra 2 basamaktan fazlasını kes
+                    var formattedValue = parseFloat(value).toString();
+                    $(this).val(formattedValue);
+                }
+            });
+
+            // Form submit öncesi M'yi temizle
+            $('form').submit(function () {
+                var price = $('#product-price').val();
+                $('#product-price').val(price.replace('M', ''));
+            });
+        });
+        $(document).ready(function () {
+            // TempData'dan SuccessMessage'yi alıyoruz
+            var successMessage = '@Html.Raw(TempData["SuccessMessage"])';
+            if (successMessage) {
+                // SweetAlert ile mesajı göster
+                Swal.fire({
+                    title: 'Başarılı!',
+                    text: successMessage,
+                    icon: 'success',
+                    confirmButtonText: 'Tamam'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Mesaj gösterildikten sonra yönlendirme yap
+                        window.location.href = '@Url.Action("GetProductsBySeller", "Product")';
+                    }
+                });
+            }
+        });
+
+    </script>
+}

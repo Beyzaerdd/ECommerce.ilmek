@@ -1,5 +1,6 @@
 ﻿using ECommerce.MVC.Areas.Admin.Models.ProductModels;
 using ECommerce.MVC.Areas.Admin.Services.Abstract;
+using ECommerce.MVC.Models.DiscountModels;
 using ECommerce.MVC.Models.EnumResponseModels;
 using ECommerce.MVC.Models.ProductModels;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
@@ -72,9 +73,40 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
         public async Task<IActionResult> ProductDetail(int id)
         {
             var response = await _productService.GetProductByIdAsync(id);
+            var discountResponse = await _discountService.GetDiscountByProductIdAsync(id);
+            var discountEntity = discountResponse.Data?.FirstOrDefault(); // Servisten gelen veri
+
             if (!response.IsSucceeded) return NotFound();
+
+            var categoryResponse = await categoryService.GetCategoryByIdAsync(response.Data.CategoryId);
+            var colorsResponse = await enumService.GetAvailableColorsAsync();
+            var sizesResponse = await enumService.GetAvailableSizesAsync();
+
+            if (!colorsResponse.IsSucceeded || !sizesResponse.IsSucceeded || !categoryResponse.IsSucceeded)
+            {
+                ViewBag.ErrorMessage = "Kategori, renk veya beden bilgisi alınamadı.";
+                return View(response.Data);
+            }
+
+            response.Data.Sizes = sizesResponse.Data
+                .Where(s => response.Data.AvailableSizeIds.Contains(s.Id))
+                .Select(s => new EnumResponseModel { Id = s.Id, Name = s.Name })
+                .ToList();
+
+            response.Data.Colors = colorsResponse.Data
+                .Where(c => response.Data.AvailableColorIds.Contains(c.Id))
+                .Select(c => new EnumResponseModel { Id = c.Id, Name = c.Name })
+                .ToList();
+
+            response.Data.CategoryName = categoryResponse.Data.Name;
+
+            response.Data.Discounts = discountResponse.Data?.ToList() ?? new List<DiscountModel>();
+
             return View(response.Data);
         }
+
+
+
 
         [HttpGet]
         public IActionResult AddProduct()
@@ -97,30 +129,21 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteProduct(int id, bool isHardDelete)
+        public async Task<IActionResult> SoftDeleteProduct(int id)
         {
-            ResponseViewModel<NoContentViewModel> response;
-            if (isHardDelete)
-            {
-                response = await _productService.HardDeleteProductAsync(id);
-            }
-            else
-            {
-                response = await _productService.SoftDeleteProductAsync(id);
-            }
-
+            var response = await _productService.SoftDeleteProductAsync(id);
             if (!response.IsSucceeded)
             {
-                TempData["Error"] = "Ürün silinirken hata oluştu.";
+                return Json(new { success = false, message = "Ürün silinirken hata oluştu." });
             }
-            return RedirectToAction("GetProductsBySeller");
+            return Json(new { success = true, message = "Ürün geçici olarak silindi." });
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(ProductUpdateModel model)
         {
             if (!ModelState.IsValid)
             {
-                
                 var colorsResponse = await enumService.GetAvailableColorsAsync();
                 var sizesResponse = await enumService.GetAvailableSizesAsync();
                 var categoryResponse = await categoryService.GetAllCategoriesAsync();
@@ -128,10 +151,9 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
                 ViewBag.Categories = categoryResponse.Data.ToList();
                 ViewBag.Colors = colorsResponse.Data.ToList();
                 ViewBag.Sizes = sizesResponse.Data.ToList();
-
+                TempData["ErrorMessage"] = "Ürün Güncellemede hata oluştu.";
                 return View(model);
             }
-
 
             model.AvailableSizes = model.AvailableSizeIds
                 .Select(id => new EnumResponseModel { Id = id })
@@ -140,17 +162,16 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
             model.AvailableColors = model.AvailableColorIds
                 .Select(id => new EnumResponseModel { Id = id })
                 .ToList();
+
             if (model.Image == null)
             {
-     
                 if (!string.IsNullOrEmpty(model.ImageUrl))
                 {
-                    model.ImageUrl = model.ImageUrl; 
+                    model.ImageUrl = model.ImageUrl;
                 }
                 else
                 {
-          
-                    model.ImageUrl = string.Empty; 
+                    model.ImageUrl = string.Empty;
                 }
             }
 
@@ -159,7 +180,6 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", response.Errors[0].Message);
 
-    
                 var colorsResponse = await enumService.GetAvailableColorsAsync();
                 var sizesResponse = await enumService.GetAvailableSizesAsync();
                 var categoryResponse = await categoryService.GetAllCategoriesAsync();
@@ -171,7 +191,10 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("GetProductsBySeller");
+            TempData["SuccessMessage"] = "Ürün başarıyla güncellendi.";
+
+     
+            return RedirectToAction("Edit", new { id = model.Id });
         }
 
 
