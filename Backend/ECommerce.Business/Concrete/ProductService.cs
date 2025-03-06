@@ -213,7 +213,7 @@ namespace ECommerce.Business.Concrete
             }
         }, HttpStatusCode.NotFound);
             }
-            if (!userRoles.Contains("Admin") && product.ApplicationUserId != userId)
+            if (product.ApplicationUserId != userId)
             {
                 return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
         {
@@ -226,24 +226,13 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.Forbidden);
             }
 
-            if (product.IsDeleted)
-            {
-                unitOfWork.GetRepository<Product>().HardDeleteAsync(p => p.Id == product.Id);
-                await unitOfWork.SaveChangesAsync();
-                return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
-            }
+
+            unitOfWork.GetRepository<Product>().HardDeleteAsync(p => p.Id == product.Id);
+            await unitOfWork.SaveChangesAsync();
+            return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
 
 
-            return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
-    {
-        new ErrorDetail
-        {
-            Message = "The product is not marked as deleted. Cannot perform hard delete.",
-            Code = "CannotHardDelete",
-            Target = nameof(id)
-        }
-    }, HttpStatusCode.BadRequest);
-        }
+ }
 
 
 
@@ -283,18 +272,9 @@ namespace ECommerce.Business.Concrete
             }
         }, HttpStatusCode.Forbidden);
             }
-            if (product.IsDeleted)
-            {
-                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
-                {
-                    new ErrorDetail{
-                        Message = "Product already marked as deleted",
-                        Code = "ProductAlreadyDeleted",
-                        Target = nameof(id)
-                    }
-                }, HttpStatusCode.BadRequest);
-            }
+       
             product.IsDeleted = true;
+            product.IsActive = false;
             unitOfWork.GetRepository<Product>().UpdateAsync(product);
             await unitOfWork.SaveChangesAsync();
             return ResponseDTO<NoContent>.Success(HttpStatusCode.OK);
@@ -332,21 +312,6 @@ namespace ECommerce.Business.Concrete
         }, HttpStatusCode.Forbidden);
             }
 
-       
-
-
-            if (product.IsDeleted)
-            {
-                return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
-        {
-            new ErrorDetail
-            {
-                Message = "The product is marked as deleted. Cannot update.",
-                Code = "ProductDeleted",
-                Target = nameof(productUpdateDTO.Id)
-            }
-        }, HttpStatusCode.BadRequest);
-            }
             if (productUpdateDTO.Image != null)
             {
                 var imageUrl = await _imageService.UploadImageAsync(productUpdateDTO.Image);
