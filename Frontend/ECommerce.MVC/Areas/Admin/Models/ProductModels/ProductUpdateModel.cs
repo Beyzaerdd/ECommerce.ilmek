@@ -58,7 +58,7 @@ namespace ECommerce.MVC.Areas.Admin.Models.ProductModels
         public List<int> AvailableColorIds { get; set; } = new();
 
 
-        [JsonPropertyName("imageUrl")] // API'den gelen ImageUrl'yi karşılamak için
+        [JsonPropertyName("imageUrl")] 
         public string? ImageUrl { get; set; }
         public DiscountUpdateModel? Discount { get; set; }
 

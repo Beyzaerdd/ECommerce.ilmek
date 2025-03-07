@@ -2,6 +2,8 @@
 @{
     Layout = "_Layout";
 }
+
+
 <!-- Start Container Fluid -->
 <div class="container-fluid">
     <div class="row">
@@ -114,3 +116,13 @@
         </div>
     </div>
 </div>
+@section Scripts {
+        <script>
+               $(document).ready(function () {
+            var successMessage = '@ViewBag.SuccessMessage';
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+        });
+        </script>
+}

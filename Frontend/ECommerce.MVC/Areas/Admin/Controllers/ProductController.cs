@@ -5,6 +5,8 @@ using ECommerce.MVC.Models.EnumResponseModels;
 using ECommerce.MVC.Models.ProductModels;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NToastNotify;
 using System.Security.Claims;
 
 namespace ECommerce.MVC.Areas.Admin.Controllers
@@ -16,13 +18,15 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
         private readonly MVC.Services.Abstract.IEnumService enumService;
         private readonly MVC.Services.Abstract.ICategoryService categoryService;
         private readonly IDiscountService _discountService;
+        private readonly IToastNotification _toaster;
 
-        public ProductController(IProductService productService, MVC.Services.Abstract.IEnumService enumService, MVC.Services.Abstract.ICategoryService categoryService, IDiscountService discountService)
+        public ProductController(IProductService productService, MVC.Services.Abstract.IEnumService enumService, MVC.Services.Abstract.ICategoryService categoryService, IDiscountService discountService, IToastNotification toaster)
         {
             _productService = productService;
             this.enumService = enumService;
             this.categoryService = categoryService;
             _discountService = discountService;
+            _toaster = toaster;
         }
 
         public async Task<IActionResult> GetAllProducts()
@@ -74,7 +78,7 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
         {
             var response = await _productService.GetProductByIdAsync(id);
             var discountResponse = await _discountService.GetDiscountByProductIdAsync(id);
-            var discountEntity = discountResponse.Data?.FirstOrDefault(); // Servisten gelen veri
+            var discountEntity = discountResponse.Data?.FirstOrDefault(); 
 
             if (!response.IsSucceeded) return NotFound();
 
@@ -107,25 +111,68 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
 
 
 
-
         [HttpGet]
-        public IActionResult AddProduct()
+        public async Task<IActionResult> AddProduct()
         {
-            return View();
+            var model = new ProductCreateModel();  
+            await LoadProductFormData();  
+            return View(model); 
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProduct(ProductCreateModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            
+            if (model.Image != null)
+            {
+                Console.WriteLine("Resim mevcut.");
+                model.ImageUrl = model.ImageUrl;
+            }
+            else if (string.IsNullOrEmpty(model.ImageUrl))
+            {
+                ModelState.AddModelError("", "Resim yüklenmesi zorunludur.");
+                await LoadProductFormData();
+                return View(model);
+            }
+  
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                TempData["ErrorMessage"] = string.Join("<br>", errors);
+                await LoadProductFormData();
+                return View(model);
+            }
 
+    
+            model.AvailableSizes = model.AvailableSizeIds?.Select(id => new EnumResponseModel { Id = id }).ToList() ?? new List<EnumResponseModel>();
+            model.AvailableColors = model.AvailableColorIds?.Select(id => new EnumResponseModel { Id = id }).ToList() ?? new List<EnumResponseModel>();
+            model.IsActive = true;
+
+     
             var response = await _productService.AddProductAsync(model);
             if (!response.IsSucceeded)
             {
                 ModelState.AddModelError("", "Ürün eklenirken hata oluştu.");
+                await LoadProductFormData();
                 return View(model);
             }
-            return RedirectToAction("GetAllProducts");
+
+            ViewBag.SuccessMessage = "Ürün başarıyla eklendi";
+
+
+            return RedirectToAction("GetProductsBySeller");
+
+        }
+     
+
+
+
+        private async Task LoadProductFormData()
+        {
+            ViewBag.Categories = new SelectList((await categoryService.GetAllCategoriesAsync()).Data, "Id", "Name");
+            ViewBag.Colors = new SelectList((await enumService.GetAvailableColorsAsync()).Data, "Id", "Name");
+            ViewBag.Sizes = new SelectList((await enumService.GetAvailableSizesAsync()).Data, "Id", "Name");
         }
 
         [HttpPost]
@@ -201,11 +248,7 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var product = await _productService.GetProductByIdAsync(id); 
-            Console.WriteLine($"Product ImageUrl: {product.Data?.ImageUrl}");
-            if (product == null)
-            {
-                return NotFound();
-            }
+          
 
 
             var discountResponse = await _discountService.GetDiscountByProductIdAsync(id);
