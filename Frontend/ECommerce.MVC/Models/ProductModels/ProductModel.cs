@@ -56,7 +56,7 @@ namespace ECommerce.MVC.Models.ProductModels
         public string SubcategoryName { get; set; }
 
         [JsonPropertyName("imageUrl")]
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         [JsonPropertyName("storeName")]
         public string StoreName { get; set; }
 

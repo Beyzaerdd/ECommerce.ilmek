@@ -21,20 +21,54 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
             try
             {
                 var client = GetHttpClient();
-                var response = await client.PostAsJsonAsync("Products/AddProduct", productCreateModel);
 
-                if (!response.IsSuccessStatusCode)
+                using var content = new MultipartFormDataContent();
+
+               
+                content.Add(new StringContent(productCreateModel.Name), nameof(productCreateModel.Name));
+                content.Add(new StringContent(productCreateModel.UnitPrice.ToString()), nameof(productCreateModel.UnitPrice));
+                content.Add(new StringContent(productCreateModel.Description), nameof(productCreateModel.Description));
+                content.Add(new StringContent(productCreateModel.PreparationTimeInDays.ToString()), nameof(productCreateModel.PreparationTimeInDays));
+                content.Add(new StringContent(productCreateModel.IsActive.ToString()), nameof(productCreateModel.IsActive));
+                content.Add(new StringContent(productCreateModel.CategoryId.ToString()), nameof(productCreateModel.CategoryId));
+                content.Add(new StringContent(productCreateModel.Stock.ToString()), nameof(productCreateModel.Stock));
+
+
+                foreach (var size in productCreateModel.AvailableSizeIds)
                 {
-                    return new ResponseViewModel<ProductModel>
-                    {
-                        IsSucceeded = false,
-                        Errors = new List<ErrorViewModel>
-                {
-                    new ErrorViewModel { Message = "Ürün eklenirken bir hata oluştu. Hata kodu: " + response.StatusCode }
-                }
-                    };
+                    content.Add(new StringContent(size.ToString()), nameof(productCreateModel.AvailableSizes));
                 }
 
+                foreach (var color in productCreateModel.AvailableColorIds)
+                {
+                    content.Add(new StringContent(color.ToString()), nameof(productCreateModel.AvailableColors));
+                }
+
+
+                if (productCreateModel.Image != null)
+                {
+                    var fileStream = productCreateModel.Image.OpenReadStream();
+                    var fileContent = new StreamContent(fileStream);
+                    content.Add(fileContent, "Image", productCreateModel.Image.FileName);
+
+
+                    content.Add(new StringContent(""), nameof(productCreateModel.ImageUrl));
+                }
+                else if (!string.IsNullOrEmpty(productCreateModel.ImageUrl))
+                {
+
+                    content.Add(new StringContent(productCreateModel.ImageUrl), nameof(productCreateModel.ImageUrl));
+                }
+                else
+                {
+
+                    content.Add(new StringContent(""), nameof(productCreateModel.ImageUrl));
+                }
+
+               
+                var response = await client.PostAsync("Products/AddProduct", content);
+
+            
                 var responseBody = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(responseBody))
                 {
@@ -46,7 +80,6 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
                 }
 
                 var result = JsonSerializer.Deserialize<ResponseViewModel<ProductModel>>(responseBody, _jsonSerializerOptions);
-
                 return result ?? new ResponseViewModel<ProductModel>
                 {
                     IsSucceeded = false,
@@ -65,6 +98,8 @@ namespace ECommerce.MVC.Areas.Admin.Services.Concrete
                 };
             }
         }
+
+
 
         public async  Task<ResponseViewModel<IEnumerable<ProductModel>>> GetAllProductsAsync(int? take = null)
         {

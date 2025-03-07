@@ -1,1 +1,121 @@
 ﻿@model ECommerce.MVC.Areas.Admin.Models.ProductModels.ProductCreateModel
+@{
+    Layout = "_Layout";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Ürün Ekle</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data" asp-action="AddProduct">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Resim Yükleme -->
+                        <div class="mb-3">
+                            <label class="form-label">Ürün Görseli</label>
+                            <input type="file" name="Image" class="form-control" />
+                            <span class="text-danger" asp-validation-for="Image"></span>
+                        </div>
+
+                        <!-- Ürün Bilgileri -->
+                        <div class="mb-3">
+                            <label class="form-label">Ürün Adı</label>
+                            <input type="text" class="form-control" asp-for="Name" placeholder="Ürün adını girin">
+                            <span class="text-danger" asp-validation-for="Name"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select class="form-select" name="CategoryId" required>
+                                <option value="">Bir kategori seçin</option>
+                                @foreach (var category in ViewBag.Categories as SelectList)
+                                {
+                                    <option value="@category.Value">@category.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Beden ve Renk Seçenekleri -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Beden Seçenekleri</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach (var size in ViewBag.Sizes as SelectList)
+                                    {
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="size-@size.Value" name="AvailableSizeIds" value="@size.Value">
+                                            <label class="form-check-label" for="size-@size.Value">@size.Text</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Renk Seçenekleri</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach (var color in ViewBag.Colors as SelectList)
+                                    {
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="color-@color.Value" name="AvailableColorIds" value="@color.Value">
+                                            <label class="form-check-label" for="color-@color.Value">@color.Text</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Açıklama -->
+                        <div class="mb-3">
+                            <label class="form-label">Açıklama</label>
+                            <textarea class="form-control" asp-for="Description" rows="4" placeholder="Ürün açıklamasını girin"></textarea>
+                            <span class="text-danger" asp-validation-for="Description"></span>
+                        </div>
+
+                        <!-- Stok, Hazırlanma Süresi ve Fiyat -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">Stok</label>
+                                <input type="number" class="form-control" asp-for="Stock" placeholder="Stok miktarı">
+                                <span class="text-danger" asp-validation-for="Stock"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Hazırlanma Süresi (Gün)</label>
+                                <input type="number" class="form-control" asp-for="PreparationTimeInDays" placeholder="Kaç gün?">
+                                <span class="text-danger" asp-validation-for="PreparationTimeInDays"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Fiyat</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bx bx-dollar"></i></span>
+                                    <input type="number" class="form-control" asp-for="UnitPrice" placeholder="Ürün fiyatı">
+                                    <span class="text-danger" asp-validation-for="UnitPrice"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Butonlar -->
+                        <div class="mt-4 text-center">
+                            <button type="submit" class="btn btn-primary w-50">Ürünü Kaydet</button>
+                            <a href="#" class="btn btn-secondary w-25">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@ViewBag.SuccessMessage';
+            if (successMessage && successMessage.trim() !== '') {
+                toastr.success(successMessage);
+            }
+        });
+    </script>
+}
