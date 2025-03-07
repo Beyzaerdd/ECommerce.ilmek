@@ -26,18 +26,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\Basket\" />
-    <Folder Include="Views\Contact\" />
-    <Folder Include="Views\Order\" />
-    <Folder Include="Views\Product\" />
-    <Folder Include="Views\UserFavorites\" />
-    <Folder Include="Views\UserProfile\" />
+    <Content Remove="Views\Shared\Components\Category\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <Folder Include="Areas\Admin\ViewComponents\" />
+    <Folder Include="Areas\Admin\Views\Shared\Components\" />
+    <Folder Include="Views\Account\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Shared\Components\Category\Default.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="4.0.0" />
     <PackageReference Include="NToastNotify" Version="8.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1" />

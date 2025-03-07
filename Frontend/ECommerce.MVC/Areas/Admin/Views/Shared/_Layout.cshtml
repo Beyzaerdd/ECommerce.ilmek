@@ -17,7 +17,7 @@
 
     <!-- Vendor css (Require in all Page) -->
     <link href="~/Admin/larkon/admin/assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <!-- Icons css (Require in all Page) -->
     <link href="~/Admin/larkon/admin/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
@@ -53,6 +53,14 @@
 
     <!-- Bildirimler (NToastNotify) -->
     @await Component.InvokeAsync("NToastNotify")
+    <!-- Önce jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  
     <!-- Vendor Javascript (Require in all Page) -->
     <script src="~/Admin/larkon/admin/assets/js/vendor.js"></script>
 
@@ -70,8 +78,14 @@
                 toastr.error(errorMessage);
             }
         });
-   
-           
+        $(document).ready(function () {
+            var successMessage = '@ViewBag.SuccessMessage';
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+        });
+
+
     </script>
 
 </body>
