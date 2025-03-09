@@ -170,7 +170,14 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
 
         private async Task LoadProductFormData()
         {
-            ViewBag.Categories = new SelectList((await categoryService.GetAllCategoriesAsync()).Data, "Id", "Name");
+            ViewBag.Categories = new SelectList(
+        (await categoryService.GetAllCategoriesAsync()).Data
+        .Where(category => category.ParentCategoryId != null),
+        "Id",
+        "Name");
+
+
+
             ViewBag.Colors = new SelectList((await enumService.GetAvailableColorsAsync()).Data, "Id", "Name");
             ViewBag.Sizes = new SelectList((await enumService.GetAvailableSizesAsync()).Data, "Id", "Name");
         }

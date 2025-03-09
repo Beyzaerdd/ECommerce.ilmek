@@ -16,7 +16,18 @@ namespace ECommerce.MVC.Models.OrderModels
         [JsonProperty("applicationUserName")]
         public string ApplicationUserName { get; set; }
 
-        [JsonProperty("status")]
+
+        [JsonProperty("applicationUserEmail")]
+        public string ApplicationUserEmail { get; set; }
+
+        [JsonProperty("applicationUserPhoneNumber")]
+        public string ApplicationUserPhoneNumber { get; set; }
+
+        [JsonProperty("applicationUserAdress")]
+
+        public string ApplicationUserAdress { get; set; }
+
+            [JsonProperty("status")]
         public EnumResponseModel Status { get; set; }
 
         [JsonProperty("orderDate")]
