@@ -11,18 +11,18 @@ namespace ECommerce.Shared.ComplexTypes
     public enum OrderStatus
     {
         [Display(Name = "Onay Bekliyor")]
-        Pending = 1,
+        Bekliyor = 1,
         [Display(Name = "Hazırlanıyor")]
-        Processing = 2,
+        Hazırlanıyor = 2,
         [Display(Name = "Kargoya verildi")]
-        Shipped = 3,
+        Kargoda = 3,
         [Display(Name = "Sipariş Teslim Edildi")]
-        Delivered = 4,
+        Teslim = 4,
         [Display(Name = "Sipariş Tamamlandı")]
-        Completed =5,
+        Tamamlandı =5,
         [Display(Name = "İptal")]
-        Cancelled = 6,
+        İptal = 6,
       [Display(Name = "İade")]
-        Returned = 7      
+        İade = 7      
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ECommerce.Shared.DTOs.ReviewDTOs
@@ -12,11 +13,16 @@ namespace ECommerce.Shared.DTOs.ReviewDTOs
         public int OrderItemId { get; set; }
         public string Content { get; set; }
         public int? Rating { get; set; }
-        public int ProductId { get; set; } // Ürünün ID'si
-        public string ProductName { get; set; } // Ürünün adı
+        public int ProductId { get; set; } 
+        public string? ProductName { get; set; } 
 
-
+        public string? ProductImageUrl { get; set; } 
 
         public DateTime CreatedAt { get; set; }
+
+        public string CustomerName { get; set; }  
+
+  
+        public string? CustomerEmail { get; set; }
     }
 }

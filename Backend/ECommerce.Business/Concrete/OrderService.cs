@@ -101,7 +101,7 @@ namespace ECommerce.Business.Concrete
                 {
                     ApplicationUserId = orderCreateDTO.ApplicationUserId,
                     OrderDate = DateTime.Now,
-                    Status = OrderStatus.Pending,
+                    Status = OrderStatus.Hazırlanıyor,
                     TotalPrice = 0,
                     OrderItems = new List<OrderItem>()
                 };
@@ -134,13 +134,13 @@ namespace ECommerce.Business.Concrete
                         orderTotalAmount += itemTotalPrice;
                         order.OrderItems.Add(orderItem);
                     }
-                   
+
                 }
 
                 order.TotalPrice = orderTotalAmount;
                 order.OrderNumber = GenerateOrderNumber();
-                order.Status = OrderStatus.Processing;
-               
+                order.Status = OrderStatus.Hazırlanıyor;
+
 
                 await _unitOfWork.GetRepository<Order>().AddAsync(order);
                 await _unitOfWork.SaveChangesAsync();
@@ -309,17 +309,17 @@ namespace ECommerce.Business.Concrete
                 Console.WriteLine("E-posta gönderme hatası: " + ex.Message);
             }
         }
- 
+
 
         private string GenerateOrderNumber(int length = 10)
         {
             var random = RandomNumberGenerator.Create();
             var bytes = new byte[length];
             random.GetNonZeroBytes(bytes);
-        
-            var result = BitConverter.ToInt32(bytes, 0); 
+
+            var result = BitConverter.ToInt32(bytes, 0);
             return Math.Abs(result).ToString();
-          
+
         }
 
 
@@ -344,26 +344,37 @@ namespace ECommerce.Business.Concrete
             await _unitOfWork.SaveChangesAsync();
             return ResponseDTO<NoContent>.Success(HttpStatusCode.NoContent);
         }
-
         public async Task<ResponseDTO<OrderDTO>> GetOrderAsync(int id)
         {
-            var order = await _unitOfWork.GetRepository<Order>().GetAsync(x => x.Id == id, query => query.Include(o => o.OrderItems).ThenInclude(oi => oi.Product));
+            var order = await _unitOfWork.GetRepository<Order>().GetAsync(x => x.Id == id, query => query.Include(o => o.OrderItems).ThenInclude(oi => oi.Product).Include(o => o.ApplicationUser)); 
+          
             if (order == null)
             {
                 return ResponseDTO<OrderDTO>.Fail(new List<ErrorDetail>
+        {
+            new ErrorDetail
             {
-                new ErrorDetail
-                {
-                    Message = "Order not found",
-                    Code = "NOT_FOUND",
-                    Target = "order"
-                }
-            }, HttpStatusCode.NotFound);
+                Message = "Order not found",
+                Code = "NOT_FOUND",
+                Target = "order"
             }
-            var orderDTO = _mapper.Map<OrderDTO>(order);
-            return ResponseDTO<OrderDTO>.Success(orderDTO, HttpStatusCode.OK);
+        }, HttpStatusCode.NotFound);
+            }
 
+            var orderDTO = _mapper.Map<OrderDTO>(order);
+
+         
+            orderDTO.ApplicationUserAdress = order.ApplicationUser?.Address;
+
+          
+
+            var response = ResponseDTO<OrderDTO>.Success(orderDTO, HttpStatusCode.OK);
+        
+
+            return response;
         }
+
+
 
         public async Task<ResponseDTO<IEnumerable<OrderDTO>>> GetOrdersAsync()
         {

@@ -14,6 +14,11 @@ namespace ECommerce.Shared.DTOs.OrderDTOs
         public string Id { get; set; }
         public string ApplicationUserId { get; set; }
         public string ApplicationUserName { get; set; }
+
+        public string ApplicationUserEmail { get; set; } 
+        public string ApplicationUserPhoneNumber { get; set; }
+
+        public string ApplicationUserAdress { get; set; } 
         public EnumDTO Status { get; set; }
         public DateTime OrderDate { get; set; }
         public List<OrderItemDTO> OrderItems { get; set; } = new List<OrderItemDTO>();
