@@ -61,5 +61,13 @@ namespace ECommerce.API.Controllers
             }
             return NoContent();
         }
+        [Authorize(Policy = "Seller")]
+
+        [HttpGet("getReviewsBySellerProducts")]
+        public async Task<IActionResult> GetReviewBySellerProducts([FromQuery] string? userId)
+        {
+             var response = await reviewService.GetReviewBySellerProducts(userId);
+            return Ok(response);
+        }
     }
 }

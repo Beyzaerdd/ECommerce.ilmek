@@ -36,8 +36,7 @@ namespace ECommerce.Business.Mapping
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (int)src)) 
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ToString()));
 
-            CreateMap<Order, OrderDTO>()
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+    
 
        
 
@@ -51,7 +50,7 @@ namespace ECommerce.Business.Mapping
 
 
             CreateMap<Invoice, InvoiceDTO>()
-            .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order)); 
+            .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order));
 
 
 
@@ -79,10 +78,19 @@ namespace ECommerce.Business.Mapping
             CreateMap<Discount, DiscountUptadeDTO>().ReverseMap();
             #endregion
 
-        
+
 
             #region Order
-            CreateMap<Order, OrderDTO>().ReverseMap();
+            CreateMap<Order, OrderDTO>()
+       .ForMember(dest => dest.ApplicationUserName, opt => opt.MapFrom(src => src.ApplicationUser.FirstName))
+       .ForMember(dest => dest.ApplicationUserEmail, opt => opt.MapFrom(src => src.ApplicationUser.Email))
+       .ForMember(dest => dest.ApplicationUserPhoneNumber, opt => opt.MapFrom(src => src.ApplicationUser.PhoneNumber))
+       .ForMember(dest => dest.ApplicationUserAdress, opt => opt.MapFrom(src => src.ApplicationUser.Address ?? "Adres bilgisi bulunamadı"))
+       .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+       .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems))
+       .ReverseMap();
+
+
             CreateMap<Order, OrderCreateDTO>().ReverseMap();
             CreateMap<Order, OrderUpdateDTO>().ReverseMap();
             #endregion
@@ -141,6 +149,9 @@ namespace ECommerce.Business.Mapping
     .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.OrderItem.Product.Id))
     .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.OrderItem.Product.Name)).ReverseMap();
 
+            CreateMap<Review, ReviewDTO>()
+    .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.OrderItem.Product.Id)) 
+    .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.OrderItem.Product.Name));  
 
             #endregion
 

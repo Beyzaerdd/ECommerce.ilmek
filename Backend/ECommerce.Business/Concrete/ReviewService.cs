@@ -32,18 +32,18 @@ namespace ECommerce.Business.Concrete
         private readonly IMapper mapper;
         public async Task<ResponseDTO<NoContent>> AddReviewAsync(ReviewCreateDTO reviewCreateDTO)
         {
-           
+
             var orderItem = await unitOfWork.GetRepository<OrderItem>()
                 .GetAsync(oi => oi.Id == reviewCreateDTO.OrderItemId,
                           query => query.Include(oi => oi.Order.OrderItems)
                                         .ThenInclude(oi => oi.Product));
 
-      
+
             var review = mapper.Map<Review>(reviewCreateDTO);
-            review.OrderItemId = orderItem.Id; 
+            review.OrderItemId = orderItem.Id;
             review.OrderItem = orderItem;
 
-          
+
             await unitOfWork.GetRepository<Review>().AddAsync(review);
             await unitOfWork.SaveChangesAsync();
 
@@ -54,10 +54,10 @@ namespace ECommerce.Business.Concrete
         public async Task<ResponseDTO<NoContent>> DeleteReviewAsync(int reviewId)
         {
             var user = httpContextAccessor.GetUserId();
-         
-            var review = await unitOfWork.GetRepository<Review>().GetAsync(r => r.Id == reviewId, query => query.Include(r => r.OrderItem).ThenInclude(r=>r.Order));
 
-            
+            var review = await unitOfWork.GetRepository<Review>().GetAsync(r => r.Id == reviewId, query => query.Include(r => r.OrderItem).ThenInclude(r => r.Order));
+
+
             if (review == null)
             {
                 return ResponseDTO<NoContent>.Fail(new List<ErrorDetail>
@@ -93,12 +93,13 @@ namespace ECommerce.Business.Concrete
         {
             var reviews = await unitOfWork.GetRepository<Review>()
                 .GetAllAsync(
-                    r => r.OrderItem != null && r.OrderItem.ProductId == productId, 
+                    r => r.OrderItem != null && r.OrderItem.ProductId == productId,
                     null,
                     null,
                     false,
-                    query => query.Include(r => r.OrderItem) 
-                                  .ThenInclude(oi => oi.Product) 
+                    query => query.Include(r => r.OrderItem)
+                                  .ThenInclude(oi => oi.Product)
+
                 );
 
             if (reviews == null || !reviews.Any())
@@ -115,7 +116,7 @@ namespace ECommerce.Business.Concrete
         public async Task<ResponseDTO<NoContent>> UpdateReviewAsync(ReviewUptadeDTO reviewUptadeDTO)
         {
             var user = httpContextAccessor.GetUserId();
-            var review = await unitOfWork.GetRepository<Review>().GetAsync(r => r.Id == reviewUptadeDTO.Id,query=>query.Include(r=>r.OrderItem).ThenInclude(r=>r.Order));
+            var review = await unitOfWork.GetRepository<Review>().GetAsync(r => r.Id == reviewUptadeDTO.Id, query => query.Include(r => r.OrderItem).ThenInclude(r => r.Order));
 
 
             if (review == null)
@@ -157,5 +158,48 @@ namespace ECommerce.Business.Concrete
             return ResponseDTO<NoContent>.Success(HttpStatusCode.NoContent);
 
         }
+
+        public async Task<ResponseDTO<IEnumerable<ReviewDTO>>> GetReviewBySellerProducts(string userId)
+        {
+            var reviews = await unitOfWork.GetRepository<Review>()
+                .GetAllAsync(
+                    r => r.OrderItem.Product.ApplicationUserId == userId,
+                    null,
+                    null,
+                    false,
+                    query => query.Include(r => r.OrderItem)
+                                  .ThenInclude(oi => oi.Product)
+                                  .Include(r => r.OrderItem.Order)  // Siparişi dahil et
+                                  .ThenInclude(o => o.ApplicationUser)  // Sipariş veren kullanıcıyı dahil et
+                );
+
+            if (reviews == null || !reviews.Any())
+            {
+                return ResponseDTO<IEnumerable<ReviewDTO>>.Fail("Bu ürünlere ait yorum bulunamadı.", HttpStatusCode.NotFound);
+            }
+
+            var result = reviews.Select(r => new ReviewDTO
+            {
+                Id = r.Id,
+                OrderItemId = r.OrderItemId,
+                Content = r.Content,
+                Rating = r.Rating,
+                ProductId = r.OrderItem.Product.Id,
+                ProductName = r.OrderItem.Product.Name,
+                ProductImageUrl = r.OrderItem.Product.ImageUrl,
+                CreatedAt = r.CreatedAt,
+                CustomerEmail=r.OrderItem.Order.ApplicationUser.Email,
+                CustomerName=r.OrderItem.Order.ApplicationUser.FirstName
+
+                
+
+
+  
+            });
+
+            return ResponseDTO<IEnumerable<ReviewDTO>>.Success(result, HttpStatusCode.OK);
+        }
+
+
     }
 }

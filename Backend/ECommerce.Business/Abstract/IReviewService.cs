@@ -20,5 +20,7 @@ namespace ECommerce.Business.Abstract
         Task<ResponseDTO<NoContent>> DeleteReviewAsync(int reviewId);
 
         Task<ResponseDTO<NoContent>> UpdateReviewAsync(ReviewUptadeDTO reviewUptadeDTO);
+
+        Task<ResponseDTO<IEnumerable<ReviewDTO>>> GetReviewBySellerProducts(string userId);
     }
 }
