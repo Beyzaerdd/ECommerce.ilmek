@@ -48,6 +48,9 @@ builder.Services.AddScoped<ECommerce.MVC.Areas.Admin.Services.Abstract.IOrderSer
 builder.Services.AddScoped<ECommerce.MVC.Areas.Admin.Services.Abstract.IDiscountService,
                            ECommerce.MVC.Areas.Admin.Services.Concrete.DiscountService>();
 
+builder.Services.AddScoped<ECommerce.MVC.Areas.Admin.Services.Abstract.IReviewService,
+                           ECommerce.MVC.Areas.Admin.Services.Concrete.ReviewService>();
+
 builder.Services.AddHttpClient("ECommerceAPI", client => client.BaseAddress = new Uri("http://localhost:1406/api/"));
 
 builder

@@ -101,7 +101,7 @@
                 <div class="collapse" id="sidebarOrders">
                     <ul class="nav sub-navbar-nav">
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Order" asp-action="List">Siaprişler</a>
+                            <a class="sub-nav-link" asp-controller="Order" asp-action="List">Siparişler</a>
                         </li>
                         <li class="sub-nav-item">
                             <a class="sub-nav-link" asp-controller="Orders" asp-action="Detail">Detaylar</a>
@@ -122,13 +122,22 @@
                 <div class="collapse" id="sidebarOrders">
                     <ul class="nav sub-navbar-nav">
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Order" asp-action="GetOrdersBySeller">Siaprişler</a>
+                            <a class="sub-nav-link" asp-controller="Order" asp-action="GetOrdersBySeller">Siparişler</a>
                         </li>
                         <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Order" asp-action="Detail">Detaylar</a>
+                            <a class="sub-nav-link" asp-controller="Order" asp-action="OrderDetail">Detaylar</a>
                         </li>
                     </ul>
                 </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Admin" asp-controller="Review" asp-action="Index">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Ürün Değerlendirmeleri </span>
+                </a>
             </li>
         }
 
