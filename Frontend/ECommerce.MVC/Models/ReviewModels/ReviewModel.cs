@@ -22,5 +22,16 @@ namespace ECommerce.MVC.Models.ReviewModels
 
         [JsonPropertyName("createdAt")]
         public DateTime CreatedAt { get; set; }
+
+        [JsonPropertyName("productName")]
+        public string? ProductName { get; set; } // ✅ Ürün Adı güncellendi
+
+        [JsonPropertyName("productImageUrl")]
+        public string? ProductImageUrl { get; set; } // ✅ Ürün görsel URL'si eklendi
+        [JsonPropertyName("customerName")]
+        public string CustomerName { get; set; }  // Yorum yapanın adı
+
+        [JsonPropertyName("customerEmail")]
+        public string? CustomerEmail { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ECommerce.MVC.Models.ReviewModels.ReviewModel>
+@{
+    Layout = "_Layout";
+}
+<div class="container-xxl">
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <p>Henüz ürünlerinize ait yorum bulunmamaktadır.</p>
+        }
+        else
+        {
+            @foreach (var review in Model)
+            {
+                <div class="col-xl-3 col-md-6">
+                    <div class="card overflow-hidden">
+                        <div class="card-body">
+                            <p class="mb-2 text-dark fw-semibold fs-15">
+                                 @review.CreatedAt.ToString("dd MMMM yyyy") oluşturuldu.
+                            </p>
+                            <p class="mb-0">" @review.Content "</p>
+                            <div class="d-flex align-items-center gap-2 mt-2 mb-1">
+                                <ul class="d-flex text-warning m-0 fs-20 list-unstyled">
+                                    @{
+                                        int fullStars = review.Rating ?? 0;
+                                        for (int i = 0; i < fullStars; i++)
+                                        {
+                                            <li><i class="bx bxs-star"></i></li>
+                                        }
+                                        for (int i = fullStars; i < 5; i++)
+                                        {
+                                            <li><i class="bx bx-star"></i></li>
+                                        }
+                                    }
+                                </ul>
+                                <p class="fw-medium mb-0 text-dark fs-15">@review.ProductName</p>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-primary position-relative mt-3">
+                            <div class="position-absolute top-0 start-0 translate-middle-y ms-3">
+                                <img src="@review.ProductImageUrl" alt="@review.ProductName"
+                                     class="avatar-lg border border-light border-3 rounded-circle">
+                            </div>
+                          
+                            <div class="mt-4">
+                                <h4 class="text-white mb-1">@review.CustomerName</h4>
+                                <p class="text-white mb-0">@review.CustomerEmail</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
