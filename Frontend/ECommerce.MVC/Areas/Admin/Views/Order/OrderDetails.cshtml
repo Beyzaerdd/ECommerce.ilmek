@@ -1,0 +1,144 @@
+﻿@model ECommerce.MVC.Models.OrderModels.OrderModel
+@{
+    Layout = "_Layout";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <!-- Left Column for Order and Product Info -->
+    <div class="col-xl-9 col-lg-8">
+        <!-- Order Header -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div>
+                        <h4 class="fw-medium text-dark d-flex align-items-center gap-2">
+                            @Model.OrderNumber
+                            <span class="badge bg-success-subtle text-success px-2 py-1 fs-13">Ödendi</span>
+                            <span class="border border-warning text-warning fs-13 px-2 py-1 rounded">@Model.Status.Name</span>
+                        </h4>
+                        <p class="mb-0"> @Model.OrderNumber - @Model.OrderDate.ToString("MMMM dd, yyyy 'at' h:mm tt")</p>
+                    </div>
+                    <div>
+                       
+                        <a href="#!" class="btn btn-primary">Sipariş Durumunu Güncelle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="card-title">Ürünler</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0 table-hover table-centered">
+                        <thead class="bg-light-subtle border-bottom">
+                            <tr>
+                                <th>Ürün Adı & Beden</th>
+                                <th>Durum</th>
+                                <th>Adet</th>
+                                <th>Birim Fiyatı</th>
+             
+                                <th>Toplam Tutar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
+                                                <img src="@item.Product.ImageUrl" alt="@item.Product.Name" class="avatar-md">
+                                            </div>
+                                            <div>
+                                                <a href="#!" class="text-dark fw-medium fs-15">@item.Product.Name</a>
+                                                <p class="text-muted mb-0 mt-1 fs-13"><span>Beden: </span>@item.Size.Name</p>
+                                                <p class="text-muted mb-0 mt-1 fs-13"><span>Beden: </span>@item.Color.Name</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                 
+                                  
+                                    <td>
+                                        <span class="badge bg-success-subtle text-success px-2 py-1 fs-13">@Model.Status.Name</span>
+                                    </td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Product.UnitPrice.ToString("C2")</td>
+
+                                    
+                                    <td class="fw-bold">@($"{(item.Quantity * item.Product?.UnitPrice):C2}")</td>
+                                   
+                              </tr>
+                           
+                            }
+                          
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Right Column for Order Summary and Customer Info -->
+    <div class="col-xl-3 col-lg-4">
+        <!-- Order Summary -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="card-title">Sipariş Özeti</h4>
+            </div>
+      
+            <div class="card-footer d-flex align-items-center justify-content-between bg-light-subtle">
+                <div>
+                    <p class="fw-medium text-dark mb-0">Toplam Tutar</p>
+                </div>
+                <div>
+                    <p class="fw-medium text-dark mb-0">
+                        @Model.TotalPrice.ToString("C2")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Müşteri Bilgileri:</h4>
+    </div>
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-2">
+          
+            <div>
+                <p class="mb-1">@Model.ApplicationUserName</p>
+                <a href="mailto:@Model.ApplicationUserEmail" class="link-primary fw-medium">@Model.ApplicationUserEmail</a>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <h5 class="">Telefon Numarası:</h5>
+            <div>
+                <a href="#!"><i class="bx bx-edit-alt fs-18"></i></a>
+            </div>
+        </div>
+        <p class="mb-1">@Model.ApplicationUserPhoneNumber</p>
+
+        <div class="d-flex justify-content-between mt-3">
+            <h5 class="">Sipariş Adresi:</h5>
+            <div>
+                <a href="#!"><i class="bx bx-edit-alt fs-18"></i></a>
+            </div>
+        </div>
+
+       
+            <p class="mb-1">@Model.ApplicationUserAdress</p>
+  
+
+
+    </div>
+</div>
+
