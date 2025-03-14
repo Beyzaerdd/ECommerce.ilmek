@@ -1,0 +1,58 @@
+﻿@model ECommerce.MVC.Areas.Admin.Models.AccountModels.SellerAccountUpdateModel
+
+@{
+    ViewData["Title"] = "Update Seller Profile";
+}
+
+<h2>Update Seller Profile</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+else if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<form asp-action="UpdateProfile" asp-controller="Seller"  method="post">
+    <div class="form-group">
+        <label for="FirstName">First Name</label>
+        <input type="text" class="form-control" id="FirstName" name="FirstName" value="@Model.FirstName" required />
+    </div>
+    <div class="form-group">
+        <label for="LastName">Last Name</label>
+        <input type="text" class="form-control" id="LastName" name="LastName" value="@Model.LastName" required />
+    </div>
+    <div class="form-group">
+        <label for="Address">Address</label>
+        <textarea class="form-control" id="Address" name="Address">@Model.Address</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="StoreName">Store Name</label>
+        <input type="text" class="form-control" id="StoreName" name="StoreName" value="@Model.StoreName" />
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" readonly />
+    </div>
+    <div class="form-group">
+        <label for="PhoneNumber">Phone Number</label>
+        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" />
+    </div>
+    <div class="form-group">
+        <label for="WeeklyOrderLimit">Weekly Order Limit</label>
+        <input type="number" class="form-control" id="WeeklyOrderLimit" name="WeeklyOrderLimit" value="@Model.WeeklyOrderLimit" min="0" />
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="IsActive" name="IsActive" @(Model.IsActive ? "checked" : "") />
+        <label class="form-check-label" for="IsActive">Active</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+</form>

@@ -1,0 +1,101 @@
+﻿@model ECommerce.MVC.Models.UserModels.ApplicationUserModel
+
+@{
+    ViewData["Title"] = "Seller Account Details";
+    Layout = "_Layout";
+}
+
+<h2 class="text-center mb-4">Seller Account Details</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+else if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="FirstName" value="@Model.FirstName" readonly />
+                <label for="FirstName">First Name</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="LastName" value="@Model.LastName" readonly />
+                <label for="LastName">Last Name</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="Address" class="form-label">Address</label>
+        <textarea class="form-control" id="Address" readonly>@Model.Address</textarea>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-floating">
+            <input type="text" class="form-control" id="StoreName" value="@Model.StoreName" readonly />
+            <label for="StoreName">Store Name</label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-floating">
+            <input type="email" class="form-control" id="Email" value="@Model.Email" readonly />
+            <label for="Email">Email</label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-floating">
+            <input type="text" class="form-control" id="PhoneNumber" value="@Model.PhoneNumber" readonly />
+            <label for="PhoneNumber">Phone Number</label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-floating">
+            <input type="text" class="form-control" id="WeeklyOrderLimit" value="@Model.WeeklyOrderLimit" readonly />
+            <label for="WeeklyOrderLimit">Weekly Order Limit</label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <input type="text" class="form-control" value="@(Model.IsActive ? "Active" : "Inactive")" readonly />
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <a href="@Url.Action("UpdateProfile", "Seller")" class="btn btn-primary btn-lg">Edit Profile</a>
+    </div>
+</div>
+
+<style>
+    .form-floating > label {
+        font-weight: 500;
+    }
+
+    .btn {
+        width: 200px;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin-top: 40px;
+    }
+
+    .alert {
+        font-weight: 600;
+    }
+</style>
