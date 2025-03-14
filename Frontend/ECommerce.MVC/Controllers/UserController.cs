@@ -1,4 +1,5 @@
-﻿using ECommerce.MVC.Models.UserModels;
+﻿using ECommerce.MVC.Areas.Admin.Models.AccountModels;
+using ECommerce.MVC.Models.UserModels;
 using ECommerce.MVC.Services.Abstract;
 using ECommerce.Shared.DTOs.UserDTO;
 using Microsoft.AspNetCore.Authorization;
@@ -84,7 +85,7 @@ namespace ECommerce.MVC.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UpdateSellerProfile(ApplicationUserModel model)
+        public async Task<IActionResult> UpdateSellerProfile(SellerAccountUpdateModel model)
         {
             if (!ModelState.IsValid)
             {

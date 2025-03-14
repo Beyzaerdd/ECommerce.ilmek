@@ -29,13 +29,13 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
             }
             else
             {
-                // Handle errors if needed
+     
                 TempData["Error"] = "Hesap bilgileri alınırken bir hata oluştu.";
                 return View();
             }
         }
 
-        // Update seller profile
+
         [HttpPost]
         public async Task<IActionResult> UpdateProfile(SellerAccountUpdateModel model)
         {
@@ -49,11 +49,11 @@ namespace ECommerce.MVC.Areas.Admin.Controllers
                 }
                 else
                 {
-                    // Display error
+                    
                     TempData["Error"] = "Profil güncellenirken bir hata oluştu.";
                 }
             }
-            return View("AccountDetails", model); // Return to AccountDetails view with current model
+            return View("AccountDetails", model); 
         }
     }
 }
