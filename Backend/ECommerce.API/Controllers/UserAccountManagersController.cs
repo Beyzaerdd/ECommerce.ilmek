@@ -95,7 +95,7 @@ namespace ECommerce.API.Controllers
 
         [Authorize(Policy = "Seller")]
         [HttpPost("updateSellerProfile")]
-        public async Task<IActionResult> UpdateSellerProfile([FromBody] ApplicationUserDTO model)
+        public async Task<IActionResult> UpdateSellerProfile([FromBody] UpdateSellerProfileDTO model)
         {
             if (model == null)
             {
