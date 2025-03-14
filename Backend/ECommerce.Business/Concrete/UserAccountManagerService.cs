@@ -249,6 +249,23 @@ namespace ECommerce.Business.Concrete
                 StoreName = seller.StoreName,
                 Email = seller.Email,
                 IsActive = seller.IsActive,
+                Address=seller.Address,
+                DateOfBirth = seller.DateOfBirth,
+                PhoneNumber = seller.PhoneNumber,
+             
+                IsApproved = seller.IsApproved,
+                IdentityNumber = seller.IdentityNumber,
+                FirstName = seller.FirstName,
+                LastName = seller.LastName,
+                WeeklyOrderLimit = seller.WeeklyOrderLimit,
+                UserName=seller.UserName,
+               
+                 
+
+                
+
+
+
 
 
 
@@ -408,13 +425,13 @@ namespace ECommerce.Business.Concrete
 
             return ResponseDTO<UpdateUserProfileDTO>.Success(model, HttpStatusCode.OK);
         }
-        public async Task<ResponseDTO<ApplicationUserDTO>> UpdateSellerProfile(ApplicationUserDTO model)
+        public async Task<ResponseDTO<UpdateSellerProfileDTO>> UpdateSellerProfile(UpdateSellerProfileDTO model)
         {
         
             var userId = httpContextAccessor.GetUserId();
             if (string.IsNullOrEmpty(userId))
             {
-                return ResponseDTO<ApplicationUserDTO>.Fail(new List<ErrorDetail>
+                return ResponseDTO<UpdateSellerProfileDTO>.Fail(new List<ErrorDetail>
         {
             new ErrorDetail
             {
@@ -428,7 +445,7 @@ namespace ECommerce.Business.Concrete
             var seller = await unitOfWork.GetRepository<Seller>().GetAsync(s => s.Id == userId);
             if (seller == null)
             {
-                return ResponseDTO<ApplicationUserDTO>.Fail(new List<ErrorDetail>
+                return ResponseDTO<UpdateSellerProfileDTO>.Fail(new List<ErrorDetail>
         {
             new ErrorDetail
             {
@@ -443,12 +460,16 @@ namespace ECommerce.Business.Concrete
             seller.Email = model.Email;
             seller.PhoneNumber = model.PhoneNumber;
             seller.Address = model.Address;
-            seller.UserName = model.UserName;
+            seller.WeeklyOrderLimit = model.WeeklyOrderLimit;
+            seller.IsActive = model.IsActive;
+            seller.FirstName = model.FirstName;
+            seller.LastName = model.LastName;
+
 
             unitOfWork.GetRepository<Seller>().UpdateAsync(seller);
             await unitOfWork.SaveChangesAsync();
 
-            return ResponseDTO<ApplicationUserDTO>.Success(model, HttpStatusCode.OK);
+            return ResponseDTO<UpdateSellerProfileDTO>.Success(model, HttpStatusCode.OK);
         }
 
     }

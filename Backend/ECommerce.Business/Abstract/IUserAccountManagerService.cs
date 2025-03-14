@@ -24,7 +24,7 @@ namespace ECommerce.Business.Abstract
         Task<ResponseDTO<Seller>> GetSellerAccountDetails();
 
         Task<ResponseDTO<UpdateUserProfileDTO>> UpdateUserProfile(UpdateUserProfileDTO model);
-        Task<ResponseDTO<ApplicationUserDTO>> UpdateSellerProfile(ApplicationUserDTO model);
+        Task<ResponseDTO<UpdateSellerProfileDTO>> UpdateSellerProfile(UpdateSellerProfileDTO model);
 
 
     }
