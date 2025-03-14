@@ -36,7 +36,7 @@ namespace ECommerce.MVC.Models.UserModels
         public bool IsApproved { get; set; }
 
         [JsonPropertyName("identityNumber")]
-        public int IdentityNumber { get; set; }
+        public string IdentityNumber { get; set; }
 
         [JsonPropertyName("dateOfBirth")]
         public DateTime DateOfBirth { get; set; }
@@ -56,5 +56,8 @@ namespace ECommerce.MVC.Models.UserModels
         [Phone(ErrorMessage = "Geçerli bir telefon numarası girin.")]
         [JsonPropertyName("phoneNumber")]
         public string PhoneNumber { get; set; }
+        [JsonPropertyName("weeklyOrderLimit")]
+        public int WeeklyOrderLimit { get; set; }
+
     }
 }

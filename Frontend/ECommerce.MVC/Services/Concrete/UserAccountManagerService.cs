@@ -1,4 +1,5 @@
-﻿using ECommerce.MVC.Models.UserModels;
+﻿using ECommerce.MVC.Areas.Admin.Models.AccountModels;
+using ECommerce.MVC.Models.UserModels;
 using ECommerce.MVC.Services.Abstract;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
 using System.Net.Http.Json;
@@ -95,7 +96,7 @@ namespace ECommerce.MVC.Services.Concrete
             return JsonSerializer.Deserialize<ResponseViewModel<UpdateUserProfileModel>>(responseBody, _jsonSerializerOptions);
 
         }
-      public async  Task<ResponseViewModel<ApplicationUserModel>> UpdateSellerProfile(ApplicationUserModel model)
+      public async  Task<ResponseViewModel<SellerAccountUpdateModel>> UpdateSellerProfile(SellerAccountUpdateModel model)
         {
 
             var client = GetHttpClient();
@@ -105,7 +106,7 @@ namespace ECommerce.MVC.Services.Concrete
 
             if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(responseBody))
             {
-                return new ResponseViewModel<ApplicationUserModel>
+                return new ResponseViewModel<SellerAccountUpdateModel>
                 {
                     IsSucceeded = false,
                     Errors = new List<ErrorViewModel>
@@ -115,7 +116,7 @@ namespace ECommerce.MVC.Services.Concrete
                 };
             }
 
-            return JsonSerializer.Deserialize<ResponseViewModel<ApplicationUserModel>>(responseBody, _jsonSerializerOptions);
+            return JsonSerializer.Deserialize<ResponseViewModel<SellerAccountUpdateModel>>(responseBody, _jsonSerializerOptions);
 
 
 

@@ -1,14 +1,12 @@
-﻿@model ECommerce.MVC.Models.OrderModels.OrderModel
+﻿@using ECommerce.MVC.Models.EnumResponseModels
+@model ECommerce.MVC.Models.OrderModels.OrderModel
 @{
     Layout = "_Layout";
 }
 
 <h2>@ViewData["Title"]</h2>
-
 <div class="row">
-    <!-- Left Column for Order and Product Info -->
     <div class="col-xl-9 col-lg-8">
-        <!-- Order Header -->
         <div class="card mb-4">
             <div class="card-body">
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
@@ -21,12 +19,30 @@
                         <p class="mb-0"> @Model.OrderNumber - @Model.OrderDate.ToString("MMMM dd, yyyy 'at' h:mm tt")</p>
                     </div>
                     <div>
-                       
-                        <a href="#!" class="btn btn-primary">Sipariş Durumunu Güncelle</a>
+                        <!-- Sipariş Durumu Güncelleme Formu -->
+                        <form id="updateOrderForm" class="d-flex gap-2">
+                            <input type="hidden" id="orderId" value="@Model.Id" />
+
+                            <select id="orderStatus" class="form-select">
+                                @foreach (var status in ViewBag.OrderStatuses as List<EnumResponseModel>)
+                                {
+                                    <option value="@status.Id" selected="@(status.Id == Model.Status.Id ? "selected" : null)">
+                                        @status.Name
+                                    </option>
+                                }
+                            </select>
+
+                            <button type="button" id="updateOrderBtn" class="btn btn-primary">Güncelle</button>
+                        </form>
+
+
                     </div>
                 </div>
             </div>
         </div>
+  
+
+
 
        
         <div class="card mb-4">
@@ -142,3 +158,29 @@
     </div>
 </div>
 
+    <script>
+        document.getElementById("updateOrderBtn").addEventListener("click", async function () {
+            const orderId = document.getElementById("orderId").value;
+            const orderStatus = document.getElementById("orderStatus").value;
+            const response = await fetch(`/Admin/Order/UpdateStatus`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    OrderId: orderId,
+                    Status: orderStatus
+                })
+            });
+
+
+            if (response.ok) {
+                alert("Durum güncellendi!");
+                // Başarılı güncelleme sonrası sayfayı yenileyebilirsin veya kullanıcıya mesaj gösterebilirsin
+            } else {
+                alert("Bir hata oluştu!");
+            }
+        });
+
+
+    </script>

@@ -141,10 +141,8 @@
             </li>
         }
 
-        @if (User.IsInRole("Admin") || User.IsInRole("Seller"))
-        {
 
-            <li class="menu-title mt-2">Users</li>
+            
             <li class="nav-item">
                 <a class="nav-link menu-arrow" href="#sidebarSellers" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSellers">
                     <span class="nav-icon">
@@ -169,17 +167,27 @@
                             </li>
 
                         }
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Seller" asp-action="Details">Details</a>
-                        </li>
-                        <li class="sub-nav-item">
-                            <a class="sub-nav-link" asp-controller="Seller" asp-action="Edit">Edit</a>
-                        </li>
+                       
+                    </ul>
+                </div>
+                <div class="collapse" id="sidebarSellers">
+                    <ul class="nav sub-navbar-nav">
 
+                       
+                        
+                        @if (User.IsInRole("Seller"))
+                        {
+                            <li class="sub-nav-item">
+                                <a class="sub-nav-link" asp-controller="Seller" asp-action="AccountDetails">Hesap Bilgilerim</a>
+                            </li>
+                            <li class="sub-nav-item">
+                                <a class="sub-nav-link" asp-controller="Seller" asp-action="UpdateProfile">Güncelle</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </li>
-        }
+        
         @if (User.IsInRole("Admin"))
 
 

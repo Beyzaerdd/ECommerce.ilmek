@@ -1,5 +1,6 @@
 ﻿
 
+using ECommerce.MVC.Areas.Admin.Models.AccountModels;
 using ECommerce.MVC.Models.UserModels;
 using ECommerce.MVC.Views.Shared.ResponseViewModels;
 using ECommerce.Shared.DTOs.ResponseDTOs;
@@ -16,6 +17,6 @@ namespace ECommerce.MVC.Services.Abstract
         Task<ResponseViewModel<ApplicationUserModel>> GetSellerByIdAsync(string sellerId);
 
         Task<ResponseViewModel<UpdateUserProfileModel>> UpdateUserProfile(UpdateUserProfileModel model);
-        Task<ResponseViewModel<ApplicationUserModel>> UpdateSellerProfile(ApplicationUserModel model);
+        Task<ResponseViewModel<SellerAccountUpdateModel>> UpdateSellerProfile(SellerAccountUpdateModel model);
     }
 }
