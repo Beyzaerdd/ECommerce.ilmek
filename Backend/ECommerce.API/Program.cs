@@ -113,7 +113,8 @@ builder.Services.AddAuthentication(options =>
        
     };
 
-}); builder.Services.AddScoped<IAuthService, AuthService>();
+});
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
