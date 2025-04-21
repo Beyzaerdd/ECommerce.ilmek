@@ -60,7 +60,7 @@ The project follows an **N-Layer Architecture**:
 - **Invoice Management and Generation** 🧾
 
 ---
-## 🚀 Planned Features for MVC
+## 🚀 Features Completed in MVC
 - **Seller Registration and Dashboard Access** 🏪
 - **Admin and Seller Dashboard** 📊
 - **Invoice Viewing** 🧾
@@ -102,8 +102,11 @@ Postman will be used to test all API endpoints
 ![alt text](images/site17.png)
 ![alt text](images/site18.png)
 ![alt text](images/site19.png)
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 45cda1658e10eae7d820315912ed47b992c39742
