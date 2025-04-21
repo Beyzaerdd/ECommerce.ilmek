@@ -60,7 +60,7 @@ The project follows an **N-Layer Architecture**:
 - **Invoice Management and Generation** 🧾
 
 ---
-## 🚀 Planned Features for MVC
+## 🚀 Features Completed in MVC
 - **Seller Registration and Dashboard Access** 🏪
 - **Admin and Seller Dashboard** 📊
 - **Invoice Viewing** 🧾
